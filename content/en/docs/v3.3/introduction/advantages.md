@@ -1,92 +1,76 @@
 ---
 title: "Advantages"
-keywords: "KubeSphere, Kubernetes, Advantages"
-description: "KubeSphere Advantages"
+keywords: "Kuberix, Kubernetes, Advantages"
+description: "Kuberix Enterprise Advantages"
 linkTitle: "Advantages"
 weight: 1600
 ---
 
-## Vision
+## Kuberix Enterprise 비전
 
-Kubernetes has become the de facto standard for deploying containerized applications at scale in private, public and hybrid cloud environments. However, many people can easily get confused when they start to use Kubernetes as it is complicated and has many additional components to manage. Some components need to be installed and deployed by users themselves, such as storage and network services. At present, Kubernetes only provides open-source solutions or projects, which can be difficult to install, maintain and operate to some extent. For users, it is not always easy to quickly get started as they are faced with a steep learning curve.
+쿠버네티스는 프라이빗, 퍼블릭 및 하이브리드 클라우드 환경에서 컨테이너화된 애플리케이션을 대규모로 배포하기 위한 사실상의 표준이 되었다. 그러나 많은 사람들이 쿠버네티스를 사용하기 시작하면 복잡하고 관리 할 추가 구성 요소가 많기 때문에 쉽게 혼란 스러울 수 있습니다. 일부 구성 요소는 저장소 및 네트워크 서비스와 같은 사용자 자신이 설치하고 배포해야 합니다. 현재 쿠버네티스는 오픈 소스 솔루션이나 프로젝트만 제공하고 있으며, 이는 어느 정도 설치, 유지 관리 및 운영이 어려울 수 있습니다. 사용자의 경우 가파른 학습 곡선에 직면하여 신속하게 시작하는 것이 항상 쉬운 것은 아닙니다.
 
-KubeSphere is designed to reduce or eliminate many Kubernetes headaches related to building, deployment, management, observability and so on. It provides comprehensive services and automates provisioning, scaling and management of applications so that you can focus on code writing. More specifically, KubeSphere boasts an extensive portfolio of features including multi-cluster management, application lifecycle management, multi-tenant management, CI/CD pipelines, service mesh, and observability (monitoring, logging, alerting, notifications, auditing and events).
+Kuberix Entreprise는 구축, 배포, 관리, 관찰 가능성 등과 관련된 많은 쿠버네티스 골칫거리를 줄이거나 없애기 위해 설계되었습니다. 포괄적인 서비스를 제공하고 응용 프로그램의 프로비저닝, 확장 및 관리를 자동화하여 코드 작성에 집중할 수 있습니다. 보다 구체적으로, Kuberix Entreprise는 멀티 클러스터 관리, 애플리케이션 수명 주기 관리, 멀티 테넌트 관리, CI/CD 파이프라인, 서비스 메시 및 옵저버빌리티(모니터링, 로깅, 경고, 알림, 감사 및 이벤트)을 포함한 광범위한 기능 포트폴리오를 자랑합니다.
 
-As a comprehensive open-source platform, KubeSphere strives to make the container platform more user-friendly and powerful. For example, KubeSphere provides a highly interactive web console for test and operation. For users who are accustomed to command-line tools, they can quickly get familiar with KubeSphere as kubectl is integrated in the platform. As such, users can create and modify their resources with the minimal learning curve.
+포괄적인 랜딩존 플랫폼인 Kuberix Entreprise는 컨테이너 플랫폼을 더욱 사용자 친화적이고 강력하게 만들기 위해 노력하고 있습니다. 예를 들어, Kuberix Entreprise는 테스트 및 작동을 위한 대화형 웹 콘솔을 제공합니다. 명령줄 도구에 익숙한 사용자는 kubectl이 플랫폼에 통합되므로 Kuberix Entreprise에 빠르게 익숙해질 수 있습니다. 따라서 사용자는 최소한의 학습 곡선으로 리소스를 만들고 수정할 수 있습니다.
 
-In addition, KubeSphere offers excellent solutions to storage and network. Apart from the major open-source storage solutions such as Ceph RBD and GlusterFS, users are also provided with [QingCloud Block Storage](https://docs.qingcloud.com/product/storage/volume/) and [QingStor NeonSAN](https://docs.qingcloud.com/product/storage/volume/super_high_performance_shared_volume/), developed by QingCloud for persistent storage. With the integrated QingCloud CSI and NeonSAN CSI plugins, enterprises can enjoy a more stable and secure services of their apps and data.
+## Kuberix Enterprise 차별성
 
-## Why KubeSphere
+Kuberix Entreprise는 기업을 위한 고성능 및 확장 가능한 컨테이너 서비스 관리를 제공합니다. 최첨단 기술로 구동되는 디지털 혁신을 달성하고 앱 반복 및 비즈니스 제공을 가속화하여 끊임없이 변화하는 기업의 요구를 충족 할 수 있도록 돕는 것을 목표로합니다.
 
-KubeSphere provides high-performance and scalable container service management for enterprises. It aims to help them accomplish digital transformation driven by cutting-edge technologies, and accelerate app iteration and business delivery to meet the ever-changing needs of enterprises.
+Kuberix Entreprise의 여섯 가지 주요 장점은 다음과 같습니다.
 
-Here are the six major advantages of KubeSphere.
+### 클러스터 통합 관리
 
-### Unified management of clusters across cloud providers
+컨테이너 사용량이 증가함에 따라 기업은 클라우드 및 온-프레미스 환경에 클러스터를 배포할 때 클러스터 관리의 복잡성이 증가하는 상황에 직면하게 됩니다. 이기종 클러스터를 관리하기 위한 균일한 플랫폼에 대한 사용자의 긴급한 요구를 해결하기 위해 Kuberix Entreprise는 상당한 이점과 함께 주요 기능 향상을 보고 있습니다. 사용자는 Kuberix Entreprise를 활용하여 지역, 클라우드 환경에서 클러스터를 관리, 모니터링, 가져오기 및 운영할 수 있습니다.
 
-As container usage ramps up, enterprises are faced with increased complexity of cluster management as they deploy clusters across cloud and on-premises environments. To address the urgent need of users for a uniform platform to manage heterogeneous clusters, KubeSphere sees a major feature enhancement with substantial benefits. Users can leverage KubeSphere to manage, monitor, import and operate clusters across regions, clouds and environments.
+해당 기능들은 설치 전후에 활성화할 수 있습니다, 해당 피처는 다음과 같습니다 :
 
-The feature can be enabled both before and after the installation. In particular, it features:
+**통합 관리**. 사용자는 직접 연결 또는 에이전트 연결을 통해 쿠버네티스 클러스터를 가져올 수 있습니다. 간단한 구성으로 대화식 웹 콘솔에서 몇 분 안에 프로세스를 수행 할 수 있습니다. 클러스터를 가져오면 사용자는 상태를 모니터링하고 중앙 제어 플레인을 통해 클러스터 리소스에서 작업할 수 있습니다.
 
-**Unified Management**. Users can import Kubernetes clusters either through direct connection or agent connection. With simple configurations, the process can be done within minutes on the interactive web console. Once clusters are imported, users are able to monitor the status and operate on cluster resources through a central control plane.
+**고가용성**. Kuberix Entreprise의 다중 클러스터 아키텍처에서 클러스터는 백업 역할을 하는 다른 클러스터와 함께 주요 서비스를 실행할 수 있습니다. 주요 클러스터가 다운되면 다른 클러스터에서 서비스를 신속하게 인계받을 수 있습니다. 또한 클러스터가 다른 지역에 배포되면 짧은 대기 시간을 위해 가장 가까운 지역으로 요청을 보낼 수 있습니다. 이러한 방식으로 영역과 클러스터에서 고가용성이 달성됩니다.
 
-**High Availability**. In the multi-cluster architecture of KubeSphere, a cluster can run major services with another one serving as the backup. When the major one goes down, services can be quickly taken over by another cluster. Besides, when clusters are deployed in different regions, requests can be sent to the closest one for low latency. In this way, high availability is achieved across zones and clusters.
+자세한 내용은 [멀티 클러스터 관리](.. /.. /멀티 클러스터 관리/)을 참고하십시오.
 
-For more information, see [Multi-cluster Management](../../multicluster-management/).
+### 강력한 옵저버빌리티
 
-### Powerful observability
+Kuberix Entreprise의 관찰 기능은 모니터링, 로깅, 감사, 이벤트, 경고 및 알림을 포함한 주요 빌딩 블록이 향상되어 크게 향상되었습니다. 고도로 기능적인 시스템을 통해 사용자는 플랫폼에서 발생하는 거의 모든 것을 관찰 할 수 있습니다. 다음과 같이 뚜렷한 이점을 가진 사용자에게 많은 것을 제공합니다.
 
-The observability feature of KubeSphere has been greatly improved with key building blocks enhanced, including monitoring, logging, auditing, events, alerting and notification. The highly functional system allows users to observe virtually everything that happens in the platform. It has much to offer for users with distinct advantages listed as below:
+**사용자 정의**. 사용자는 여러 디스플레이 양식을 사용할 수 있는 자체 모니터링 대시보드를 사용자 지정할 수 있습니다. 필요에 따라 자체 템플릿을 설정하고, 모니터링하려는 메트릭을 추가하고, 선호하는 디스플레이 색상을 선택할 수도 있습니다. 경고 정책 및 규칙은 반복 간격, 시간 및 임계값을 포함하여 모두 사용자 지정할 수 있습니다.
 
-**Customized**. Users are allowed to customize their own monitoring dashboard with multiple display forms available. They can set their own templates based on their needs, add the metric they want to monitor and even choose the display color they prefer. Alerting policies and rules can all be customized as well, including repetition interval, time and threshold.
+**다양성 확보**. Ops 팀은 Kuberix Entreprise가 거의 모든 차원의 리소스를 모니터링하기 때문에 대용량 데이터를 기록하는 복잡한 작업에서 자유로워집니다. 또한 이메일, 슬랙 등 같이 사용자가 선택할 수있는 다양한 채널을 갖춘 효율적인 알림 시스템을 갖추고 있습니다. Kuberix Entreprise의 다중 테넌트 시스템 뒷면에서 서로 다른 테넌트는 로그, 이벤트 및 감사 로그만 액세스할 수 있는 로그를 쿼리할 수 있습니다. 필터, 키워드, 퍼지 및 정확한 쿼리가 지원됩니다.
 
-**Diversified**. Ops teams are freed from the complicated work of recording massive data as KubeSphere monitors resources from virtually all dimensions. It also features an efficient notification system with diversified channels for users to choose from, such as email, Slack and WeChat Work. On the back of the multi-tenant system of KubeSphere, different tenants are able to query logs, events and auditing logs which are only accessible to them. Filters, keywords, and fuzzy and exact query are supported.
+**시각화 및 응답형**. Kuberix Entreprise는 특히 다양한 리소스를 모니터링하기 위해 그래픽 웹 콘솔을 사용자에게 제공합니다. 이러한 그래프는 고도로 대화식 그래프로 표시되어 사용자에게 클러스터 내부에서 일어나는 일을 명확하게 볼 수 있도록 합니다. 서로 다른 수준의 리소스는 사용량에 따라 정렬 할 수 있으므로 사용자가 추가 데이터 분석을 위해 비교하는 것이 편리합니다.
 
-**Visualized and Interactive**. KubeSphere presents users with a graphic web console, especially for the monitoring of different resources. They are displayed in highly interactive graphs that give users a clear view of what is happening inside a cluster. Resources at different levels can also be sorted based on their usage, which is convenient for users to compare for further data analysis.
+**정확함**. 전체 모니터링 시스템은 사용자가 구성 요소 오류를 신속하게 찾을 수 있도록 두 번째 수준의 정밀도로 작동합니다. 이벤트 및 감사 측면에서 모든 활동은 나중에 참조 할 수 있도록 정확하게 기록됩니다.
 
-**Accurate**. The entire monitoring system functions at second-level precision that allow users to quickly locate any component failures. In terms of events and auditing, all activities are accurately recorded for future reference.
+자세한 내용은 [클러스터 관리](.. /.. /cluster-administration/), [프로젝트 사용 설명서](.. /.. /project-user-guide/) 및 [Toolbox](.. /.. /도구 상자/)을 참고하십시오.
 
-For more information, see related sections in [Cluster Administration](../../cluster-administration/), [Project User Guide](../../project-user-guide/) and [Toolbox](../../toolbox/).
+### 데브옵스 자동화
 
-### Automated DevOps
+자동화는 DevOps 구현의 핵심 부분입니다. 자동적이고 간소화된 파이프라인을 통해 사용자는 지속적인 제공 및 통합 측면에서 앱을 배포할 수 있는 더 나은 위치에 있습니다.
 
-Automation represents a key part of implementing DevOps. With automatic, streamlined pipelines in place, users are better positioned to distribute apps in terms of continuous delivery and integration.
+**CI/CD**. Kuberix Entreprise DevOps 시스템은 Jenkins를 엔진으로 사용하여 제작되었으며 플러그인이 풍부합니다. 또한 Jenkins는 확장 개발을 위한 환경을 제공하여 DevOps 팀이 통합 플랫폼에서 전체 프로세스(개발, 테스트, 구축, 배포, 모니터링, 로깅, 알림 등)에서 원활하게 작업할 수 있도록 합니다. Kuberix Entreprise 계정은 CI / CD 파이프 라인의 다중 테넌트 격리 및 통합 인증에 대한 기업의 요구를 충족시키는 내장 Jenkins에도 사용할 수 있습니다.
 
-**Jenkins-powered**. The KubeSphere DevOps system is built with Jenkins as the engine, which is abundant in plugins. On top of that, Jenkins provides an enabling environment for extension development, making it possible for the DevOps team to work smoothly across the whole process (developing, testing, building, deploying, monitoring, logging, notifying, etc.) in a unified platform. The KubeSphere account can also be used for the built-in Jenkins, meeting the demand of enterprises for multi-tenant isolation of CI/CD pipelines and unified authentication.
+**편리한 도구**. 사용자는 Docker 또는 쿠버네티스의 작동 방식을 철저히 이해하지 않고도 자동화 도구(예: Binary-to-Image 및 Source-to-Image)를 쉽게 활용할 수 있습니다. 레지스트리 주소를 제출하거나 바이너리 파일 (예 : JAR / WAR / 바이너리)을 업로드하면됩니다. 궁극적으로 서비스는 Dockerfile에서 코딩하지 않고 자동으로 쿠버네티스에 릴리스됩니다.
 
-**Convenient built-in tools**. Users can easily take advantage of automation tools (for example, Binary-to-Image and Source-to-Image) even without a thorough understanding of how Docker or Kubernetes works. They only need to submit a registry address or upload binary files (for example, JAR/WAR/Binary). Ultimately, services will be released to Kubernetes automatically without any coding in a Dockerfile.
+자세한 내용은 [DevOps 사용 설명서](.. /.. /devops-user-guide/)을 참고하십시오.
 
-For more information, see [DevOps User Guide](../../devops-user-guide/).
+### 정밀한 엑세스 제어
 
-### Fine-grained access control
+Kuberix Entreprise는 클러스터, 작업 공간 및 프로젝트를 포함한 다양한 수준에서 세분화된 액세스 제어를 지원합니다. 특정 역할을 가진 사용자는 다른 리소스에서 작업할 수 있습니다.
 
-KubeSphere supports fine-grained access control across different levels, including clusters, workspaces and projects. Users with specific roles can operate on different resources.
+**정의 기반 시스템**. 시스템 역할 외에도 Kuberix Entreprise는 사용자가 테넌트에 할당할 수 있는 다양한 작업을 통해 역할을 정의할 수 있도록 지원합니다. 이것은 관련없는 자원의 영향을받지 않고 누가 무엇을 책임져야하는지 결정할 수 있기 때문에 상세한 작업 할당에 대한 기업의 필요성을 충족시킵니다.
 
-**Self-defined**. Apart from system roles, KubeSphere empowers users to define their roles with a spectrum of operations that they can assign to tenants. This meets the need of enterprises for detailed task allocation as they can decide who should be responsible for what while not being affected by irrelevant resources.
+**보안**. 서로 다른 수준의 세입자는 서로 완전히 격리되어 있으므로 서로 영향을 미치지 않고 리소스를 공유 할 수 있습니다. 또한 데이터 보안을 보장하기 위해 네트워크를 완전히 격리할 수 있습니다.
 
-**Secure**. As tenants at different levels are completely isolated from each other, they can share resources while not affecting one another. The network can also be completely isolated to ensure data security.
+자세한 내용은 [작업 영역]의 역할 및 구성원 관리(.. /.. /작업공간 관리/역할 및 구성원 관리/) 및 [프로젝트](.. /.. /프로젝트-관리/역할-및-멤버-관리/)을 참고하십시오.
 
-For more information, see Role and Member Management in [Workspaces](../../workspace-administration/role-and-member-management/) and [Projects](../../project-administration/role-and-member-management/) respectively.
+### 마이크로서비스 거버넌스
 
-### Out-of-box microservices governance
+Istio의 백그라운드에서 Kuberix Entreprise는 여러 가지 연계 전략을 특징으로합니다. 이러한 모든 기능은 즉시 사용할 수 있으므로 코드 해킹없이 일관된 사용자 경험을 의미합니다. 다음은 Kuberix Entreprise의 마이크로 서비스 거버넌스 또는 서비스 메시의 두 가지 주요 이점입니다.
 
-On the back of Istio, KubeSphere features multiple grayscale strategies. All these features are out of the box, which means consistent user experiences without any code hacking. Here are two major advantages of microservices governance, or service mesh in KubeSphere:
+- **파이프라인**. Kuberix Entreprise는 카나리아 배포, 블루그린 배포, 트래픽 미러링 및 서킷브레이크를 포함하여 트래픽 관리에 대한 다양한 솔루션 포트폴리오를 사용자에게 제공합니다.
+- **시각화**. 고도로 인터랙티브한 웹 콘솔을 통해 Kuberix Entreprise는 사용자가 마이크로 서비스가 어떻게 서로 상호 연결되는지 간단한 방식으로 볼 수 있도록 합니다. 이를 통해 사용자는 앱을 모니터링하고, 오류를 찾고, 성능을 향상시킬 수 있습니다.
 
-- **Comprehensive**. KubeSphere provides users with a well-diversified portfolio of solutions to traffic management, including canary release, blue-green deployment, traffic mirroring and circuit breaking.
-- **Visualized**. With a highly interactive web console, KubeSphere allows users to view how microservices interconnect with each other in a straightforward way. This helps users to monitor apps, locate failures, and improve performance.
-
-KubeSphere aims to make service-to-service calls within the microservices architecture reliable and fast. For more information, see [Project User Guide](../../project-user-guide/).
-
-### Vibrant open source community
-
-As an open-source project, KubeSphere represents more than just a container platform for app deployment and distribution. The KubeSphere team believes that a true open-source model focuses more on sharing, discussions and problem solving with everyone involved. Together with partners, ambassadors and contributors, and other community members, the KubeSphere team files issues, submits pull requests, participates in meetups, and exchanges ideas of innovation.
-
-The KubeSphere community has the capabilities and technical know-how to help you share the benefits that the open-source model can offer. More importantly, it is home to open-source enthusiasts from around the world who make everything here possible.
-
-**Partners**. KubeSphere partners play a critical role in KubeSphere's go-to-market strategy. They can be app developers, technology companies, cloud providers or go-to-market partners, all of whom drive the community ahead in their respective aspects.
-
-**Ambassadors**. As community representatives, ambassadors promote KubeSphere in a variety of ways (for example, activities, blogs and user cases) so that more people can join the community.
-
-**Contributors**. KubeSphere contributors help the whole community by contributing to code or documentation. You don't need to be an expert while you can still make a difference even it is a minor code fix or language improvement.
-
-For more information, see [Partner Program](https://kubesphere.io/partner/) and [Community Governance](https://kubesphere.io/contribution/).
+Kuberix Entreprise는 마이크로 서비스 아키텍처 내에서 서비스 간 호출을 안정적이고 빠르게 수행하는 것을 목표로 합니다. 자세한 내용은 [프로젝트 사용 설명서](.. /.. /프로젝트-사용자 가이드/)을 참고하십시오.
