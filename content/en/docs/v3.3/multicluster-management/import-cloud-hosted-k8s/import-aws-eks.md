@@ -96,7 +96,7 @@ weight: 5320
 
    그러나 이 자동으로 생성된 kubeconfig 파일을 사용하려면 이 kubeconfig를 사용하려는 모든 컴퓨터에 `aws`(aws CLI 도구) 명령을 설치해야 합니다.
 
-2. 로컬 컴퓨터에서 다음 명령을 실행하여 Kuberix Enterprise에서 생성된 ServiceAccount `kubesphere`의 토큰을 가져옵니다. 클러스터에 대한 클러스터 관리자 액세스 권한이 있으며 새 kubeconfig 토큰으로 사용됩니다.
+2. 로컬 컴퓨터에서 다음 명령을 실행하여 Kuberix Enterprise에서 생성된 ServiceAccount `KuberixEnterprise`의 토큰을 가져옵니다. 클러스터에 대한 클러스터 관리자 액세스 권한이 있으며 새 kubeconfig 토큰으로 사용됩니다.
 
    ```bash
    TOKEN=$(kubectl -n ke-system get secret $(kubectl -n ke-system get sa KuberixEnterprise -o jsonpath='{.secrets[0].name}') -o jsonpath='{.data.token}' | base64 -d)
