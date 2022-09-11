@@ -1,105 +1,105 @@
 ---
 title: 'Use Cases'
-keywords: 'KubeSphere, Kubernetes, Multi-cluster, Observability, DevOps'
-description: 'Applicable in a variety of scenarios, KubeSphere provides enterprises with containerized environments with a complete set of features for management and operation.'
+keywords: 'Kuberix, Kubernetes, Multi-cluster, Observability, DevOps'
+description: 'Applicable in a variety of scenarios, Kuberix Enterprise provides containerized environments with a complete set of features for management and operation.'
 
 weight: 1700
 ---
 
-KubeSphere is applicable in a variety of scenarios. For enterprises that deploy their business system on bare metal, their business modules are tightly coupled with each other. That means it is extremely difficult for resources to be horizontally scaled. In this connection, KubeSphere provides enterprises with containerized environments with a complete set of features for management and operation. It empowers enterprises to rise to the challenges in the middle of their digital transformation, including agile software development, automated operation and maintenance, microservices governance, traffic management, autoscaling, high availability, as well as DevOps and CI/CD.
+Kuberix Enterprise는 다양한 시나리오에 적용할 수 있습니다. 베어메탈에 비즈니스 시스템을 배포하는 기업의 경우 비즈니스 모듈이 서로 밀접하게 결합되어 있습니다. 즉, 리소스를 수평으로 확장하는 것이 매우 어렵습니다. 이와 관련하여 Kuberix Enterprise는 관리 및 운영을 위한 완전한 기능 세트를 갖춘 컨테이너화된 환경을 기업에 제공합니다. 이를 통해 기업은 민첩한 소프트웨어 개발, 자동화된 운영 및 유지 관리, 마이크로서비스 거버넌스, 트래픽 관리, 자동 확장, 고가용성, DevOps 및 CI/CD를 비롯한 디지털 혁신의 한가운데에 있는 문제에 대처할 수 있습니다.
 
-At the same time, with the strong support for network and storage offered by QingCloud, KubeSphere is highly compatible with the existing monitoring and O&M system of enterprises. This is how they can upgrade their system for IT containerization.
+Kuberix Enterprise는 기업의 기존 모니터링 및 O&M 시스템과 완벽하게 호환됩니다. 이것이 IT 컨테이너화를 위해 시스템을 업그레이드하는 방법입니다.
 
-## Multi-cluster Deployment
+## 멀티 클러스터 배포
 
-It is generally believed that using as few clusters as possible can reduce costs with less pressure for O&M. That said, both individuals and organizations tend to deploy multiple clusters for various reasons. For instance, the majority of enterprises may deploy their services across clusters as they need to be tested in non-production environments. Another typical example is that enterprises may separate their services based on regions, departments, and infrastructure providers by adopting multiple clusters.
+일반적으로 가능한 한 적은 수의 클러스터를 사용하면 O&M에 대한 부담을 덜고 비용을 줄일 수 있다고 믿어집니다. 즉, 개인과 조직 모두 다양한 이유로 여러 클러스터를 배포하는 경향이 있습니다. 예를 들어, 대부분의 기업은 비프로덕션 환경에서 테스트해야 하므로 클러스터에 서비스를 배포할 수 있습니다. 또 다른 전형적인 예는 기업이 여러 클러스터를 채택하여 지역, 부서 및 인프라 제공자를 기반으로 서비스를 분리할 수 있다는 것입니다.
 
-The main reasons for employing this method fall into the following four categories:
+이 방법을 사용하는 주요 이유는 다음 네 가지 범주로 나뉩니다.
 
-### High Availability
+### 고가용성
 
-Users can deploy workloads on multiple clusters by using a global VIP or DNS to send requests to corresponding backend clusters. When a cluster malfunctions or fails to handle requests, the VIP or DNS records can be transferred to a healthy cluster.
+사용자는 글로벌 VIP 또는 DNS를 사용하여 해당 백엔드 클러스터에 요청을 보내 여러 클러스터에 워크로드를 배포할 수 있습니다. 클러스터가 오작동하거나 요청을 처리하지 못하는 경우 VIP 또는 DNS 레코드를 정상 클러스터로 전송할 수 있습니다.
 
 ![high-availability](https://ap3.qingstor.com/kubesphere-website/docs/ha.png)
 
-### Low Latency
+### 낮은 대기 시간
 
-When clusters are deployed in various regions, user requests can be forwarded to the nearest cluster, greatly reducing network latency. For example, we have three Kubernetes clusters deployed in New York, Houston and Los Angeles respectively. For users in California, their requests can be forwarded to Los Angeles. This will reduce the network latency due to geographical distance, providing the best user experience possible for users in different areas.
+클러스터가 다양한 지역에 배포되면 사용자 요청을 가장 가까운 클러스터로 전달할 수 있어 네트워크 대기 시간을 크게 줄일 수 있습니다. 예를 들어 뉴욕, 휴스턴, 로스앤젤레스에 각각 3개의 쿠버네티스 클러스터가 배포되어 있습니다. 캘리포니아 사용자의 경우 요청을 로스앤젤레스로 전달할 수 있습니다. 이렇게 하면 지리적 거리로 인한 네트워크 대기 시간이 줄어들어 다양한 지역의 사용자에게 최상의 사용자 경험을 제공할 수 있습니다.
 
-### Isolation
+### 격리
 
-**Failure Isolation**. Generally, it is much easier for multiple small clusters to isolate failures than a large cluster. In case of outages, network failures, insufficient resources or other possible resulting issues, the failure can be isolated within a certain cluster without spreading to others.
+**장애 격리**. 일반적으로 여러 개의 작은 클러스터가 큰 클러스터보다 장애를 격리하는 것이 훨씬 쉽습니다. 중단, 네트워크 장애, 리소스 부족 또는 기타 가능한 문제가 발생한 경우 장애가 다른 클러스터로 확산되지 않고 특정 클러스터 내에서 격리될 수 있습니다.
 
-**Business Isolation**. Although Kubernetes provides namespaces as a solution to app isolation, this method only represents the isolation in logic. This is because different namespaces are connected through the network, which means the issue of resource preemption still exists. To achieve further isolation, users need to create additional network isolation policies or set resource quotas. Using multiple clusters users can achieve complete physical isolation that is more secure and reliable than the isolation through namespaces. For example, this is extremely effective when different departments within an enterprise use multiple clusters for the deployment of development, testing or production environments.
+**비즈니스 격리**. 쿠버네티스는 앱 격리에 대한 솔루션으로 네임스페이스를 제공하지만 이 방법은 논리에서 격리만 나타냅니다. 이는 네트워크를 통해 서로 다른 네임스페이스가 연결되어 리소스 선점 문제가 여전히 존재하기 때문입니다. 추가 격리를 달성하려면 사용자가 추가 네트워크 격리 정책을 생성하거나 리소스 할당량을 설정해야 합니다. 여러 클러스터를 사용하여 사용자는 네임스페이스를 통한 격리보다 더 안전하고 안정적인 완전한 물리적 격리를 달성할 수 있습니다. 예를 들어, 이는 기업 내의 여러 부서에서 개발, 테스트 또는 프로덕션 환경 배포를 위해 여러 클러스터를 사용할 때 매우 효과적입니다.
 
 ![pipeline](https://ap3.qingstor.com/kubesphere-website/docs/pipeline.png)
 
-### Avoid Vendor Lock-in
+### 벤더 종속 방지
 
-Kubernetes has become the de facto standard in container orchestration. Against this backdrop, many enterprises avoid putting all eggs in one basket as they deploy clusters by using services of different cloud providers. That means they can transfer and scale their business anytime between clusters. However, it is not that easy for them to transfer their business in terms of costs, as different cloud providers feature varied Kubernetes services, including storage and network interface.
+쿠버네티스는 컨테이너 오케스트레이션의 사실상 표준이 되었습니다. 이러한 배경에서 많은 기업은 다양한 클라우드 제공업체의 서비스를 사용하여 클러스터를 배포할 때 모든 계란을 한 바구니에 담는 것을 기피합니다. 즉, 클러스터 간에 언제든지 비즈니스를 이전하고 확장할 수 있습니다. 그러나 클라우드 제공업체마다 스토리지 및 네트워크 인터페이스를 비롯한 다양한 쿠버네티스 서비스를 제공하기 때문에 비용 측면에서 비즈니스를 이전하는 것이 쉽지 않습니다.
 
-KubeSphere provides its unique feature as a solution to the above four cases. Based on the Federation pattern of KubeSphere's multi-cluster feature, multiple heterogeneous Kubernetes clusters can be aggregated within a unified Kubernetes resource pool. When users deploy applications, they can decide to which Kubernetes cluster they want app replicas to be scheduled in the pool. The whole process is managed and maintained through KubeSphere. This is how KubeSphere helps users achieve multi-site high availability (across zones and clusters).
+Kuberix Enterprise는 위의 4가지 경우에 대한 솔루션으로 고유한 기능을 제공합니다. Kuberix Enterprise의 멀티 클러스터 기능의 연합 패턴을 기반으로 여러 이기종 쿠버네티스 클러스터를 통합 쿠버네티스 리소스 풀 내에서 집계할 수 있습니다. 사용자가 애플리케이션을 배포할 때 풀에서 앱 복제본을 예약할 쿠버네티스 클러스터를 결정할 수 있습니다. 전체 프로세스는 Kuberix Enterprise를 통해 관리 및 유지됩니다. 이것이 쿠버네티스가 사용자가 다중 사이트 고가용성을 달성하도록 돕는 방법입니다(영역 및 클러스터 전반에 걸쳐).
 
-For more information, see [Multi-cluster Management](../../multicluster-management/).
+자세한 내용은 [멀티 클러스터 관리](../../multicluster-management/)를 참조하십시오.
 
-## Full-stack Observability with Streamlined O&M
+## 간소화된 O&M을 통한 전체 스택 관찰 가능성
 
-Observability represents an important part in the work of Ops teams. In this regard, enterprises see increasing pressure on their Ops teams as they deploy their business on Kubernetes directly or on the platform of other cloud providers. This poses considerable challenges to Ops teams since they need to cope with extensive data.
+관찰 가능성은 Ops 팀의 작업에서 중요한 부분을 나타냅니다. 이와 관련하여 기업은 쿠버네티스에 직접 비즈니스를 배포하거나 다른 클라우드 제공업체의 플랫폼에 비즈니스를 배포함에 따라 운영 팀에 대한 부담이 증가하고 있음을 확인합니다. 이는 광범위한 데이터에 대처해야 하기 때문에 운영 팀에게 상당한 문제를 제기합니다.
 
-### Multi-dimensional Cluster Monitoring
+### 다차원 클러스터 모니터링
 
-Again, the adoption of multi-cluster deployment across clouds is on the rise both among individuals and enterprises. However, because they run different services, users need to learn, deploy and especially, monitor across different cloud environments. After all, the tool provided by one cloud vendor for observability may not be applicable to another. In short, Ops teams are in desperate need of a unified view across different clouds for cluster monitoring covering metrics across the board.
+다시 말하지만, 클라우드 전반에 걸친 다중 클러스터 배포의 채택은 개인과 기업 모두에서 증가하고 있습니다. 그러나 서로 다른 서비스를 실행하기 때문에 사용자는 서로 다른 클라우드 환경에서 학습, 배포, 특히 모니터링이 필요합니다. 결국 한 클라우드 공급업체에서 관찰 가능성을 위해 제공한 도구가 다른 공급업체에 적용되지 않을 수 있습니다. 요컨대, 운영 팀은 전반적으로 메트릭을 포괄하는 클러스터 모니터링을 위해 서로 다른 클라우드 전반에 걸쳐 통합된 보기가 절실히 필요합니다.
 
-### Log Query
+### 로그 쿼리
 
-A comprehensive monitoring feature is meaningless without a flexible log query system. This is because users need to be able to track all the information related to their resources, such as alerting messages, node scheduling status, app deployment success, or network policy modification. All these records play an important role in making sure users can keep up with the latest development, which will inform policy decisions of their business.
+유연한 로그 쿼리 시스템이 없으면 포괄적인 모니터링 기능은 의미가 없습니다. 이는 사용자가 경고 메시지, 노드 예약 상태, 앱 배포 성공 또는 네트워크 정책 수정과 같은 리소스와 관련된 모든 정보를 추적할 수 있어야 하기 때문입니다. 이러한 모든 기록은 사용자가 비즈니스의 정책 결정을 알리는 최신 개발을 따라갈 수 있도록 하는 데 중요한 역할을 합니다.
 
-### Customization
+### 커스터마이징
 
-Even for resource monitoring on the same platform, the tool provided by the cloud vendor may not be a panacea. In some cases, users need to create their own standard of observability, such as the specific monitoring metrics and display form. Moreover, they need to integrate common tools to the cloud for special use, such as Prometheus, which is the de facto standard for Kubernetes monitoring. In other words, customization has become a necessity in the industry as cloud-powered applications drive business on the one hand while requiring fine-grained monitoring on the other just in case of any failure.
+동일한 플랫폼에서 리소스 모니터링을 하는 경우에도 클라우드 공급업체에서 제공하는 도구가 만병 통치약이 아닐 수 있습니다. 경우에 따라 사용자는 특정 모니터링 메트릭 및 표시 형식과 같은 고유한 관찰 가능성 표준을 만들어야 합니다. 또한 쿠버네티스 모니터링의 사실상 표준인 Prometheus와 같은 특수 용도를 위해 공통 도구를 클라우드에 통합해야 합니다. 다시 말해, 클라우드 기반 애플리케이션이 한편으로는 비즈니스를 주도하고 다른 한편으로는 장애가 발생할 경우에 대비하여 세밀한 모니터링이 필요하기 때문에 사용자 지정은 업계에서 필수가 되었습니다.
 
-KubeSphere features a unified platform for the management of clusters deployed across cloud providers. Apps can be deployed automatically, streamlining the process of operation and maintenance. At the same time, KubeSphere boasts powerful observability features (alerting, events, auditing, logging and notifications) with a comprehensive customized monitoring system for a wide range of resources. Users themselves can decide what resources they want to monitor in what kind of forms.
+Kuberix Enterprise는 클라우드 제공업체에 배포된 클러스터 관리를 위한 통합 플랫폼을 제공합니다. 앱을 자동으로 배포하여 운영 및 유지 관리 프로세스를 간소화할 수 있습니다. 동시에 쿠버네티스는 광범위한 리소스에 대한 포괄적인 맞춤형 모니터링 시스템과 함께 강력한 관찰 기능(경고, 이벤트, 감사, 로깅 및 알림)을 자랑합니다. 사용자는 어떤 종류의 형식으로 어떤 리소스를 모니터링할지 결정할 수 있습니다.
 
-With KubeSphere, enterprises can focus more on business innovation as they are freed from complicated process of data collection and analysis.
+Kuberix Enterprise를 통해 기업은 복잡한 데이터 수집 및 분석 프로세스에서 벗어나 비즈니스 혁신에 더 집중할 수 있습니다.
 
-## Implement DevOps Practices
+## DevOps 사례 구현
 
-DevOps represents an important set of practices or methods that engage both development and Ops teams for more coordinated and efficient cooperation between them. Therefore, development, test and release can be faster, more efficient and more reliable. CI/CD pipelines in KubeSphere provide enterprises with agile development and automated O&M. Besides, the microservices feature (service mesh) in KubeSphere enables enterprises to develop, test and release services in a fine-grained way, creating an enabling environment for their implementation of DevOps. With KubeSphere, enterprises can make full use of DevOps by:
+DevOps는 개발 팀과 운영 팀이 더 잘 조정되고 효율적인 협력을 위해 참여하는 중요한 관행 또는 방법 세트를 나타냅니다. 따라서 개발, 테스트 및 릴리스가 더 빠르고 효율적이며 안정적일 수 있습니다. Kuberix Enterprise의 CI/CD 파이프라인은 기업에 민첩한 개발 및 자동화된 O&M을 제공합니다. 또한 Kuberix Enterprise의 마이크로서비스 기능(서비스 메시)을 통해 기업은 세분화된 방식으로 서비스를 개발, 테스트 및 릴리스하여 DevOps 구현을 위한 환경을 조성할 수 있습니다. Kuberix Enterprise를 통해 기업은 다음을 통해 DevOps를 최대한 활용할 수 있습니다.
 
-- Testing service robustness through fault injection without code hacking.
-- Decoupling Kubernetes services with credential management and access control.
-- Visualizing end-to-end monitoring process.
+- 코드 해킹 없이 결함 주입을 통한 서비스 견고성 테스트.
+- 자격 증명 관리 및 액세스 제어로 쿠버네티스 서비스를 분리합니다.
+- 종단 간 모니터링 프로세스를 시각화합니다.
 
-## Service Mesh and Cloud-native Architecture
+## 서비스 메시 및 클라우드 네이티브 아키텍처
 
-Enterprises are now under increasing pressure to accelerate innovation amid their digital transformation. Specifically, they need to speed up in terms of development cycle, delivery time and deployment frequency. As application architectures evolve from monolithic to microservices, enterprises are faced with a multitude of resulting challenges. For example, microservices communicate with each other frequently, which entails smooth and stable network connectivity. Among others, latency represents a key factor that affects the entire architecture and user experience. In case of any failure, a troubleshooting and identifying system also needs to be in place to respond in time. Besides, deploying distributed applications is never an easy job without highly-functional tools and infrastructure.
+기업은 이제 디지털 혁신 속에서 혁신을 가속화해야 한다는 압박을 받고 있습니다. 특히 개발 주기, 제공 시간 및 배포 빈도 측면에서 속도를 높여야 합니다. 애플리케이션 아키텍처가 모놀리식에서 마이크로서비스로 발전함에 따라 기업은 수많은 문제에 직면하게 됩니다. 예를 들어 마이크로 서비스는 서로 자주 통신하므로 원활하고 안정적인 네트워크 연결이 필요합니다. 무엇보다도 대기 시간은 전체 아키텍처와 사용자 경험에 영향을 미치는 핵심 요소입니다. 장애가 발생한 경우 문제 해결 및 식별 시스템도 제 시간에 대응할 수 있어야 합니다. 게다가, 분산 응용 프로그램을 배포하는 것은 고기능 도구와 인프라 없이는 결코 쉬운 일이 아닙니다.
 
-KubeSphere service mesh addresses a series of microservices use cases.
+Kuberix Enterprise 서비스 메시는 일련의 마이크로서비스 사용 사례를 해결합니다.
 
-### Multi-cloud App Distribution
+### 멀티 클라우드 앱 배포
 
-As mentioned above, it is not uncommon for individuals or organizations to deploy apps across Kubernetes clusters, whether on premises, public or hybrid. This may bring out significant challenges in unified traffic management, application and service scalability, DevOps pipeline automation, monitoring and so on.
+위에서 언급했듯이 개인이나 조직이 온프레미스, 퍼블릭 또는 하이브리드 여부에 관계없이 쿠버네티스 클러스터 전반에 앱을 배포하는 것은 드문 일이 아닙니다. 이로 인해 통합 트래픽 관리, 애플리케이션 및 서비스 확장성, DevOps 파이프라인 자동화, 모니터링 등에 중대한 문제가 발생할 수 있습니다.
 
-### Visualization
+### 시각화
 
-As users deploy microservices which will communicate among themselves considerably, it will help users gain a better understanding of topological relations between microservices if the connection is highly visualized. Besides, distributed tracing is also essential for each service, providing operators with a detailed understanding of call flows and service dependencies within a mesh.
+사용자가 서로 상당히 통신할 마이크로 서비스를 배포함에 따라 연결이 고도로 시각화되면 사용자가 마이크로 서비스 간의 토폴로지 관계를 더 잘 이해하는 데 도움이 됩니다. 또한 분산 추적은 각 서비스에 필수적이므로 운영자에게 메시 내 통화 흐름 및 서비스 종속성에 대한 자세한 이해를 제공합니다.
 
-### Rolling Updates
+### 롤링 업데이트
 
-When enterprises introduce a new version of a service, they may adopt a canary upgrade or blue-green deployment. The new one runs side by side with the old one and a set percentage of traffic is moved to the new service for error detection and latency monitoring. If everything works fine, the traffic to the new one will gradually increase until 100% of customers are using the new version. For this type of update, KubeSphere provides three kinds of categories of grayscale release:
+기업이 새 버전의 서비스를 도입할 때 카나리 업그레이드 또는 블루-그린 배포를 채택할 수 있습니다. 새 서비스는 이전 서비스와 나란히 실행되며 오류 감지 및 대기 시간 모니터링을 위해 일정 비율의 트래픽이 새 서비스로 이동됩니다. 모든 것이 제대로 작동하면 고객의 100%가 새 버전을 사용할 때까지 새 버전에 대한 트래픽이 점차 증가합니다. 이러한 유형의 업데이트에 대해 Kuberix Enterprise는 세 가지 종류의 그레이스케일 릴리스 범주를 제공합니다.
 
-**Blue-green Deployment**. The blue-green release provides a zero downtime deployment, which means the new version can be deployed with the old one preserved. It enables both versions to run at the same time. If there is a problem with running, you can quickly roll back to the old version.
+**블루그린 배포**. 블루-그린 배포는 다운타임이 없는 배포를 제공합니다. 즉, 이전 버전을 보존한 상태로 새 버전을 배포할 수 있습니다. 두 버전을 동시에 실행할 수 있습니다. 실행에 문제가 있으면 빠르게 이전 버전으로 롤백할 수 있습니다.
 
-**Canary Release**. This method brings part of the actual traffic into a new version to test its performance and reliability. It can help detect potential problems in the actual environment while not affecting the overall system stability.
+**카나리 배포**. 이 방법은 실제 트래픽의 일부를 새 버전으로 가져와 성능과 안정성을 테스트합니다. 전체 시스템 안정성에 영향을 주지 않으면서 실제 환경에서 잠재적인 문제를 감지하는 데 도움이 될 수 있습니다.
 
-**Traffic Mirroring**. Traffic mirroring provides a more accurate way to test new versions as problems can be detected in advance while not affecting the production environment.
+**트래픽 미러링**. 트래픽 미러링은 프로덕션 환경에 영향을 주지 않으면서 문제를 미리 감지할 수 있으므로 새 버전을 테스트하는 보다 정확한 방법을 제공합니다.
 
-With a lightweight, highly scalable microservices architecture offered by KubeSphere, enterprises are well-positioned to build their own cloud-native applications for the above scenarios. Based on Istio, a major solution to microservices, KubeSphere provides a platform for microservices governance without any hacking into code. Spring Cloud is also integrated for enterprises to build Java apps. KubeSphere also offers microservices upgrade consultations and technical support services, helping enterprises implement microservices architectures for their cloud-native transformation.
+Kuberix Enterprise가 제공하는 가볍고 확장성이 뛰어난 마이크로서비스 아키텍처를 통해 기업은 위의 시나리오를 위한 자체 클라우드 네이티브 애플리케이션을 구축할 수 있는 유리한 위치에 있습니다. 마이크로서비스의 주요 솔루션인 Istio를 기반으로 하는 Kuberix Enterprise는 코드 해킹 없이 마이크로서비스 거버넌스를 위한 플랫폼을 제공합니다. Spring Cloud는 기업이 Java 앱을 구축할 수 있도록 통합되었습니다. Kuberix Enterprise는 또한 마이크로서비스 업그레이드 컨설팅 및 기술 지원 서비스를 제공하여 기업이 클라우드 네이티브 변환을 위한 마이크로서비스 아키텍처를 구현할 수 있도록 지원합니다.
 
-## Bare Metal Deployment
+## 베어메탈 배포
 
-Sometimes, the cloud is not necessarily the ideal place for the deployment of resources. For example, physical, dedicated servers tend to function better when it comes to the cases that require considerable compute resources and high disk I/O. Besides, for some specialized workloads that are difficult to migrate to a cloud environment, certified hardware and complicated licensing and support agreements may be required.
+때로는 클라우드가 리소스 배포에 이상적인 장소가 아닐 수도 있습니다. 예를 들어, 물리적 전용 서버는 상당한 컴퓨팅 리소스와 높은 디스크 I/O가 필요한 경우에 더 잘 작동하는 경향이 있습니다. 또한 클라우드 환경으로 마이그레이션하기 어려운 일부 전문 워크로드의 경우 인증된 하드웨어와 복잡한 라이선스 및 지원 계약이 필요할 수 있습니다.
 
-KubeSphere can help enterprises deploy a containerized architecture on bare metal, load balancing traffic with a physical switch. In this connection, [OpenELB](https://github.com/kubesphere/openelb), a CNCF-certified cloud-native tool is born for this end. At the same time, KubeSphere, together with QingCloud VPC and QingStor NeonSAN, provides users with a complete set of features ranging from load balancing, container platform building, network management, and storage. This means virtually all aspects of the containerized architecture can be fully controlled and uniformly managed, without sacrificing the performance in virtualization.
+Kuberix Enterprise는 기업이 물리적 스위치를 사용하여 트래픽을 로드 밸런싱하는 베어 메탈에 컨테이너화된 아키텍처를 배포하는 데 도움이 될 수 있습니다. 이를 위해 CNCF 인증 클라우드 네이티브 툴인 OpenELB를 포함했습니다. 동시에 Kuberix Enterprise는 로드 밸런싱, 컨테이너 플랫폼 구축, 네트워크 관리 및 스토리지에 이르는 완전한 기능 세트를 사용자에게 제공합니다. 이는 가상화의 성능을 저하시키지 않으면서 컨테이너화된 아키텍처의 거의 모든 측면을 완전히 제어하고 균일하게 관리할 수 있음을 의미합니다.
 
-For detailed information about how KubeSphere drives the development of numerous industries, please see [Case Studies](/case/).
+Kuberix Enterprise가 다양한 산업의 발전을 주도하는 방법에 대한 자세한 내용은 [사례 연구](/case/)를 참조하십시오.
