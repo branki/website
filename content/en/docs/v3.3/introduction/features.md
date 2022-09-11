@@ -1,172 +1,173 @@
 ---
 title: "Features"
-keywords: "KubeSphere, Kubernetes, Docker, Jenkins, Istio, Features"
-description: "KubeSphere Key Features"
+keywords: "Kuberix, Kubernetes, Docker, Jenkins, Istio, Features"
+description: "Kuberix Enterprise Key Features"
 
 linkTitle: "Features"
 weight: 1300
 ---
 
-## Overview
+## 개요
 
-As an [open source container platform](https://kubesphere.io/), KubeSphere provides enterprises with a robust, secure and feature-rich platform, boasting the most common functionalities needed for enterprises adopting Kubernetes, such as multi-cluster deployment and management, network policy configuration, Service Mesh (Istio-based), DevOps projects (CI/CD), security management, Source-to-Image and Binary-to-Image, multi-tenant management, multi-dimensional monitoring, log query and collection, alerting and notification, auditing, application management, and image registry management.
+Kuberix Enterprise는 멀티 클러스터 배포 및 관리, 네트워크 정책 구성, 서비스 메시, DevOps 프로젝트, 보안 관리, 소스-이미지 및 바이너리-이미지, 멀티 테넌트 관리, 다차원 모니터링, 로그 쿼리 및 수집, 경고 및 알림, 감사, 애플리케이션 관리, 이미지 레지스트리 관리와 같이 쿠버네티스를 채택하는 기업에 필요한 가장 일반적인 기능을 자랑하는 강력하고 안전하며 기능이 풍부한 플랫폼을 제공합니다.
 
-It also supports various open source storage and network solutions, as well as cloud storage services. For example, KubeSphere presents users with a powerful cloud-native tool [OpenELB](https://openelb.github.io/), a CNCF-certified load balancer developed for bare metal Kubernetes clusters.
+또한 다양한 오픈 소스 스토리지 및 네트워크 솔루션뿐만 아니라 클라우드 스토리지 서비스도 지원합니다. 예를 들어, Kuberix Enterprise는 베어메탈 쿠버네티스 클러스터용으로 개발된 CNCF 인증 로드 밸런서인 강력한 클라우드 네이티브 도구인 [OpenELB](https://openelb.github.io/)를 사용자에게 제공합니다.
 
-With an easy-to-use web console in place, KubeSphere eases the learning curve for users and drives the adoption of Kubernetes.
+사용하기 쉬운 웹 콘솔을 갖춘 Kuberix Enterprise는 사용자의 학습 곡선을 완화하고 쿠버네티스의 채택을 주도합니다.
 
 ![Overview](https://pek3b.qingstor.com/kubesphere-docs/png/20200202153355.png)
 
-The following modules elaborate on the key features and benefits provided by KubeSphere. For detailed information, see the respective chapter in this guide.
+다음 모듈은 Kuberix Enterprise가 제공하는 주요 기능과 이점에 대해 자세히 설명합니다. 자세한 내용은 이 가이드의 각 장을 참조하십시오.
 
-## Provisioning and Maintaining Kubernetes
+## 쿠버네티스 프로비저닝 및 유지관리
 
-### Provisioning Kubernetes Clusters
+### 쿠버네티스 클러스터 프로비저닝
 
-[KubeKey](https://github.com/kubesphere/kubekey) allows you to deploy Kubernetes on your infrastructure out of box, provisioning Kubernetes clusters with high availability. It is recommended that at least three control plane nodes are configured behind a load balancer for production environment.
+KubePOP은 쿠버네티스를 인프라에 즉시 배포하여 Kubernetes 클러스터를 고가용성으로 프로비저닝할 수 있습니다. 프로덕션 환경을 위한 부하 분산 장치 뒤에 세 개 이상의 제어 노드를 구성하는 것이 좋습니다.
 
-### Kubernetes Resource Management
+### 쿠버네티스 리소스 관리
 
-KubeSphere provides a graphical web console, giving users a clear view of a variety of Kubernetes resources, including Pods and containers, clusters and nodes, workloads, secrets and ConfigMaps, services and Ingress, jobs and CronJobs, and applications. With wizard user interfaces, users can easily interact with these resources for service discovery, HPA, image management, scheduling, high availability implementation, container health check and more.
+Kuberix Enterprise는 그래픽 웹 콘솔을 제공하여 사용자에게 포드 및 컨테이너, 클러스터 및 노드, 워크로드, 비밀 및 ConfigMaps, 서비스 및 수신, 작업 및 CronJobs, 애플리케이션을 포함한 다양한 쿠버네티스 리소스를 명확하게 볼 수 있도록 합니다. 마법사 사용자 인터페이스를 통해 사용자는 서비스 검색, HPA, 이미지 관리, 예약, 고가용성 구현, 컨테이너 상태 확인 등을 위해 이러한 리소스와 쉽게 상호 작용할 수 있습니다.
 
-As KubeSphere 3.3.0 features enhanced observability, users are able to keep track of resources from multi-tenant perspectives, such as custom monitoring, events, auditing logs, alerts and notifications.
+Kuberix Enterprise는 향상된 관찰 기능을 제공하므로 사용자는 사용자 지정 모니터링, 이벤트, 감사 로그, 경고 및 알림과 같은 다중 테넌트 관점에서 리소스를 추적할 수 있습니다.
 
-### Cluster Upgrade and Scaling
+### 클러스터 업그레이드 및 스케일링
 
-The next-gen installer [KubeKey](https://github.com/kubesphere/kubekey) provides an easy way of installation, management and maintenance. Moreover, it supports rolling upgrades of Kubernetes clusters so that the cluster service is always available while being upgraded. Also, you can add new nodes to a Kubernetes cluster to include more workloads by using KubeKey.
+차세대 설치 프로그램 KubePOP은 설치, 관리 및 유지 보수의 쉬운 방법을 제공합니다. 또한 쿠버네티스 클러스터의 롤링 업그레이드를 지원하므로 업그레이드하는 동안 클러스터 서비스를 항상 사용할 수 있습니다. 또한 KubePOP을 사용하여 더 많은 워크로드를 포함하도록 쿠버네티스 클러스터에 새 노드를 추가할 수 있습니다.
 
-## Multi-cluster Management and Deployment
+## 멀티 클러스터 관리 및 배포
 
-As the IT world sees a growing number of cloud-native applications reshaping software portfolios for enterprises, users tend to deploy their clusters across locations, geographies, and clouds. Against this backdrop, KubeSphere has undergone a significant upgrade to address the pressing need of users with its brand-new multi-cluster feature.
+IT 업계에서는 점점 더 많은 클라우드 네이티브 애플리케이션이 기업용 소프트웨어 포트폴리오를 재구성함에 따라 사용자는 위치, 지역 및 클라우드에 클러스터를 배포하는 경향이 있습니다. 이러한 배경에서 Kuberix Enterprise는 새로운 멀티 클러스터 기능으로 사용자의 긴급한 요구를 해결하기 위해 상당한 업그레이드를 거쳤습니다.
 
-With KubeSphere, users can manage the infrastructure underneath, such as adding or deleting clusters. Heterogeneous clusters deployed on any infrastructure (for example, Amazon EKS and Google Kubernetes Engine) can be managed in a unified way. This is made possible by a central control plane of KubeSphere with two efficient management approaches available.
+Kuberix Enterprise를 사용하여 사용자는 클러스터 추가 또는 삭제와 같은 하부 인프라를 관리할 수 있습니다. 모든 인프라(예: Amazon EKS 및 Google GKE)에 배포된 이기종 클러스터를 통합된 방식으로 관리할 수 있습니다. 이는 두 가지 효율적인 관리 접근 방식을 사용할 수 있는 Kuberix Enterprise의 중앙 제어 평면에 의해 가능합니다.
 
-- **Solo**. Independently deployed Kubernetes clusters can be maintained and managed together in KubeSphere container platform.
-- **Federation**. Multiple Kubernetes clusters can be aggregated together as a Kubernetes resource pool. When users deploy applications, replicas can be deployed on different Kubernetes clusters in the pool. In this regard, high availability is achieved across zones and clusters.
+- **독립성**. 독립적으로 배포된 쿠버네티스 클러스터는 Kuberix Enterprise 컨테이너 플랫폼에서 함께 유지 및 관리될 수 있습니다.
+- **페더레이션**. 여러 쿠버네티스 클러스터를 쿠버네티스 리소스 풀로 함께 집계할 수 있습니다. 사용자가 애플리케이션을 배포할 때 풀의 다른 쿠버네티스 클러스터에 복제본을 배포할 수 있습니다. 이와 관련하여 영역 및 클러스터 전반에 걸쳐 고가용성이 달성됩니다.
 
-KubeSphere allows users to deploy applications across clusters. More importantly, an application can also be configured to run on a certain cluster. Besides, the multi-cluster feature, paired with [OpenPitrix](https://github.com/openpitrix/openpitrix), an industry-leading application management platform, enables users to manage apps across their whole lifecycle, including release, removal and distribution.
+Kuberix Enterprise를 사용하면 사용자가 클러스터에 애플리케이션을 배포할 수 있습니다. 더 중요한 것은 애플리케이션이 특정 클러스터에서 실행되도록 구성할 수도 있다는 것입니다. 또한, 업계 최고의 애플리케이션 관리 플랫폼인 [OpenPitrix](https://github.com/openpitrix/openpitrix)와 결합된 멀티 클러스터 기능을 통해 사용자는 릴리스, 제거 및 분포를 수행합니다.
 
-For more information, see [Multi-cluster Management](../../multicluster-management/).
+자세한 내용은 [멀티 클러스터 관리](../../multicluster-management/)를 참조하십시오.
 
-## DevOps Support
+## DevOps 지원
 
-KubeSphere provides a pluggable DevOps component based on popular CI/CD tools such as Jenkins. It features automated workflows and tools including binary-to-image (B2I) and source-to-image (S2I) to package source code or binary artifacts into ready-to-run container images.
+Kuberix Enterprise는 Jenkins와 같은 인기 있는 CI/CD 도구를 기반으로 하는 플러그형 DevOps 구성 요소를 제공합니다. 바이너리-이미지(B2I) 및 소스-이미지(S2I)를 포함한 자동화된 워크플로 및 도구를 제공하여 소스 코드 또는 바이너리 아티팩트를 바로 실행할 수 있는 컨테이너 이미지로 패키징합니다.
 
 ![DevOps](https://pek3b.qingstor.com/kubesphere-docs/png/20200202220455.png)
 
-### CI/CD Pipeline
+### CI/CD 파이프라인
 
-- **Automation**. CI/CD pipelines and build strategies are based on Jenkins, streamlining and automating the development, test and production process. Dependency caches are used to accelerate build and deployment.
-- **Out-of-box**. Users can ship their Jenkins build strategy and client plugin to create a Jenkins pipeline based on Git repository/SVN. They can define any step and stage in the built-in Jenkinsfile. Common agent types are embedded, such as Maven, Node.js and Go. Users can customize the agent type as well.
-- **Visualization**. Users can easily interact with a visualized control panel to set conditions and manage CI/CD pipelines.
-- **Quality Management**. Static code analysis is supported to detect bugs, code smells and security vulnerabilities.
-- **Logs**. The entire running process of CI/CD pipelines is recorded.
+- **자동화**. CI/CD 파이프라인 및 빌드 전략은 Jenkins를 기반으로 하여 개발, 테스트 및 생산 프로세스를 간소화하고 자동화합니다. 종속성 캐시는 빌드 및 배포를 가속화하는 데 사용됩니다.
+- **기본 제공**. 사용자는 Jenkins 빌드 전략과 클라이언트 플러그인을 제공하여 Git 저장소/SVN을 기반으로 Jenkins 파이프라인을 생성할 수 있습니다. 그들은 기본 제공 Jenkinsfile에서 모든 단계와 단계를 정의할 수 있습니다. Maven, Node.js 및 Go와 같은 일반적인 에이전트 유형이 포함되어 있습니다. 사용자는 에이전트 유형도 사용자 지정할 수 있습니다.
+- **시각화**. 사용자는 시각화된 제어판과 쉽게 상호 작용하여 조건을 설정하고 CI/CD 파이프라인을 관리할 수 있습니다.
+- **품질 관리**. 버그, 코드 냄새 및 보안 취약성을 감지하기 위해 정적 코드 분석이 지원됩니다.
+- **로그**. CI/CD 파이프라인의 전체 실행 프로세스가 기록됩니다.
 
 ### Source-to-Image
 
-Source-to-Image (S2I) is a toolkit and automated workflow for building reproducible container images from source code. S2I produces ready-to-run images by injecting source code into a container image and making the container ready to execute from source code.
+S2I(Source-to-Image)는 소스 코드에서 재현 가능한 컨테이너 이미지를 빌드하기 위한 툴킷 및 자동화된 워크플로입니다. S2I는 소스 코드를 컨테이너 이미지에 주입하고 컨테이너를 소스 코드에서 실행할 준비가 되도록 하여 바로 실행할 수 있는 이미지를 생성합니다.
 
-S2I allows you to publish your service to Kubernetes without writing a Dockerfile. You just need to provide a source code repository address, and specify the target image registry. All configurations will be stored as different resources in Kubernetes. Your service will be automatically published to Kubernetes, and the image will be pushed to the target registry as well.
+S2I를 사용하면 Dockerfile을 작성하지 않고도 쿠버네티스에 서비스를 게시할 수 있습니다. 소스 코드 저장소 주소를 제공하고 대상 이미지 레지스트리를 지정하기만 하면 됩니다. 모든 구성은 쿠버네티스에 다른 리소스로 저장됩니다. 서비스는 자동으로 쿠버네티스에 게시되고 이미지는 대상 레지스트리에도 푸시됩니다.
 
 ![S2I](https://pek3b.qingstor.com/kubesphere-docs/png/20200204131749.png)
 
 ### Binary-to-Image
 
-Similar to S2I, Binary-to-Image (B2I) is a toolkit and automated workflow for building reproducible container images from binary (for example, Jar, War, Binary package).
+S2I와 유사하게 Binary-to-Image(B2I)는 바이너리(예: Jar, War, Binary 패키지)에서 재현 가능한 컨테이너 이미지를 빌드하기 위한 툴킷 및 자동화된 워크플로입니다.
 
-You just need to upload your application binary package, and specify the image registry to which you want to push. The rest is exactly the same as S2I.
+애플리케이션 바이너리 패키지를 업로드하고 푸시하려는 이미지 레지스트리를 지정하기만 하면 됩니다. 나머지는 S2I와 완전히 동일합니다.
 
-For more information, see [DevOps User Guide](../../devops-user-guide/).
+자세한 내용은 [DevOps 사용 설명서](../../devops-user-guide/)를 참조하세요.
 
-## Istio-based Service Mesh
+## Istio 기반 서비스 메시
 
-KubeSphere service mesh is composed of a set of ecosystem projects, such as Istio, Envoy and Jaeger. We design a unified user interface to use and manage these tools. Most features are out-of-box and have been designed from the developer's perspective, which means KubeSphere can help you to reduce the learning curve since you do not need to deep dive into those tools individually.
+Kuberix Enterprise 서비스 메시는 Istio, Envoy 및 Jaeger와 같은 일련의 생태계 프로젝트로 구성됩니다. 우리는 이러한 도구를 사용하고 관리할 수 있는 통합 사용자 인터페이스를 설계합니다. 대부분의 기능은 즉시 사용 가능하며 개발자의 관점에서 설계되었습니다. 즉, Kuberix Enterprise는 해당 도구를 개별적으로 자세히 알아볼 필요가 없기 때문에 학습 곡선을 줄이는 데 도움이 될 수 있습니다.
 
-KubeSphere service mesh provides fine-grained traffic management, observability, tracing, and service identity and security management for a distributed application. Therefore, developers can focus on core business. With service mesh management of KubeSphere, users can better track, route and optimize communications within Kubernetes for cloud-native apps.
+Kuberix Enterprise 서비스 메시는 분산 애플리케이션에 대한 세분화된 트래픽 관리, 관찰 가능성, 추적, 서비스 ID 및 보안 관리를 제공합니다. 따라서 개발자는 핵심 비즈니스에 집중할 수 있습니다. Kuberix Enterprise의 서비스 메시 관리를 통해 사용자는 클라우드 네이티브 앱용 쿠버네티스 내에서 통신을 더 잘 추적, 라우팅 및 최적화할 수 있습니다.
 
-### Traffic Management
+### Traffic 관리
 
-- **Canary release** represents an important deployment strategy of new versions for testing purposes. Traffic is separated with a pre-configured ratio into a canary release and a production release respectively. If everything goes well, users can change the percentage and gradually replace the old version with the new one.
-- **Blue-green deployment** allows users to run two versions of an application at the same time. Blue stands for the current app version and green represents the new version tested for functionality and performance. Once the testing results are successful, application traffic is routed from the in-production version (blue) to the new one (green).
-- **Traffic mirroring** enables teams to bring changes to production with as little risk as possible. Mirroring sends a copy of live traffic to a mirrored service.
-- **Circuit breaker** allows users to set limits for calls to individual hosts within a service, such as the number of concurrent connections or how many times calls to this host have failed.
+- **Canary 배포**는 테스트 목적으로 새 버전의 중요한 배포 전략을 나타냅니다. 트래픽은 미리 구성된 비율로 각각 카나리아 릴리스와 프로덕션 릴리스로 분리됩니다. 모든 것이 잘되면 사용자는 백분율을 변경하고 점차적으로 이전 버전을 새 버전으로 교체할 수 있습니다.
+- **블루그린 배포**를 통해 사용자는 동시에 두 가지 버전의 애플리케이션을 실행할 수 있습니다. 파란색은 현재 앱 버전을 나타내고 녹색은 기능 및 성능 테스트를 거친 새 버전을 나타냅니다. 테스트 결과가 성공하면 애플리케이션 트래픽이 프로덕션 버전(파란색)에서 새 버전(녹색)으로 라우팅됩니다.
+- **트래픽 미러링**을 통해 팀은 가능한 한 위험을 최소화하면서 프로덕션에 변경 사항을 적용할 수 있습니다. 미러링은 라이브 트래픽의 복사본을 미러링된 서비스로 보냅니다.
+- **서킷 브레이킹**를 사용하면 동시 연결 수 또는 이 호스트에 대한 호출이 실패한 횟수와 같이 서비스 내의 개별 호스트에 대한 호출에 대한 제한을 설정할 수 있습니다.
 
-For more information, see [Grayscale Release](../../project-user-guide/grayscale-release/overview/).
+자세한 내용은 [그레이스케일 릴리스](../../project-user-guide/grayscale-release/overview/)를 참조하십시오.
 
-### Visualization
+### 시각화
 
-KubeSphere service mesh has the ability to visualize the connections between microservices and the topology of how they interconnect. In this regard, observability is extremely useful in understanding the interconnection of cloud-native microservices.
+Kuberix Enterprise 서비스 메시에는 마이크로서비스 간의 연결과 상호 연결 방식의 토폴로지를 시각화할 수 있는 기능이 있습니다. 이와 관련하여 관찰 가능성은 클라우드 네이티브 마이크로 서비스의 상호 연결을 이해하는 데 매우 유용합니다.
 
-### Distributed Tracing
+### 분산 추적
 
-Based on Jaeger, KubeSphere service mesh enables users to track how services interact with each other. It helps users gain a deeper understanding of request latency, bottlenecks, serialization and parallelism via visualization.
+Jaeger를 기반으로 하는 Kuberix Enterprise 서비스 메시를 통해 사용자는 서비스가 서로 상호 작용하는 방식을 추적할 수 있습니다. 사용자는 시각화를 통해 요청 대기 시간, 병목 현상, 직렬화 및 병렬 처리에 대해 더 깊이 이해할 수 있습니다.
 
-## Multi-tenant Management
+## 멀티 테넌트 관리
 
-In KubeSphere, resources (for example, clusters) can be shared between tenants. First, administrators or managers need to set different account roles with different authorizations. After that, members in the platform can be assigned with these roles to perform specific actions on varied resources. Meanwhile, as KubeSphere completely isolates tenants, they will not affect each other at all.
+Kuberix Enterprise에서 리소스(예: 클러스터)는 테넌트 간에 공유될 수 있습니다. 먼저 관리자 또는 관리자는 서로 다른 권한으로 서로 다른 계정 역할을 설정해야 합니다. 그런 다음 플랫폼의 구성원에게 이러한 역할을 할당하여 다양한 리소스에 대한 특정 작업을 수행할 수 있습니다. 한편 Kuberix Enterprise는 테넌트를 완전히 격리하므로 서로에게 전혀 영향을 미치지 않습니다.
+
+- **멀티 테넌시**. 통합된 방식으로 역할 기반의 세분화된 인증과 3계층 권한 부여 시스템을 제공합니다.
+- **통합 인증**. 기업의 경우 Kuberix Enterprise는 LDAP 또는 AD 프로토콜을 기반으로 하는 중앙 인증 시스템과 호환됩니다. 테넌트 ID의 통합 인증을 달성하기 위해 SSO(Single Sign-On)도 지원됩니다.
+- **인증 시스템**. 클러스터, 작업 공간 및 프로젝트의 세 가지 수준으로 구성됩니다. Kuberix Enterprise는 리소스 보안을 위해 여러 수준에서 서로 다른 역할이 완전히 격리된 상태에서 리소스를 공유할 수 있도록 합니다.
 
 - **Multi-tenancy**. It provides role-based fine-grained authentication in a unified way and a three-tier authorization system.
 - **Unified authentication**. For enterprises, KubeSphere is compatible with their central authentication system that is base on LDAP or AD protocol. Single sign-on (SSO) is also supported to achieve unified authentication of tenant identity.
 - **Authorization system**. It is organized into three levels: cluster, workspace and project. KubeSphere ensures resources can be shared while different roles at multiple levels are completely isolated for resource security.
 
-For more information, see [Role and Member Management in Workspace](../../workspace-administration/role-and-member-management/).
+자세한 내용은 [Workspace의 역할 및 구성원 관리](../../workspace-administration/role-and-member-management/)를 참조하십시오.
 
-## Observability
+## 옵저버빌리티
 
-### Multi-dimensional Monitoring
+### 다차원 모니터링
 
-KubeSphere features a self-updating monitoring system with graphical interfaces that streamline the whole process of operation and maintenance. It provides customized monitoring of a variety of resources and includes a set of alerts that can immediately notify users of any occurring issues.
+Kuberix Enterprise는 운영 및 유지 관리의 전체 프로세스를 간소화하는 그래픽 인터페이스가 있는 자체 업데이트 모니터링 시스템을 제공합니다. 다양한 리소스에 대한 맞춤형 모니터링을 제공하고 발생하는 문제를 즉시 사용자에게 알릴 수 있는 일련의 경고를 포함합니다.
 
-- **Customized monitoring dashboard**. Users can decide exactly what metics need to be monitored in what kind of form. Different templates are available in KubeSphere for users to select, such as Elasticsearch, MySQL, and Redis. Alternatively, they can also create their own monitoring templates, including charts, colors, intervals and units.
-- **O&M-friendly**. The monitoring system can be operated in a visualized interface with open standard APIs for enterprises to integrate their existing systems. Therefore, they can implement operation and maintenance in a unified way.
-- **Third-party compatibility**. KubeSphere is compatible with Prometheus, which is the de facto metrics collection platform for monitoring in Kubernetes environments. Monitoring data can be seamlessly displayed in the web console of KubeSphere.
+- **맞춤형 모니터링 대시보드**. 사용자는 어떤 종류의 형식으로 모니터링해야 하는 메트릭을 정확히 결정할 수 있습니다. Elasticsearch, MySQL, Redis와 같이 사용자가 선택할 수 있는 다양한 템플릿이 Kuberix Enterprise에서 제공됩니다. 또는 차트, 색상, 간격 및 단위를 포함한 자체 모니터링 템플릿을 만들 수도 있습니다.
+- **O&M 친화적**. 모니터링 시스템은 기업이 기존 시스템을 통합할 수 있도록 개방형 표준 API를 사용하여 시각화된 인터페이스에서 운영할 수 있습니다. 따라서 통합된 방식으로 운영 및 유지 관리를 구현할 수 있습니다.
+- **타사 호환성**. Kuberix Enterprise는 쿠버네티스 환경에서 모니터링하기 위한 사실상의 메트릭 수집 플랫폼인 Prometheus와 호환됩니다. 모니터링 데이터는 Kuberix Enterprise의 웹 콘솔에서 원활하게 표시될 수 있습니다.
 
-- **Multi-dimensional monitoring at second-level precision**.
-	- For infrastructure monitoring, the system provides comprehensive metrics such as CPU utilization, memory utilization, CPU load average, disk usage, inode utilization, disk throughput, IOPS, network outbound/inbound rate, Pod status, etcd service status, and API Server status.
-	- For application resource monitoring, the system provides five key monitoring metrics: CPU utilization, memory consumption, Pod number, network outbound and inbound rate. Besides, users can sort data based on resource consumption and search metics by customizing the time range. In this way, occurring problems can be quickly located so that users can take necessary action.
-- **Ranking**. Users can sort data by node, workspace and project, which gives them a graphical view of how their resources are running in a straightforward way.
-- **Component monitoring**. It allows users to quickly locate any component failures to avoid unnecessary business downtime.
+- **엔터프라이즈급 다차원 모니터링**.
+- 인프라 모니터링을 위해 시스템은 CPU 사용률, 메모리 사용률, CPU 로드 평균, 디스크 사용률, inode 최적화, 디스크 처리량, IOPS, 네트워크 아웃바운드/인바운드 속도, 파드 상태 등 서비스 상태 및 API 서버 상태와 같은 포괄적인 메트릭을 제공합니다. .
+- 애플리케이션 리소스 모니터링을 위해 시스템은 CPU 사용률, 메모리 소비, 포드 번호, 네트워크 아웃바운드 및 인바운드 속도의 5가지 주요 모니터링 메트릭을 제공합니다. 또한 사용자는 시간 범위를 사용자 지정하여 리소스 소비 및 검색 메트릭을 기반으로 데이터를 정렬할 수 있습니다. 이러한 방식으로 발생하는 문제를 신속하게 찾아 사용자가 필요한 조치를 취할 수 있습니다.
+- **랭킹**. 사용자는 노드, 작업 공간 및 프로젝트별로 데이터를 정렬할 수 있으므로 리소스가 어떻게 실행되고 있는지를 그래픽으로 볼 수 있습니다.
+- **구성요소 모니터링**. 이를 통해 사용자는 불필요한 비즈니스 다운타임을 피하기 위해 구성 요소 오류를 신속하게 찾을 수 있습니다.
 
-### Alerting, Events, Auditing and Notifications
+### 경고, 이벤트, 감사 및 알림
 
-- **Customized alerting policies and rules**. The alerting system is based on multi-tenant monitoring of multi-dimensional metrics. The system will send alerts related to a wide spectrum of resources such as pod, network and workload. In this regard, users can customize their own alerting policy by setting specific rules, such as repetition interval and time. The threshold and alerting level can also be defined by users themselves. 
-- **Accurate event tracking**. KubeSphere allows users to know what is happening inside a cluster, such as container running status (successful or failed), node scheduling, and image pulling result. They will be accurately recorded with the specific reason, status and message displayed in the web console. In a production environment, this will help users to respond to any issues in time.
-- **Enhanced auditing security**. As KubeSphere features fine-grained management of user authorization, resources and network can be completely isolated to ensure data security. The comprehensive auditing feature allows users to search for activities related to any operation or alert.
-- **Diversified notification methods**. Emails represent a key approach for users to receive notifications of relevant activities they want to know. They can be sent based on the rule set by users themselves, who are able to customize the sender email address and their receiver lists. Besides, other channels, such as Slack and WeChat, are also supported to meet the need of our users. In this connection, KubeSphere provides users with more notification preferences as they are updated on the latest development in KubeSphere no matter what channel they select.
+- **맞춤형 알림 정책 및 규칙**. 경고 시스템은 다차원 메트릭의 다중 테넌트 모니터링을 기반으로 합니다. 시스템은 포드, 네트워크 및 워크로드와 같은 광범위한 리소스와 관련된 경고를 보냅니다. 이와 관련하여 사용자는 반복 간격 및 시간과 같은 특정 규칙을 설정하여 자신의 알림 정책을 사용자 지정할 수 있습니다. 임계값 및 경고 수준은 사용자가 직접 정의할 수도 있습니다.
+- **정확한 이벤트 추적**. Kuberix Enterprise는 사용자가 컨테이너 실행 상태(성공 또는 실패), 노드 스케줄링 및 이미지 풀링 결과와 같은 클러스터 내부에서 일어나는 일을 알 수 있도록 합니다. 웹 콘솔에 표시되는 특정 이유, 상태 및 메시지와 함께 정확하게 기록됩니다. 프로덕션 환경에서 이는 사용자가 모든 문제에 적시에 응답하는 데 도움이 됩니다.
+- **강화된 감사 보안**. Kuberix Enterprise는 사용자 권한 부여에 대한 세분화된 관리를 제공하므로 리소스와 네트워크를 완전히 격리하여 데이터 보안을 보장할 수 있습니다. 포괄적인 감사 기능을 통해 사용자는 모든 작업 또는 경고와 관련된 활동을 검색할 수 있습니다.
+- **다양한 알림 방법**. 이메일은 사용자가 알고 싶은 관련 활동에 대한 알림을 수신하는 주요 접근 방식을 나타냅니다. 보낸 사람 이메일 주소와 받는 사람 목록을 사용자 지정할 수 있는 사용자 자신이 설정한 규칙에 따라 보낼 수 있습니다. 그 외에도 Slack등 같은 다른 채널도 사용자의 요구를 충족하기 위해 지원됩니다. 이와 관련하여 Kuberix Enterprise는 사용자가 선택한 채널에 관계없이 Kuberix Enterprise의 최신 개발에 대해 업데이트됨에 따라 사용자에게 더 많은 알림 기본 설정을 제공합니다.
 
-For more information, please see [Project User Guide](../../project-user-guide/).
+자세한 내용은 [프로젝트 사용 설명서](../../project-user-guide/)를 참고하십시오.
 
-## Log Query and Collection
+## 로그 쿼리 및 수집
 
-- **Multi-tenant log management**. In KubeSphere log search system, different tenants can only see their own log information. Logs can be exported as records for future reference.
-- **Multi-level log query**. Users can search for logs related to various resources, such as projects, workloads, and pods. Flexible and convenient log collection configuration options are available.
-- **Multiple log collectors**. Users can choose log collectors such as Elasticsearch, Kafka, and Fluentd.
-- **On-disk log collection**. For applications whose logs are saved in a Pod sidecar as a file, users can enable Disk Log Collection.
+- **멀티 테넌트 로그 관리**. Kuberix Enterprise 로그 검색 시스템에서 서로 다른 테넌트는 자신의 로그 정보만 볼 수 있습니다. 로그는 나중에 참조할 수 있도록 기록으로 내보낼 수 있습니다.
+- **다단계 로그 쿼리**. 사용자는 프로젝트, 워크노드, 파드와 같은 다양한 리소스와 관련된 로그를 검색할 수 있습니다. 유연하고 편리한 로그 수집 구성 옵션을 사용할 수 있습니다.
+- **다중 로그 수집기**. 사용자는 Elasticsearch, Kafka 및 Fluentd와 같은 로그 수집기를 선택할 수 있습니다.
+- **온디스크 로그 수집**. 로그가 Pod 사이드카에 파일로 저장되는 애플리케이션의 경우 사용자는 디스크 로그 수집을 활성화할 수 있습니다.
 
-## Application Management and Orchestration
+## 애플리케이션 관리 및 오케스트레이션
 
-- **App Store**. KubeSphere provides an app store based on [OpenPitrix](https://github.com/openpitrix/openpitrix), an industry-leading open source system for app management across the whole lifecycle, including release, removal, and distribution.
-- **App repository**. In KubeSphere, users can create an app repository hosted either in object storage (such as [QingStor](https://www.qingcloud.com/products/qingstor/) or [AWS S3](https://aws.amazon.com/what-is-cloud-object-storage/)) or in [GitHub](https://github.com/). App packages submitted to the app repository are composed of Helm Chart template files of the app.
-- **App template**. With app templates, KubeSphere provides a visualized way for app deployment with just one click. Internally, app templates can help different teams in the enterprise to share middleware and business systems. Externally, they can serve as an industry standard for application delivery based on different scenarios and needs.
+- **앱 스토어**. Kuberix Enterprise는 출시, 제거, 배포를 포함한 전체 수명 주기에 걸쳐 앱 관리를 위한 업계 최고의 오픈 소스 시스템인 [OpenPitrix](https://github.com/openpitrix/openpitrix)를 기반으로 하는 앱 스토어를 제공합니다.
+- **앱 저장소**. Kuberix Enterprise에서 사용자는 객체 스토리지에서 호스팅되는 앱 리포지토리를 생성할 수 있습니다. 앱 리포지토리에 등록되는 앱 패키지는 앱의 Helm Chart 템플릿 파일로 구성됩니다.
+- **앱 템플릿**. 앱 템플릿을 사용하여 Kuberix Enterprise는 단 한 번의 클릭으로 앱 배포를 위한 시각화된 방법을 제공합니다. 내부적으로 앱 템플릿은 기업의 여러 팀이 미들웨어와 비즈니스 시스템을 공유하는 데 도움이 될 수 있습니다. 외부적으로는 다양한 시나리오와 요구 사항을 기반으로 하는 애플리케이션 제공을 위한 업계 표준 역할을 할 수 있습니다.
 
-## Multiple Storage Solutions
+## 다양한 스토리지 솔루션
 
-- Open source storage solutions are available such as GlusterFS, CephRBD, and NFS.
-- NeonSAN CSI plugin connects to QingStor NeonSAN to meet core business requirements for low latency, high resilience, and high performance.
-- QingCloud CSI plugin connects to various block storage services in QingCloud platform.
+- GlusterFS, CephRBD, NFS 등의 오픈 소스 스토리지 솔루션을 사용할 수 있습니다.
 
-## Multiple Network Solutions
+## 다양한 네트워크 솔루션
 
-- Open source network solutions are available such as Calico and Flannel.
+- Calico, Flannel 등의 오픈소스 네트워크 솔루션이 있습니다.
 
-- [OpenELB](https://github.com/kubesphere/openelb), a load balancer developed for bare metal Kubernetes clusters, is designed by KubeSphere development team. This CNCF-certified tool serves as an important solution for developers. It mainly features:
+- 베어메탈 쿠버네티스 클러스터용으로 사용된 로드밸런서인 [OpenELB](https://openelb.github.io/)는 CNCF에서 인증된 도구로 개발자에게 중요한 솔루션 역할을 합니다. 다음과 같은 기능을 제공합니다.
 
-  1. ECMP routing load balancing
-  2. BGP dynamic routing configuration
-  3. VIP management
-  4. LoadBalancerIP assignment in Kubernetes services (v0.3.0)
-  5. Installation with Helm Chart (v0.3.0)
-  6. Dynamic BGP server configuration through CRD (v0.3.0)
-  7. Dynamic BGP peer configuration through CRD (v0.3.0)
-
-  For more information, please see [this article](https://kubesphere.io/conferences/porter/).
+  1. ECMP 라우팅 로드 밸런싱
+  2. BGP 동적 라우팅 구성
+  3. VIP 관리
+  4. 쿠버네티스 서비스의 LoadBalancerIP 할당(v0.3.0)
+  5. Helm Chart로 설치 (v0.3.0)
+  6. CRD를 통한 동적 BGP 서버 구성(v0.3.0)
+  7. CRD를 통한 동적 BGP 피어 구성(v0.3.0)
+  
