@@ -1,32 +1,32 @@
 ---
-title: "KubeSphere Federation"
-keywords: "Kubernetes, KubeSphere, federation, multicluster, hybrid-cloud"
-description: "Understand the fundamental concept of Kubernetes federation in KubeSphere, including member clusters and host clusters."
-linkTitle: "KubeSphere Federation"
+title: "Kuberix Enterprise Federation"
+keywords: "Kubernetes, Kuberix, federation, multicluster, hybrid-cloud"
+description: "Understand the fundamental concept of Kubernetes federation in Kuberix Enterprise, including member clusters and host clusters."
+linkTitle: "Kuberix Enterprise Federation"
 weight: 5120
 ---
 
-The multi-cluster feature relates to the network connection among multiple clusters. Therefore, it is important to understand the topological relations of clusters.
+다중 클러스터 기능은 다중 클러스터 간의 네트워크 연결과 관련됩니다. 따라서 클러스터의 토폴로지 관계를 이해하는 것이 중요합니다.
 
-## How the Multi-cluster Architecture Works
+## 멀티 클러스터 아키텍처 작동 방식
 
-Before you use the central control plane of KubeSphere to manage multiple clusters, you need to create a host cluster, also known as **host** cluster. The host cluster, essentially, is a KubeSphere cluster with the multi-cluster feature enabled. It provides you with the control plane for unified management of member clusters, also known as **member** cluster. Member clusters are common KubeSphere clusters without the central control plane. Namely, tenants with necessary permissions (usually cluster administrators) can access the control plane from the host cluster to manage all member clusters, such as viewing and editing resources on member clusters. Conversely, if you access the web console of any member cluster separately, you cannot see any resources on other clusters.
+Kuberix Enterprise의 중앙 제어 평면을 사용하여 여러 클러스터를 관리하기 전에 **호스트** 클러스터라고도 하는 호스트 클러스터를 생성해야 합니다. 호스트 클러스터는 기본적으로 멀티 클러스터 기능이 활성화된 Kuberix Enterprise 클러스터입니다. **구성원** 클러스터라고도 하는 구성원 클러스터의 통합 관리를 위한 제어 평면을 제공합니다. 구성원 클러스터는 중앙 제어 평면이 없는 일반적인 Kuberix Enterprise 클러스터입니다. 즉, 필요한 권한이 있는 테넌트(일반적으로 클러스터 관리자)는 호스트 클러스터에서 컨트롤 플레인에 액세스하여 구성원 클러스터의 리소스 보기 및 편집과 같은 모든 구성원 클러스터를 관리할 수 있습니다. 반대로 멤버 클러스터의 웹 콘솔에 별도로 액세스하면 다른 클러스터의 리소스를 볼 수 없습니다.
 
-There can only be one host cluster while multiple member clusters can exist at the same time. In a multi-cluster architecture, the network between the host cluster and member clusters can be [connected directly](../../enable-multicluster/direct-connection/) or [through an agent](../../enable-multicluster/agent-connection/). The network between member clusters can be set in a completely isolated environment.
+여러 구성원 클러스터가 동시에 존재할 수 있지만 호스트 클러스터는 하나만 있을 수 있습니다. 다중 클러스터 아키텍처에서 호스트 클러스터와 구성원 클러스터 간의 네트워크는 [Direct-Connection](../../enable-multicluster/direct-connection/) 또는 [Agent-Connection](../.. /enable-multicluster/agent-connection/). 구성원 클러스터 간의 네트워크는 완전히 격리된 환경에서 설정할 수 있습니다.
 
-If you are using on-premises Kubernetes clusters built through kubeadm, install KubeSphere on your Kubernetes clusters by referring to [Air-gapped Installation on Kubernetes](../../../installing-on-kubernetes/on-prem-kubernetes/install-ks-on-linux-airgapped/), and then enable KubeSphere multi-cluster management through direct connection or agent connection.
+kubeadm을 통해 구축된 온프레미스 쿠버네티스 클러스터를 사용하는 경우 [Air-gapped Installation on Kubernetes](../../../installing-on-kubernetes/on-prem- kubernetes/install-ks-on-linux-airgapped/)를 선택한 다음 직접 연결 또는 에이전트 연결을 통해 Kuberix Enterprise 멀티 클러스터 관리를 활성화합니다.
 
-![kubesphere-federation](/images/docs/v3.3/multicluster-management/introduction/kubesphere-federation/kubesphere-federation.png)
+![KE-federation](/images/docs/v3.3/multicluster-management/introduction/kubesphere-federation/kubesphere-federation.png)
 
-## Vendor Agnostic
+## 벤더 종속제거
 
-KubeSphere features a powerful, inclusive central control plane so that you can manage any KubeSphere clusters in a unified way regardless of deployment environments or cloud providers.
+Kuberix Enterprise는 강력하고 포괄적인 중앙 제어 평면을 제공하므로 배포 환경이나 클라우드 제공업체에 관계없이 모든 Kuberix Enterprise 클러스터를 통합된 방식으로 관리할 수 있습니다.
 
-## Resource Requirements
+## 리소스 요구 사항
 
-Before you enable multi-cluster management, make sure you have enough resources in your environment.
+다중 클러스터 관리를 활성화하기 전에 환경에 충분한 리소스가 있는지 확인하십시오.
 
-| Namespace      | kube-federation-system | kubesphere-system |
+| Namespace      | kube-federation-system | KE-system |
 | -------------- | ---------------------- | ----------------- |
 | Sub-component  | 2 x controller-manager | tower             |
 | CPU Request    | 100 m                  | 100 m             |
@@ -42,8 +42,8 @@ Before you enable multi-cluster management, make sure you have enough resources 
 
 {{</ notice >}}
 
-## Use the App Store in a Multi-cluster Architecture
+## 멀티 클러스터 아키텍처에서 App Store 사용
 
-Different from other components in KubeSphere, the [KubeSphere App Store](../../../pluggable-components/app-store/) serves as a global application pool for all clusters, including host cluster and member clusters. You only need to enable the App Store on the host cluster and you can use functions related to the App Store on member clusters directly (no matter whether the App Store is enabled on member clusters or not), such as [app templates](../../../project-user-guide/application/app-template/) and [app repositories](../../../workspace-administration/app-repository/import-helm-repository/).
+Kuberix Enterprise의 다른 구성 요소와 달리 [KE 앱 스토어](../../../pluggable-components/app-store/)는 호스트 클러스터 및 멤버 클러스터를 포함한 모든 클러스터에 대한 글로벌 애플리케이션 풀 역할을 합니다. 호스트 클러스터에서 App Store를 활성화하기만 하면 [앱 템플릿](. ./../../project-user-guide/application/app-template/) 및 [앱 저장소](../../../workspace-administration/app-repository/import-helm-repository/ )를 사용할수 있습니다.
 
-However, if you only enable the App Store on member clusters without enabling it on the host cluster, you will not be able to use the App Store on any cluster in the multi-cluster architecture.
+그러나 호스트 클러스터에서 활성화하지 않고 멤버 클러스터에서만 App Store를 활성화하면 멀티 클러스터 아키텍처의 클러스터에서 App Store를 사용할 수 없습니다.
