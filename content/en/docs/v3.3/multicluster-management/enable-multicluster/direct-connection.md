@@ -161,7 +161,7 @@ multicluster:
 
 {{< notice note >}}
 
-단일 노드 클러스터([All-in-One](../../../quick-start/all-in-one-on-linux/))에 KubeSphere를 설치하는 경우 다음을 수행할 필요가 없습니다. `config-sample.yaml` 파일을 만듭니다. 이 경우 Kuberix Enterprise 설치 후 멤버 클러스터를 설정할 수 있다.
+단일 노드 클러스터([All-in-One](../../../quick-start/all-in-one-on-linux/))에 Kuberix Enterprise를 설치하는 경우 다음을 수행할 필요가 없습니다. `config-sample.yaml` 파일을 만듭니다. 이 경우 Kuberix Enterprise 설치 후 멤버 클러스터를 설정할 수 있다.
 
 {{</ notice >}} 
 
