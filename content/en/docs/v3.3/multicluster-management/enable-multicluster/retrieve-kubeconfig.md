@@ -1,20 +1,20 @@
 ---
 title: "Retrieve Kubeconfig"
-keywords: 'Kubernetes, KubeSphere, multicluster, hybrid-cloud, kubeconfig'
+keywords: 'Kubernetes, Kuberix, multicluster, hybrid-cloud, kubeconfig'
 description: 'Retrieve the Kubeconfig which is needed for cluster importing through direct connection.'
 titleLink: "Retrieve KubeConfig"
 weight: 5230
 ---
 
-You need to provide the kubeconfig of a member cluster if you import it using [direct connection](../direct-connection/).
+[Direct-connection](../direct-connection/)을 사용하여 가져올 경우 구성원 클러스터의 kubeconfig를 제공해야 합니다.
 
-## Prerequisites
+## 전제 조건
 
-You have a Kubernetes cluster.
+쿠버네티스 클러스터가 있습니다.
 
-## Get KubeConfig
+## KubeConfig 가져오기
 
-Go to `$HOME/.kube`, and check the file in the directory where, normally, a file named `config` exists. Use the following command to retrieve the KubeConfig file:
+`$HOME/.kube`로 이동하여 일반적으로 `config`라는 파일이 있는 디렉토리에서 파일을 확인합니다. 다음 명령을 사용하여 KubeConfig 파일을 검색합니다.
 
 ```bash
 cat $HOME/.kube/config
@@ -25,7 +25,7 @@ apiVersion: v1
 clusters:
 - cluster:
     certificate-authority-data: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUN5RENDQWJDZ0F3SUJBZ0lCQURBTkJna3Foa2lHOXcwQkFRc0ZBREFWTVJNd0VRWURWUVFERXdwcmRXSmwKY201bGRHVnpNQjRYRFRJd01EZ3dPREE1hqaVE3NXhwbGFQNUgwSm5ySk5peTBacFh6QWxjYzZlV2JlaXJ1VgpUbmZUVjZRY3pxaVcrS3RBdFZVbkl4MCs2VTgzL3FiKzdINHk2RnA0aVhUaDJxRHJ6Qkd4dG1UeFlGdC9OaFZlCmhqMHhEbHVMOTVUWkRjOUNmSFgzdGZJeVh5WFR3eWpnQ2g1RldxbGwxVS9qVUo2RjBLVVExZ1pRTFp4TVJMV0MKREM2ZFhvUGlnQ3BNaVRPVXl5SVNhWUVjYVNBMEo5VWZmSGd4ditVcXVleTc0cEM2emszS0lOT2tGMkI1MllxeApUa09OT2VkV2hDUExMZkUveVJqeGw1aFhPL1Z4REFaVC9HQ1Y1a0JZN0toNmRhendmUllOa21IQkhDMD0KLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQo=hqaVE3NXhwbGFQNUgwSm5ySk5peTBacFh6QWxjYzZlV2JlaXJ1VgpUbmZUVjZRY3pxaVcrS3RBdFZVbkl4MCs2VTgzL3FiKzdINHk2RnA0aVhUaDJxRHJ6Qkd4dG1UeFlGdC9OaFZlCmhqMHhEbHVMOTVUWkRjOUNmSFgzdGZJeVh5WFR3eWpnQ2g1RldxbGwxVS9qVUo2RjBLVVExZ1pRTFp4TVJMV0MKREM2ZFhvUGlnQ3BNaVRPVXl5SVNhWUVjYVNBMEo5VWZmSGd4ditVcXVleTc0cEM2emszS0lOT2tGMkI1MllxeApUa09OT2VkV2hDUExMZkUveVJqeGw1aFhPL1Z4REFaVC9HQ1Y1a0JZN0toNmRhendmUllOa21IQkhDMD0KLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQo=
-    server: https://lb.kubesphere.local:6443
+    server: https://lb.kuberixEnterprise.local:6443
   name: cluster.local
 contexts:
 - context:
