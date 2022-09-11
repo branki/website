@@ -1,6 +1,6 @@
 ---
 title: "Quickstarts"
-description: "Help you to better understand KubeSphere with detailed graphics and contents"
+description: "Help you to better understand Kuberix Enterprise with detailed graphics and contents"
 layout: "second"
 
 linkTitle: "Quickstarts"
@@ -11,6 +11,6 @@ icon: "/images/docs/v3.3/docs.svg"
 
 ---
 
-Quickstarts include six hands-on lab exercises that help you quickly get started with KubeSphere. It is highly recommended that you go though all of these tutorials to explore the basic feature of KubeSphere.
+빠른 시작에는 Kuberix Enterprise를 빠르게 시작하는 데 도움이 되는 6가지 실습 실습이 포함되어 있습니다. Kuberix Enterprise의 기본 기능을 탐색하려면 이 모든 튜토리얼을 진행하는 것이 좋습니다.
 
 
