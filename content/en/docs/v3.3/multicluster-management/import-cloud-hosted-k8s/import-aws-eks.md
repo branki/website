@@ -1,45 +1,45 @@
 ---
 title: "Import an AWS EKS Cluster"
-keywords: 'Kubernetes, KubeSphere, multicluster, Amazon EKS'
+keywords: 'Kubernetes, Kuberix, multicluster, Amazon EKS'
 description: 'Learn how to import an Amazon Elastic Kubernetes Service cluster.'
 titleLink: "Import an AWS EKS Cluster"
 weight: 5320
 ---
 
-This tutorial demonstrates how to import an AWS EKS cluster through the [direct connection](../../../multicluster-management/enable-multicluster/direct-connection/) method. If you want to use the agent connection method, refer to [Agent Connection](../../../multicluster-management/enable-multicluster/agent-connection/).
+이 자습서에서는 [Direct-connection](../../../multicluster-management/enable-multicluster/direct-connection/) 메서드를 통해 AWS EKS 클러스터를 가져오는 방법을 보여줍니다. 에이전트 연결 방법을 사용하려면 [Agent-Connection](../../../multicluster-management/enable-multicluster/agent-connection/)을 참조하십시오.
 
-## Prerequisites
+## 전제 조건
 
-- You have a Kubernetes cluster with KubeSphere installed, and prepared this cluster as the host cluster. For more information about how to prepare a host cluster, refer to [Prepare a host cluster](../../../multicluster-management/enable-multicluster/direct-connection/#prepare-a-host-cluster).
-- You have an EKS cluster to be used as the member cluster.
+- Kuberix Enterprise가 설치된 쿠버네티스 클러스터가 있고 이 클러스터를 호스트 클러스터로 준비했습니다. 호스트 클러스터 준비 방법에 대한 자세한 내용은 [호스트 클러스터 준비](../../../multicluster-management/enable-multicluster/direct-connection/#prepare-a-host-cluster)를 참조하십시오. .
+- 구성원 클러스터로 사용할 EKS 클러스터가 있습니다.
 
-## Import an EKS Cluster
+## EKS 클러스터 가져오기
 
-### Step 1: Deploy KubeSphere on your EKS cluster
+### 1단계: EKS 클러스터에 KubeSphere 배포
 
-You need to deploy KubeSphere on your EKS cluster first. For more information about how to deploy KubeSphere on EKS, refer to [Deploy KubeSphere on AWS EKS](../../../installing-on-kubernetes/hosted-kubernetes/install-kubesphere-on-eks/#install-kubesphere-on-eks).
+먼저 EKS 클러스터에 Kuberix Enterprise를 배포해야 합니다. EKS에 Kuberix Enterprise를 배포하는 방법에 대한 자세한 내용은 [AWS EKS에 Kuberix Enterprise 배포](../../../installing-on-kubernetes/hosted-kubernetes/install-kubesphere-on-eks/#install)를 참조하십시오. -KuberixEnterprise-on-eks).
 
-### Step 2: Prepare the EKS member cluster
+### 2단계: EKS 구성원 클러스터 준비
 
-1. In order to manage the member cluster from the host cluster, you need to make `jwtSecret` the same between them. Therefore, get it first by executing the following command on your host cluster.
+1. 호스트 클러스터에서 멤버 클러스터를 관리하기 위해서는 'jwtSecret'을 동일하게 설정해야 합니다. 따라서 호스트 클러스터에서 다음 명령을 실행하여 먼저 가져옵니다.
 
    ```bash
-   kubectl -n kubesphere-system get cm kubesphere-config -o yaml | grep -v "apiVersion" | grep jwtSecret
+   kubectl -n ke-system get cm ke-config -o yaml | grep -v "apiVersion" | grep jwtSecret
    ```
 
-   The output is similar to the following:
+   출력은 다음과 같습니다:
 
    ```yaml
    jwtSecret: "QVguGh7qnURywHn2od9IiOX6X8f8wK8g"
    ```
 
-2. Log in to the KubeSphere console of the EKS cluster as `admin`. Click **Platform** in the upper-left corner and then select **Cluster Management**.
+2. EKS 클러스터의 Kuberix Enterprise 콘솔에 `admin`으로 로그인합니다. 왼쪽 상단에서 **플랫폼**을 클릭한 다음 **클러스터 관리**를 선택합니다.
 
-3. Go to **CRDs**, enter `ClusterConfiguration` in the search bar, and then press **Enter** on your keyboard. Click **ClusterConfiguration** to go to its detail page.
+3. **CRDs**로 이동하여 검색 창에 `ClusterConfiguration`을 입력한 다음 키보드에서 **Enter**를 누릅니다. **ClusterConfiguration**을 클릭하여 세부 정보 페이지로 이동합니다.
 
-4. Click <img src="/images/docs/v3.3/multicluster-management/import-cloud-hosted-k8s/import-eks/three-dots.png" height="20px" v> on the right and then select **Edit YAML** to edit `ks-installer`. 
+4. 오른쪽의 <img src="/images/docs/v3.3/multicluster-management/import-cloud-hosted-k8s/import-eks/three-dots.png" height="20px" v>를 클릭하고 그런 다음 **YAML 편집**을 선택하여 `ke-installer`를 편집합니다.
 
-5. In the YAML file of `ks-installer`, change the value of `jwtSecret` to the corresponding value shown above and set the value of `clusterRole` to `member`. Click **Update** to save your changes.
+5. `ke-installer`의 YAML 파일에서 `jwtSecret`의 값을 위에 표시된 해당 값으로 변경하고 `clusterRole`의 값을 `member`로 설정합니다. **업데이트**를 클릭하여 변경 사항을 저장합니다.
 
    ```yaml
    authentication:
@@ -53,13 +53,13 @@ You need to deploy KubeSphere on your EKS cluster first. For more information ab
 
    {{< notice note >}}
 
-   Make sure you use the value of your own `jwtSecret`. You need to wait for a while so that the changes can take effect.
+   자신의 `jwtSecret` 값을 사용해야 합니다. 변경 사항이 적용되려면 잠시 기다려야 합니다.
 
    {{</ notice >}}
 
-### Step 3: Create a new kubeconfig file
+### 3단계: 새 kubeconfig 파일 생성
 
-1. [Amazon EKS](https://docs.aws.amazon.com/eks/index.html) doesn’t provide a built-in kubeconfig file as a standard kubeadm cluster does. Nevertheless, you can create a kubeconfig file by referring to this [document](https://docs.aws.amazon.com/eks/latest/userguide/create-kubeconfig.html). The generated kubeconfig file will be like the following:
+1. [Amazon EKS](https://docs.aws.amazon.com/eks/index.html)는 표준 kubeadm 클러스터처럼 내장된 kubeconfig 파일을 제공하지 않습니다. 그럼에도 불구하고 이 [문서](https://docs.aws.amazon.com/eks/latest/userguide/create-kubeconfig.html)를 참조하여 kubeconfig 파일을 생성할 수 있습니다. 생성된 kubeconfig 파일은 다음과 같습니다.
 
    ```yaml
    apiVersion: v1
@@ -94,23 +94,23 @@ You need to deploy KubeSphere on your EKS cluster first. For more information ab
            #   value: "<aws-profile>"
    ```
 
-   However, this automatically generated kubeconfig file requires the command `aws` (aws CLI tools) to be installed on every computer that wants to use this kubeconfig.
+   그러나 이 자동으로 생성된 kubeconfig 파일을 사용하려면 이 kubeconfig를 사용하려는 모든 컴퓨터에 `aws`(aws CLI 도구) 명령을 설치해야 합니다.
 
-2. Run the following commands on your local computer to get the token of the ServiceAccount `kubesphere` created by KubeSphere. It has the cluster admin access to the cluster and will be used as the new kubeconfig token.
+2. 로컬 컴퓨터에서 다음 명령을 실행하여 Kuberix Enterprise에서 생성된 ServiceAccount `kubesphere`의 토큰을 가져옵니다. 클러스터에 대한 클러스터 관리자 액세스 권한이 있으며 새 kubeconfig 토큰으로 사용됩니다.
 
    ```bash
-   TOKEN=$(kubectl -n kubesphere-system get secret $(kubectl -n kubesphere-system get sa kubesphere -o jsonpath='{.secrets[0].name}') -o jsonpath='{.data.token}' | base64 -d)
-   kubectl config set-credentials kubesphere --token=${TOKEN}
-   kubectl config set-context --current --user=kubesphere
+   TOKEN=$(kubectl -n ke-system get secret $(kubectl -n ke-system get sa KuberixEnterprise -o jsonpath='{.secrets[0].name}') -o jsonpath='{.data.token}' | base64 -d)
+   kubectl config set-credentials KuberixEnterprise --token=${TOKEN}
+   kubectl config set-context --current --user=KuberixEnterprise
    ```
 
-3. Retrieve the new kubeconfig file by running the following command:
+3. 다음 명령을 실행하여 새 kubeconfig 파일을 검색합니다.:
 
    ```bash
    cat ~/.kube/config
    ```
 
-   The output is similar to the following and you can see that a new user `kubesphere` is inserted and set as the current-context user:
+   출력은 다음과 유사하며 새 사용자 'KuberixEnterprise'가 삽입되어 현재 컨텍스트 사용자로 설정된 것을 볼 수 있습니다.:
 
    ```yaml
    apiVersion: v1
@@ -122,7 +122,7 @@ You need to deploy KubeSphere on your EKS cluster first. For more information ab
    contexts:
    - context:
        cluster: arn:aws-cn:eks:cn-north-1:660450875567:cluster/EKS-LUSLVMT6
-       user: kubesphere
+       user: KuberixEnterprise
      name: arn:aws-cn:eks:cn-north-1:660450875567:cluster/EKS-LUSLVMT6
    current-context: arn:aws-cn:eks:cn-north-1:660450875567:cluster/EKS-LUSLVMT6
    kind: Config
@@ -141,18 +141,18 @@ You need to deploy KubeSphere on your EKS cluster first. For more information ab
          - EKS-LUSLVMT6
          command: aws
          env: null
-   - name: kubesphere
+   - name: KuberixEnterprise
      user:
        token: eyJhbGciOiJSUzI1NiIsImtpZCI6ImlCRHF4SlE5a0JFNDlSM2xKWnY1Vkt5NTJrcDNqRS1Ta25IYkg1akhNRmsifQ.eyJpc3M................9KQtFULW544G-FBwURd6ArjgQ3Ay6NHYWZe3gWCHLmag9gF-hnzxequ7oN0LiJrA-al1qGeQv-8eiOFqX3RPCQgbybmix8qw5U6f-Rwvb47-xA
    ```
 
-   You can run the following command to check that the new kubeconfig does have access to the EKS cluster.
+   다음 명령을 실행하여 새 kubeconfig에 EKS 클러스터에 대한 액세스 권한이 있는지 확인할 수 있습니다.
 
    ```shell
    kubectl get nodes
    ```
 
-   The output is simialr to this:
+   출력은 다음과 같습니다:
 
    ```
    NAME                                        STATUS   ROLES    AGE   VERSION
@@ -160,12 +160,12 @@ You need to deploy KubeSphere on your EKS cluster first. For more information ab
    ip-10-0-8-148.cn-north-1.compute.internal   Ready    <none>   78m   v1.18.8-eks-7c9bda
    ```
 
-### Step 4: Import the EKS member cluster
+### 4단계: EKS 구성원 클러스터 가져오기
 
-1. Log in to the KubeSphere console on your host cluster as `admin`. Click **Platform** in the upper-left corner and then select **Cluster Management**. On the **Cluster Management** page, click **Add Cluster**.
+1. 호스트 클러스터의 Kuberix Enterprise 콘솔에 `admin`으로 로그인합니다. 왼쪽 상단에서 **플랫폼**을 클릭한 다음 **클러스터 관리**를 선택합니다. **클러스터 관리** 페이지에서 **클러스터 추가**를 클릭합니다.
 
-2. Enter the basic information based on your needs and click **Next**.
+2. 필요에 따라 기본 정보를 입력하고 **다음**을 클릭합니다.
 
-3. In **Connection Method**, select **Direct connection**. Fill in the new kubeconfig file of the EKS member cluster and then click **Create**.
+3. **연결 방법**에서 **직접 연결**을 선택합니다. EKS 구성원 클러스터의 새 kubeconfig 파일을 입력한 다음 **Create**를 클릭합니다.
 
-4. Wait for cluster initialization to finish.
+4. 클러스터 초기화가 완료될 때까지 기다립니다.
