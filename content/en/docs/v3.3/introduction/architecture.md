@@ -19,7 +19,7 @@ Kuberix Enterprise는 프론트엔드와 백엔드를 분리하며, 그 자체�
 |---|---|
 | KE-apiserver | Kuberix Enterprise API 서버는 Kubernetes 객체를 포함하는 API 객체에 대한 데이터의 유효성을 검사하고 구성합니다. API 서버는 REST 작업을 서비스하고 다른 모든 구성 요소가 상호 작용하는 클러스터의 공유 상태에 프런트 엔드를 제공합니다. |
 | KE-console | Kuberix Enterprise 콘솔은 전용 콘솔 서비스를 제공합니다|
-| ks-controller-manager | Kuberix Enterprise 컨트롤러는 비즈니스 로직을 처리합니다(예: 작업 영역을 만들 때 컨트롤러가 해당 권한 및 구성을 자동으로 생성합니다). |
+| KE-controller-manager | Kuberix Enterprise 컨트롤러는 비즈니스 로직을 처리합니다(예: 작업 영역을 만들 때 컨트롤러가 해당 권한 및 구성을 자동으로 생성합니다). |
 | Matrics-Server | 쿠버네티스 모니터링 구성 요소는 각 노드의 Kubelet에서 메트릭을 수집합니다. |
 | Prometheus | 는 클러스터, 노드, 워크로드, API 객체의 모니터링 메트릭 및 서비스를 제공합니다. |
 | Elasticsearch | 는 로그 인덱싱, 쿼리 및 데이터 관리를 제공합니다. 내장 서비스 외에도 Kuberix Enterprise는 외부 Elasticsearch 서비스의 통합을 지원합니다. |
