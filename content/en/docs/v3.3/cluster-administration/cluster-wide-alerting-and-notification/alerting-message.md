@@ -24,5 +24,5 @@ weight: 8540
 
 ## 알림 보기
 
-경고 알림(예: 이메일 및 Slack 메시지)도 수신하려면 [알림 채널](../../../cluster-administration/platform-settings/notification-management/configure)을 구성해야 합니다. -이메일/) 먼저.
+경고 알림(예: 이메일 및 Slack 메시지)도 수신하려면 [알림 채널](../../../cluster-administration/platform-settings/notification-management/configure)을 구성해야 합니다.
 
