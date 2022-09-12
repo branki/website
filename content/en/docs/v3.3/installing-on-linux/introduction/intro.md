@@ -1,70 +1,70 @@
 ---
 title: "Installing on Linux — Overview"
-keywords: 'Kubernetes, KubeSphere, Linux, Installation'
+keywords: 'Kubernetes, Kuberix, Linux, Installation'
 description: 'Explore the general content in this chapter, including installation preparation, installation tool and method, and storage configurations.'
 linkTitle: "Overview"
 weight: 3110
 ---
 
-As an open-source project on [GitHub](https://github.com/kubesphere), KubeSphere is home to a community with thousands of users. Many of them are running KubeSphere for their production workloads. For the installation on Linux, KubeSphere can be deployed both in clouds and in on-premises environments, such as AWS EC2, Azure VM and bare metal.
+Linux에 설치하는 경우 Kuberix Enterprise는 클라우드와 AWS EC2, Azure VM 및 베어메탈과 같은 온프레미스 환경 모두에 배포할 수 있습니다.
 
-The installation process is easy and friendly as KubeSphere provides users with [KubeKey](https://github.com/kubesphere/kubekey), a lightweight installer that supports the installation of Kubernetes, KubeSphere and related add-ons. KubeKey not only helps users to create clusters online but also serves as an air-gapped installation solution.
+Kuberix Enterprise는 쿠버네티스 및 관련 애드온 설치를 지원하는 경량 설치 프로그램인 [KubePOP](https://github.com/ke/kubepop)를 사용자에게 제공하므로 설치 프로세스가 쉽고 친숙합니다. KubePOP는 사용자가 온라인으로 클러스터를 생성하는 데 도움이 될 뿐만 아니라 에어갭 설치 솔루션 역할도 합니다.
 
-Here is a list of available installation options.
+다음은 사용 가능한 설치 옵션 목록입니다.
 
-- [All-in-one installation](../../../quick-start/all-in-one-on-linux/): Install KubeSphere on a single node. It is only for users to quickly get familiar with KubeSphere.
-- [Multi-node installation](../multioverview/): Install KubeSphere on multiple nodes. It is for testing or development.
-- [Air-gapped installation on Linux](../air-gapped-installation/): All images of KubeSphere have been encapsulated into a package. It is convenient for air-gapped installation on Linux machines.
-- [High availability installation](../../../installing-on-linux/high-availability-configurations/ha-configuration/): Install a highly-available KubeSphere cluster with multiple nodes which is used for production.
-- Minimal Packages: Only install the minimum required system components of KubeSphere. Here is the minimum resource requirement:
-  - 2 CPUs
-  - 4 GB RAM
-  - 40 GB Storage
-- [Full Packages](../../../pluggable-components/): Install all available system components of KubeSphere such as DevOps, service mesh, and alerting.
+- [올인원 설치](../../../quick-start/all-in-one-on-linux/): 단일 노드에 Kuberix Enterprise를 설치합니다. 사용자가 Kuberix Enterprise에 빠르게 익숙해지기만 하면 됩니다.
+- [멀티 노드 설치](../multioverview/): Kuberix Enterprise를 멀티 노드에 설치합니다. 테스트 또는 개발용입니다.
+- [Linux에서 Air-gapped 설치](../air-gapped-installation/): Kuberix Enterprise의 모든 이미지가 패키지로 캡슐화되었습니다. Linux 시스템에서 에어 갭 설치에 편리합니다.
+- [고가용성 설치](../../../installing-on-linux/high-availability-configurations/ha-configuration/): 프로덕션에 사용되는 다중 노드가 있는 고가용성 Kuberix Enterprise 클러스터를 설치합니다.
+- 최소 패키지: Kuberix Enterprise의 최소 필수 시스템 구성 요소만 설치합니다. 최소 리소스 요구 사항은 다음과 같습니다.
+  - 2개의 CPU
+  - 4GB RAM
+  - 40GB 스토리지
+- [전체 패키지](../../../pluggable-components/): DevOps, 서비스 메시 및 경고와 같은 Kuberix Enterprise의 사용 가능한 모든 시스템 구성 요소를 설치합니다.
 
 {{< notice note >}}
 
-Not all options are mutually exclusive. For instance, you can deploy KubeSphere with the minimal package on multiple nodes in an air-gapped environment.
+모든 옵션이 상호 배타적인 것은 아닙니다. 예를 들어 에어 갭 환경의 여러 노드에 최소 패키지로 Kuberix Enterprise를 배포할 수 있습니다.
 
-{{</ notice >}} 
+{{</ notice >}}
 
-If you have an existing Kubernetes cluster, see [Overview of Installing on Kubernetes](../../../installing-on-kubernetes/introduction/overview/).
+기존 쿠버네티스 클러스터가 있는 경우 [쿠버네티스 설치 개요](../../../installing-on-kubernetes/introduction/overview/)를 참조하세요.
 
-## Before Installation
+## 설치 전
 
-- As images will be pulled from the Internet, your environment must have Internet access. Otherwise, you need to [install KubeSphere in an air-gapped environment](../air-gapped-installation/).
-- For all-in-one installation, the only one node is both the control plane and the worker.
-- For multi-node installation, you need to provide host information in a configuration file.
-- See [Port Requirements](../port-firewall/) before installation.
+- 인터넷에서 이미지를 가져오므로 환경에서 인터넷에 액세스할 수 있어야 합니다. 그렇지 않으면 [에어 갭 환경에 쿠버네티스 설치](../air-gapped-installation/)가 필요합니다.
+- 일체형 설치의 경우 제어 평면과 작업자가 모두 하나의 노드입니다.
+- 다중 노드 설치의 경우 구성 파일에 호스트 정보를 제공해야 합니다.
+- 설치하기 전에 [포트 요구 사항](../port-firewall/)을 참조하십시오.
 
-## KubeKey
+## KubePOP
 
-[KubeKey](https://github.com/kubesphere/kubekey) provides an efficient approach to the installation and configuration of your cluster. You can use it to create, scale, and upgrade your Kubernetes cluster. It also allows you to install cloud-native add-ons (YAML or Chart) as you set up your cluster. For more information, see [KubeKey](../kubekey).
+[KubePOP](https://github.com/ke/kubepop)는 클러스터 설치 및 구성에 대한 효율적인 접근 방식을 제공합니다. 이를 사용하여 쿠버네티스 클러스터를 생성, 확장 및 업그레이드할 수 있습니다. 또한 클러스터를 설정할 때 클라우드 네이티브 추가 기능(YAML 또는 차트)을 설치할 수 있습니다. 자세한 내용은 [KubePOP](../kubepop)를 참조하십시오.
 
-## Quick Installation for Development and Testing
+## 개발 및 테스트를 위한 빠른 설치
 
-KubeSphere has decoupled some components since v2.1.0. KubeKey only installs necessary components by default as this way features fast installation and minimal resource consumption. If you want to enable enhanced pluggable functionalities, see [Enable Pluggable Components](../../../pluggable-components/) for details.
+Kuberix Enterprise는 v2.1.0부터 일부 구성 요소를 분리했습니다. KubePOP는 빠른 설치와 최소한의 리소스 소비를 특징으로 하기 때문에 기본적으로 필요한 구성 요소만 설치합니다. 향상된 플러그 가능 기능을 활성화하려면 [플러그 가능 구성 요소 활성화](../../../pluggable-components/)에서 자세한 내용을 참조하십시오.
 
-The quick installation of KubeSphere is only for development or testing since it uses [Local Volume](https://kubernetes.io/docs/concepts/storage/volumes/#local) based on [openEBS](https://openebs.io/) to provide storage services by default. If you want a production installation, see [High Availability Configurations](../../../installing-on-linux/high-availability-configurations/ha-configuration/).
+Kuberix Enterprise의 빠른 설치는 [openEBS](https://openebs.xml) 기반의 [Local Volume](https://kubernetes.io/docs/concepts/storage/volumes/#local)을 사용하기 때문에 개발 또는 테스트 전용입니다. io/) 기본적으로 스토리지 서비스를 제공합니다. 프로덕션 설치를 원하면 [고가용성 구성](../../../installing-on-linux/high-availability-configurations/ha-configuration/)을 참조하십시오.
 
-## Storage Configurations
+## 스토리지 구성
 
-KubeSphere allows you to configure persistent storage services both before and after installation. Meanwhile, KubeSphere supports a variety of open-source storage solutions (for example, Ceph and GlusterFS) as well as commercial storage products. Refer to [Persistent Storage Configurations](../../../installing-on-linux/persistent-storage-configurations/understand-persistent-storage/) for detailed instructions regarding how to configure the storage class before you install KubeSphere.
+Kuberix Enterprise를 사용하면 설치 전후에 영구 스토리지 서비스를 구성할 수 있습니다. 한편, Kuberix Enterprise는 상용 스토리지 제품뿐만 아니라 다양한 오픈 소스 스토리지 솔루션(예: Ceph 및 GlusterFS)을 지원합니다. Kuberix Enterprise를 설치하기 전에 스토리지 클래스를 구성하는 방법에 대한 자세한 지침은 [영구 스토리지 구성](../../../installing-on-linux/persistent-storage-configurations/understand-persistent-storage/)을 참조하십시오. .
 
-For more information about how to set different storage classes for your workloads after you install KubeSphere, see [Storage Classes](../../../cluster-administration/storageclass/).
+Kuberix Enterprise를 설치한 후 워크로드에 대해 다른 스토리지 클래스를 설정하는 방법에 대한 자세한 내용은 [스토리지 클래스](../../../cluster-administration/storageclass/)를 참조하십시오.
 
-## Cluster Operation and Maintenance
+## 클러스터 운영 및 유지 관리
 
-### Add new nodes
+### 새 노드 추가
 
-With KubeKey, you can increase the number of nodes to meet higher resource needs after the installation, especially in production. For more information, see [Add New Nodes](../../../installing-on-linux/cluster-operation/add-new-nodes/).
+KubePOP를 사용하면 특히 프로덕션 환경에서 설치 후 더 많은 리소스 요구 사항을 충족하기 위해 노드 수를 늘릴 수 있습니다. 자세한 내용은 [새 노드 추가](../../../installing-on-linux/cluster-operation/add-new-nodes/)를 참조하십시오.
 
-### Remove nodes
+### 노드 제거
 
-You need to drain a node before you remove it. For more information, see [Remove Nodes](../../../installing-on-linux/cluster-operation/remove-nodes/).
+노드를 제거하기 전에 노드를 비워야 합니다. 자세한 내용은 [노드 제거](../../../installing-on-linux/cluster-operation/remove-nodes/)를 참조하십시오.
 
-## Uninstalling
+## 설치 제거
 
-Uninstalling KubeSphere means it will be removed from your machine, which is irreversible. Please be cautious with the operation.
+Kuberix Enterprise를 제거하면 시스템에서 제거되며 되돌릴 수 없습니다. 조작에 주의해 주십시오.
 
-For more information, see [Uninstall KubeSphere and Kubernetes](../../../installing-on-linux/uninstall-kubesphere-and-kubernetes/).
+자세한 내용은 [Kuberix Enterprise 및 쿠버네티스 제거](../../../installing-on-linux/uninstall-kuberixEnterprise-and-kubernetes/)를 참조하십시오.
