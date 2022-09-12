@@ -1,31 +1,29 @@
 ---
 title: "Volume Snapshot Classes"
-keywords: 'KubeSphere, Kubernetes, PVC, PV, Snapshot, Snapshot Classes'
-description: 'Learn how to manage snapshot classes on KubeSphere.'
+keywords: 'Kuberix, Kubernetes, PVC, PV, Snapshot, Snapshot Classes'
+description: 'Learn how to manage snapshot classes on Kuberix Enterprise.'
 linkTitle: "Volume Snapshot Classes"
 weight: 8900
 ---
 
-Volume snapshot classes provide a way for administrators to define storage types used for volume snapshots. This tutorial describes how to create and use snapshot classes.
+## 전제 조건
 
-## Prerequisites
+- 작업 공간, 프로젝트 및 사용자(`project-regular`)를 생성해야 합니다. 사용자는 '운영자' 역할로 프로젝트에 초대되어야 합니다. 자세한 내용은 [작업 공간, 프로젝트, 사용자 및 역할 생성](../../../quick-start/create-workspace-and-project/)을 참조하십시오.
 
-- You need to create a workspace, a project and a user (`project-regular`). The user must be invited to the project with the role of `operator`. For more information, see [Create Workspaces, Projects, Users and Roles](../../../quick-start/create-workspace-and-project/).
+- 쿠버네티스 1.20 이상을 설치해야 합니다.
 
-- You need to install Kubernetes 1.17 or higher.
+- 기본 저장소 플러그인은 스냅샷을 지원합니다.
 
-- Your underlying storage plugin supports snapshots.
+## 절차
 
-## Procedures
+1. Kuberix Enterprise의 웹 콘솔에 'project-regular'로 로그인합니다. 왼쪽 탐색 창에서 **Storage > Volume Snapshot Classes**를 클릭합니다.
 
-1. Log in to the web console of KubeSphere as `project-regular`. On the navigation pane on the left, click **Storage > Volume Snapshot Classes**.
+2. **Volume Snapshot Classes** 페이지에서 **Create**를 클릭합니다.
 
-2. On the **Volume Snapshot Classes** page, click **Create**.
+3. 표시된 **Create Volume Snapshot Class** 대화 상자에서 볼륨 스냅샷의 이름을 설정하고 **Next**를 클릭합니다. 또한 별칭을 설정하고 설명을 추가할 수 있습니다.
 
-3. In the displayed **Create Volume Snapshot Class** dialog box, set the name of the volume snapshot, and click **Next**. Also, you can set an alias and add description.
+4. **Volume Snapshot Class Settings** 탭에서 다음 유형을 지원하는 프로비저닝 및 삭제 정책을 선택합니다.
 
-4. On the **Volume Snapshot Class Settings** tab, select a provisioner and deletion policy, which supports the following types:
-
-   -  Delete: The snapshot of the underlying storage will be deleted along with the VolumeSnapshotContent.
-   -  Retain: Both the snapshot of the underlying storage and the VolumeSnapshotContent will be retained.
+   - 삭제: 기본 저장소의 스냅샷이 VolumeSnapshotContent와 함께 삭제됩니다.
+   - 유지: 기본 스토리지의 스냅샷과 VolumeSnapshotContent가 모두 유지됩니다.
 
