@@ -1,65 +1,65 @@
 ---
-title: "KubeKey"
-keywords: 'KubeKey, Installation, KubeSphere'
-description: 'Understand what KubeKey is and how it works to help you create, scale and upgrade your Kubernetes cluster.'
-linkTitle: "KubeKey"
+title: "KubePOP"
+keywords: 'KubePOP, Installation, Kuberix'
+description: 'Understand what KubePOP is and how it works to help you create, scale and upgrade your Kubernetes cluster.'
+linkTitle: "KubePOP"
 weight: 3120
 ---
 
-Developed in Go, [KubeKey](https://github.com/kubesphere/kubekey) represents a brand-new installation tool as a replacement for the ansible-based installer used before. KubeKey provides you with flexible installation choices, as you can install Kubernetes only or install both Kubernetes and KubeSphere.
+Go로 개발된 [KubePOP](https://github.com/ke/kubepop)은 이전에 사용된 ansible 기반 설치 프로그램을 대체하는 새로운 설치 도구입니다. KubePOP는 쿠버네티스만 설치하거나 쿠버네티스와 Kuberix Enterprise를 모두 설치할 수 있으므로 유연한 설치 선택을 제공합니다.
 
-There are several scenarios to use KubeKey:
+KubePOP를 사용하는 몇 가지 시나리오가 있습니다.
 
-- Install Kubernetes only;
-- Install Kubernetes and KubeSphere together in one command;
-- Scale a cluster;
-- Upgrade a cluster;
-- Install Kubernetes-related add-ons (Chart or YAML).
+- 쿠버네티스만 설치합니다.
+- 하나의 명령으로 쿠버네티스와 Kuberix Enterprise를 함께 설치합니다.
+- 클러스터 확장
+- 클러스터 업그레이드
+- 쿠버네티스 관련 애드온(Chart 또는 YAML)을 설치합니다.
 
-## How Does KubeKey Work
+## KubePOP는 어떻게 작동합니까?
 
-After you download KubeKey, you use an executable called `kk` to perform different operations. No matter you use it to create, scale or upgrade a cluster, you must prepare a configuration file using `kk` beforehand. This configuration file contains basic parameters of your cluster, such as host information, network configurations (CNI plugin and Pod and Service CIDR), registry mirrors, add-ons (YAML or Chart) and pluggable component options (if you install KubeSphere). For more information, see [an example configuration file](https://github.com/kubesphere/kubekey/blob/release-2.2/docs/config-example.md).
+KubePOP를 다운로드한 후 `kp`라는 실행 파일을 사용하여 다른 작업을 수행합니다. 클러스터를 생성, 확장 또는 업그레이드하는 데 사용하든 상관없이 사전에 `kp`를 사용하여 구성 파일을 준비해야 합니다. 이 구성 파일에는 호스트 정보, 네트워크 구성(CNI 플러그인 및 Pod 및 서비스 CIDR), 레지스트리 미러, 추가 기능(YAML 또는 차트) 및 플러그형 구성 요소 옵션(Kuberix Enterprise를 설치하는 경우)과 같은 클러스터의 기본 매개변수가 포함되어 있습니다. 자세한 내용은 [구성 파일 예시](https://github.com/ke/kubepop/blob/release-2.2/docs/config-example.md)를 참조하세요.
 
-With the configuration file in place, you execute the `./kk` command with varied flags for different operations. After that, KubeKey automatically installs Docker and pulls all the necessary images for installation. When the installation is complete, you can inspect installation logs.
+구성 파일이 있는 상태에서 다양한 작업에 대해 다양한 플래그를 사용하여 `./kp` 명령을 실행합니다. 그런 다음 KubePOP는 Docker를 자동으로 설치하고 설치에 필요한 모든 이미지를 가져옵니다. 설치가 완료되면 설치 로그를 검사할 수 있습니다.
 
-## Why KubeKey
+## KubePOP 차별점
 
-- The previous ansible-based installer has a bunch of software dependencies such as Python. KubeKey is developed in Go language to get rid of the problem in a variety of environments, making sure the installation is successful.
-- KubeKey supports multiple installation options, such as [all-in-one installation](../../../quick-start/all-in-one-on-linux/), [multi-node installation](../multioverview/), and [air-gapped installation](../air-gapped-installation/).
-- KubeKey uses Kubeadm to install Kubernetes clusters on nodes in parallel as much as possible in order to reduce installation complexity and improve efficiency. It greatly saves installation time compared to the older installer.
-- KubeKey aims to install clusters as an object, i.e., CaaO.
+- 이전의 가능 기반 설치 프로그램에는 Python과 같은 소프트웨어 종속성이 많이 있습니다. KubePOP는 Go 언어로 개발되어 다양한 환경에서 발생하는 문제를 제거하여 설치에 성공합니다.
+- KubePOP는 [올인원 설치](../../../quick-start/all-in-one-on-linux/), [멀티 노드 설치]( ../multioverview/) 및 [에어 갭 설치](../에어 갭 설치/).
+- KubePOP는 설치 복잡성을 줄이고 효율성을 높이기 위해 Kubeadm을 사용하여 노드에 쿠버네티스 클러스터를 최대한 병렬로 설치합니다. 이전 설치 프로그램에 비해 설치 시간이 크게 절약됩니다.
+- KubePOP는 클러스터를 객체, 즉 CaaO로 설치하는 것을 목표로 합니다.
 
-## Download KubeKey
+## KubeKey 다운로드
 
 {{< tabs >}}
 
 {{< tab "Good network connections to GitHub/Googleapis" >}}
 
-Download KubeKey from its [GitHub Release Page](https://github.com/kubesphere/kubekey/releases) or use the following command directly.
+[GitHub 릴리스 페이지](https://github.com/ke/kubepop/releases)에서 KubePOP를 다운로드하거나 다음 명령을 직접 사용합니다.
 
 ```bash
-curl -sfL https://get-kk.kubesphere.io | VERSION=v2.2.2 sh -
+curl -sfL https://get-kp.kuberix.io | VERSION=v2.2.2 sh -
 ```
 
 {{</ tab >}}
 
 {{< tab "Poor network connections to GitHub/Googleapis" >}}
 
-Run the following command first to make sure you download KubeKey from the correct zone.
+다음 명령을 먼저 실행하여 올바른 영역에서 KubePOP를 다운로드했는지 확인하십시오.
 
 ```bash
-export KKZONE=cn
+export KPZONE=cn
 ```
 
-Run the following command to download KubeKey:
+다음 명령을 실행하여 KubePOP를 다운로드하십시오.:
 
 ```bash
-curl -sfL https://get-kk.kubesphere.io | VERSION=v2.2.2 sh -
+curl -sfL https://get-kp.kuberix.io | VERSION=v2.2.2 sh -
 ```
 
 {{< notice note >}}
 
-After you download KubeKey, if you transfer it to a new machine also with poor network connections to Googleapis, you must run `export KKZONE=cn` again before you proceed with the steps below.
+KubePOP를 다운로드한 후 Googleapis에 대한 네트워크 연결이 좋지 않은 새 컴퓨터로 전송하는 경우 아래 단계를 진행하기 전에 `export KPZONE=cn`을 다시 실행해야 합니다.
 
 {{</ notice >}} 
 
@@ -69,21 +69,22 @@ After you download KubeKey, if you transfer it to a new machine also with poor n
 
 {{< notice note >}}
 
-The commands above download the latest release (v2.2.2) of KubeKey. You can change the version number in the command to download a specific version.
+위의 명령은 KubePOP의 최신 릴리스(v2.2.2)를 다운로드합니다. 명령에서 버전 번호를 변경하여 특정 버전을 다운로드할 수 있습니다.
 
 {{</ notice >}}
 
-## Support Matrix
+## 지원 매트릭스
 
-If you want to use KubeKey to install both Kubernetes and KubeSphere 3.3.0, see the following table of all supported Kubernetes versions.
+KubePOP를 사용하여 쿠버네티스와 Kuberix Enterprise v3.3.0을 모두 설치하려면 지원되는 모든 쿠버네티스 버전에 대한 다음 표를 참조하십시오.
 
-| KubeSphere version | Supported Kubernetes versions                                |
-| ------------------ | ------------------------------------------------------------ |
-| v3.3.0             | v1.19.x, v1.20.x, v1.21.x, v1.22.x, and v1.23.x (experimental support) |
+| Kuberix Enterprise version | Supported Kubernetes versions                                          |
+| -------------------------- | ---------------------------------------------------------------------- |
+| v3.3.0                     | v1.19.x, v1.20.x, v1.21.x, v1.22.x, and v1.23.x (experimental support) |
 
 {{< notice note >}} 
 
-- You can also run `./kk version --show-supported-k8s` to see all supported Kubernetes versions that can be installed by KubeKey.
-- The Kubernetes versions that can be installed using KubeKey are different from the Kubernetes versions supported by KubeSphere v3.3.0. If you want to [install KubeSphere 3.3.0 on an existing Kubernetes cluster](../../../installing-on-kubernetes/introduction/overview/), your Kubernetes version must be v1.19.x, v1.20.x, v1.21.x, v1.22.x, and v1.23.x (experimental support).
-- If you want to use KubeEdge, you are advised to install Kubernetes v1.21.x or earlier to prevent compatability issues.
+- `./kp version --show-supported-k8s`를 실행하여 KubePOP에서 설치할 수 있는 지원되는 모든 쿠버네티스 버전을 볼 수도 있습니다.
+- KubePOP를 사용하여 설치할 수 있는 쿠버네티스 버전은 Kuberix Enterprise v3.3.0에서 지원하는 쿠버네티스 버전과 다릅니다. [기존 쿠버네티스 클러스터에 Kuberix Enterprise v3.3.0 설치](../../../installing-on-kubernetes/introduction/overview/)를 수행하려면 쿠버네티스 버전이 v1.19.x, v1이어야 합니다. .20.x, v1.21.x, v1.22.x 및 v1.23.x(실험 지원).
+- KubeEdge를 사용하려면 호환성 문제를 방지하기 위해 쿠버네티스 v1.21.x 또는 이전 버전을 설치하는 것이 좋습니다.
+
 {{</ notice >}}
