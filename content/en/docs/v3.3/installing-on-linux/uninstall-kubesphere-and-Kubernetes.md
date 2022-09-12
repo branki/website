@@ -1,25 +1,25 @@
 ---
-title: "Uninstall KubeSphere and Kubernetes"
-keywords: 'Kubernetes, KubeSphere, uninstalling, remove-cluster'
-description: 'Remove KubeSphere and Kubernetes from your machines.'
-linkTitle: "Uninstall KubeSphere and Kubernetes"
+title: "Uninstall Kuberix Enterprise and Kubernetes"
+keywords: 'Kubernetes, Kuberix, uninstalling, remove-cluster'
+description: 'Remove Kuberix Enterprise and Kubernetes from your machines.'
+linkTitle: "Uninstall Kuberix Enterprise and Kubernetes"
 weight: 3700
 ---
 
 
-Uninstalling KubeSphere and Kubernetes means they will be removed from your machine. This operation is irreversible and does not have any backup. Please be cautious with the operation.
+Kuberix Enterprise 및 쿠버네티스를 제거하면 컴퓨터에서 제거됩니다. 이 작업은 되돌릴 수 없으며 백업이 없습니다. 조작에 주의해 주십시오.
 
-To delete your cluster, execute the following command.
+클러스터를 삭제하려면 다음 명령어를 실행하세요.
 
-- If you installed KubeSphere with the quickstart ([all-in-one](../../quick-start/all-in-one-on-linux/)):
+- 빠른 시작([all-in-one](../../quick-start/all-in-one-on-linux/))으로 Kuberix Enterprise를 설치한 경우::
 
     ```bash
-    ./kk delete cluster
+    ./kp delete cluster
     ```
 
-- If you installed KubeSphere with the advanced mode ([created with a configuration file](../introduction/multioverview/#step-3-create-a-cluster)):
+- 고급 모드로 Kuberix Enterprise를 설치한 경우([구성 파일로 생성](../introduction/multioverview/#step-3-create-a-cluster)):
 
     ```bash
-    ./kk delete cluster [-f config-sample.yaml]
+    ./kp delete cluster [-f config-sample.yaml]
     ```
 
