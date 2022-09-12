@@ -1,17 +1,17 @@
 ---
 title: "Kubernetes Cluster Configurations"
-keywords: 'Kubernetes, cluster, configuration, KubeKey'
+keywords: 'Kubernetes, Kuberix, cluster, configuration, KubePOP'
 description: 'Customize your Kubernetes settings in the configuration file for your cluster.'
 linkTitle: "Kubernetes Cluster Configurations"
 weight: 3160
 ---
 
-When creating a Kubernetes cluster, you can use [KubeKey](../kubekey/) to define a configuration file (`config-sample.yaml`) which contains basic information of your cluster. Refer to the following example for Kubernetes-related parameters in the configuration file.
+쿠버네티스 클러스터를 생성할 때 [KubePOP](../kubepop/)를 사용하여 클러스터의 기본 정보가 포함된 구성 파일(`config-sample.yaml`)을 정의할 수 있습니다. 구성 파일의 쿠버네티스 관련 매개변수는 다음 예를 참조하십시오.
 
 ```yaml
   kubernetes:
     version: v1.22.10
-    imageRepo: kubesphere
+    imageRepo: kuberixEnterprise
     clusterName: cluster.local
     masqueradeAll: false
     maxPods: 110
@@ -32,7 +32,7 @@ When creating a Kubernetes cluster, you can use [KubeKey](../kubekey/) to define
   addons: []
 ```
 
-The below table describes the above parameters in detail.
+아래 표는 위의 매개변수에 대해 자세히 설명합니다.
 
   <table border="1">
    <tbody>
@@ -45,38 +45,38 @@ The below table describes the above parameters in detail.
    </tr>
    <tr>
      <td><code>version</code></td>
-     <td>The Kubernetes version to be installed. If you do not specify a Kubernetes version, {{< contentLink "docs/installing-on-linux/introduction/kubekey" "KubeKey" >}} v2.2.2 will install Kubernetes v1.23.7 by default. For more information, see {{< contentLink "docs/installing-on-linux/introduction/kubekey/#support-matrix" "Support Matrix" >}}.</td>
+     <td>설치할 쿠버네티스 버전입니다. 쿠버네티스 버전을 지정하지 않으면 {{< contentLink "docs/installing-on-linux/introduction/kubepop" "KubePOP" >}} v2.2.2가 기본적으로 쿠버네티스 v1.23.7을 설치합니다. 자세한 내용은 {{< contentLink "docs/installing-on-linux/introduction/kubepop/#support-matrix" "Support Matrix" >}}를 참조하세요.</td>
    </tr>
    <tr>
      <td><code>imageRepo</code></td>
-     <td>The Docker Hub repository where images will be downloaded.</td>
+     <td>이미지가 다운로드될 Docker Hub 리포지토리입니다.</td>
    </tr>
    <tr>
      <td><code>clusterName</code></td>
-     <td>The Kubernetes cluster name.</td>
+     <td>쿠버네티스 클러스터 이름입니다.</td>
    </tr>
    <tr>
      <td><code>masqueradeAll</code>*</td>
-     <td><code>masqueradeAll</code> tells kube-proxy to SNAT everything if using the pure iptables proxy mode. It defaults to <code>false</code>.</td>
+     <td><code>masqueradeAll은 순수 iptables 프록시 모드를 사용하는 경우 kube-proxy에 SNAT에 모든 것을 알려줍니다. 기본값은 false입니다.</td>
    </tr>
    <tr>
      <td><code>maxPods</code>*</td>
-     <td>The maximum number of Pods that can run on this Kubelet. It defaults to <code>110</code>.</td>
+     <td>이 Kubelet에서 실행할 수 있는 최대 Pod 수입니다. 기본값은 <code>110</code> 입니다.</td>
    </tr>
    <tr>
      <td><code>nodeCidrMaskSize</code>*</td>
-     <td>The mask size for node CIDR in your cluster. It defaults to <code>24</code>.</td>
+     <td>클러스터의 노드 CIDR에 대한 마스크 크기입니다. 기본값은 <code>24</code> 입니다.</td>
    </tr>
    <tr>
      <td><code>proxyMode</code>*</td>
-     <td>The proxy mode to use. It defaults to <code>ipvs</code>.</td>
+     <td>사용할 프록시 모드입니다. 기본값은 <code>ipvs</code> 입니다.</td>
    </tr>
    <tr>
      <th colSpan='2'><code>network</code></th>
    </tr>
    <tr>
      <td><code>plugin</code></td>
-     <td>The CNI plugin to use. KubeKey installs Calico by default while you can also specify Flannel. Note that some features can only be used when Calico is adopted as the CNI plugin, such as Pod IP Pools.</td>
+     <td>The CNI plugin to use. KubePOP installs Calico by default while you can also specify Flannel. Note that some features can only be used when Calico is adopted as the CNI plugin, such as Pod IP Pools.</td>
    </tr>
    <tr>
      <td><code>calico.ipipMode</code>*</td>
