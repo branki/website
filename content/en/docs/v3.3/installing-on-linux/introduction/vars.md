@@ -76,42 +76,42 @@ weight: 3160
    </tr>
    <tr>
      <td><code>plugin</code></td>
-     <td>The CNI plugin to use. KubePOP installs Calico by default while you can also specify Flannel. Note that some features can only be used when Calico is adopted as the CNI plugin, such as Pod IP Pools.</td>
+     <td>사용할 CNI 플러그인입니다. KubePOP은 기본적으로 Calico를 설치하지만 Flannel을 지정할 수도 있습니다. Pod IP Pools와 같은 일부 기능은 Calico가 CNI 플러그인으로 채택된 경우에만 사용할 수 있습니다.</td>
    </tr>
    <tr>
      <td><code>calico.ipipMode</code>*</td>
-     <td>The IPIP Mode to use for the IPv4 POOL created at startup. If it is set to a value other than <code>Never</code>, <code>vxlanMode</code> should be set to <code>Never</code>. Allowed values are <code>Always</code>, <code>CrossSubnet</code> and <code>Never</code>. It defaults to <code>Always</code>.</td>
+     <td>시작 시 생성된 IPv4 POOL에 사용할 IPIP 모드입니다. <code>Never</code> 이외의 값으로 설정하면 <code>vxlanMode</code>를 <code>Never</code>로 설정해야 합니다. 허용되는 값은 <code>Always</code>, <code>CrossSubnet</code> 및<code>Never</code>입니다. 기본값은 <code>Always</code>입니다.</td>
    </tr>
    <tr>
      <td><code>calico.vxlanMode</code>*</td>
-     <td>The VXLAN Mode to use for the IPv4 POOL created at startup. If it is set to a value other than <code>Never</code>, <code>ipipMode</code> should be set to <code>Never</code>. Allowed values are <code>Always</code>, <code>CrossSubnet</code> and <code>Never</code>. It defaults to <code>Never</code>.</td>
+     <td>시작 시 생성된 IPv4 풀에 사용할 VXLAN 모드입니다. <code>Never</code> 이외의 값으로 설정하면 <code>ipipMode</code>를<code>Never</code>로 설정해야 합니다. 허용되는 값은 <code>Always</code>, <code>CrossSubnet</code> 및 <code>Never</code>입니다. 기본값은 <code>Never</code>입니다.</td>
    </tr>
    <tr>
      <td><code>calico.vethMTU</code>*</td>
-     <td>The maximum transmission unit (MTU) setting determines the largest packet size that can be transmitted through your network. It defaults to <code>1440</code>.</td>
+     <td>MTU(최대 전송 단위) 설정은 네트워크를 통해 전송할 수 있는 최대 패킷 크기를 결정합니다. 기본값은 <code>1440</code>입니다.</td>
    </tr>
    <tr>
      <td><code>kubePodsCIDR</code></td>
-     <td>A valid CIDR block for your Kubernetes Pod subnet. It should not overlap with your node subnet and your Kubernetes Services subnet.</td>
+     <td>쿠버네티스 Pod 서브넷에 대한 유효한 CIDR 블록입니다. 노드 서브넷 및 쿠버네티스 서비스 서브넷과 겹치지 않아야 합니다.</td>
    </tr>
    <tr>
      <td><code>kubeServiceCIDR</code></td>
-     <td>A valid CIDR block for your Kubernetes Services. It should not overlap with your node subnet and your Kubernetes Pod subnet.</td>
+     <td>쿠버네티스 서비스에 대한 유효한 CIDR 블록입니다. 노드 서브넷 및 쿠버네티스 Pod 서브넷과 겹치지 않아야 합니다.</td>
    </tr>
    <tr>
      <th colSpan='2'><code>registry</code></th>
    </tr>
    <tr>
      <td><code>registryMirrors</code></td>
-     <td>Configure a Docker registry mirror to speed up downloads. For more information, see {{< contentLink "https://docs.docker.com/registry/recipes/mirror/#configure-the-docker-daemon" "Configure the Docker daemon" >}}.</td>
+     <td>다운로드 속도를 높이기 위해 Docker 레지스트리 미러를 구성합니다. 자세한 내용은 {{< contentLink "https://docs.docker.com/registry/recipes/mirror/#configure-the-docker-daemon" "도커 데몬 구성" >}}을 참조하세요.</td>
    </tr>
    <tr>
      <td><code>insecureRegistries</code></td>
-     <td>Set an address of insecure image registry. For more information, see {{< contentLink "https://docs.docker.com/registry/insecure/" "Test an insecure registry" >}}.</td>
+     <td>안전하지 않은 이미지 레지스트리의 주소를 설정합니다. 자세한 내용은 {{< contentLink "https://docs.docker.com/registry/insecure/" "안전하지 않은 레지스트리 테스트" >}}를 참조하세요.</td>
    </tr>
    <tr>
      <td><code>privateRegistry</code>*</td>
-     <td>Configure a private image registry for air-gapped installation (for example, a Docker local registry or Harbor). For more information, see {{< contentLink "docs/installing-on-linux/introduction/air-gapped-installation/" "Air-gapped Installation on Linux" >}}.</td>
+     <td>에어 갭 설치를 위해 개인 이미지 레지스트리를 구성합니다(예: Docker 로컬 레지스트리 또는 Harbour). 자세한 내용은 {{< contentLink "docs/installing-on-linux/introduction/air-gapped-installation/" "Air-gapped Installation on Linux" >}}를 참조하세요.</td>
    </tr> 
    </tbody>
    </table>
@@ -119,8 +119,8 @@ weight: 3160
 
 {{< notice note >}}
 
-- \* By default, KubeKey does not define these parameters in the configuration file while you can manually add them and customize their values.
-- `addons` is used to install cloud-native add-ons (YAML or Chart). For more information, see [this file](https://github.com/kubesphere/kubekey/blob/release-2.2/docs/addons.md).
-- This page only lists part of the parameters in the configuration file created by KubeKey. For more information about other parameters, see [this example file](https://github.com/kubesphere/kubekey/blob/release-2.2/docs/config-example.md).
+- \* 기본적으로 KubePOP는 구성 파일에서 이러한 매개변수를 정의하지 않지만 수동으로 추가하고 값을 사용자 지정할 수 있습니다.
+- 'addons'는 클라우드 네이티브 추가 기능(YAML 또는 Chart)을 설치하는 데 사용됩니다. 자세한 내용은 [이 파일](https://github.com/ke/kubepop/blob/release-2.2/docs/addons.md)을 참조하세요.
+- 이 페이지는 KubePOP에서 생성한 구성 파일의 매개변수 중 일부만 나열합니다. 다른 매개변수에 대한 자세한 내용은 [이 예제 파일](https://github.com/ke/kubepop/blob/release-2.2/docs/config-example.md)을 참조하십시오.
 
 {{</ notice >}} 
