@@ -15,10 +15,11 @@ KubePOP v2.1.0에서는 쿠버네티스 클러스터의 에어갭 설치를 위�
 
 |Host IP| Host Name | Usage      |
 | ---------------- | ---- | ---------------- |
-|192.168.0.2 | node1    | Online host for packaging the source cluster with Kubernetes v1.22.10 and KubeSphere v3.3.0 installed |
+|192.168.0.2 | node1    | Online host for packaging the source cluster with Kubernetes v1.22.10 and Kuberix Enterprise v3.3.0 installed |
 |192.168.0.3 | node2    | Control plane node of the air-gapped environment |
 |192.168.0.4 | node3    | Image registry node of the air-gapped environment |
-## Preparations
+
+## 설치 준비
 
 1. 다음 명령을 실행하여 KubePOP v2.2.2를 다운로드합니다.
 
@@ -36,7 +37,7 @@ KubePOP v2.1.0에서는 쿠버네티스 클러스터의 에어갭 설치를 위�
 
    {{< tab "Poor network connections to GitHub/Googleapis" >}}
 
-   다음 명령을 먼저 실행하여 올바른 영역에서 KubeKey를 다운로드했는지 확인하십시오.
+   다음 명령을 먼저 실행하여 올바른 영역에서 KubePOP를 다운로드했는지 확인하십시오.
 
    ```bash
    export KPZONE=cn
@@ -103,8 +104,8 @@ KubePOP v2.1.0에서는 쿠버네티스 클러스터의 에어갭 설치를 위�
          version: v0.9.1
        etcd:
          version: v3.4.13
-      ## For now, if your cluster container runtime is containerd, KubeKey will add a docker 20.10.8 container runtime in the below list.
-      ## The reason is KubeKey creates a cluster with containerd by installing a docker first and making kubelet connect the socket file of containerd which docker contained.
+      ## For now, if your cluster container runtime is containerd, KubePOP will add a docker 20.10.8 container runtime in the below list.
+      ## The reason is KubePOP creates a cluster with containerd by installing a docker first and making kubelet connect the socket file of containerd which docker contained.
        containerRuntimes:
        - type: docker
          version: 20.10.8
@@ -161,7 +162,7 @@ KubePOP v2.1.0에서는 쿠버네티스 클러스터의 에어갭 설치를 위�
      - docker.io/ke/devops-apiserver:v3.3.0
      - docker.io/ke/devops-controller:v3.3.0
      - docker.io/ke/devops-tools:v3.3.0
-     - docker.io/ke/ks-jenkins:v3.3.0-2.319.1
+     - docker.io/ke/ke-jenkins:v3.3.0-2.319.1
      - docker.io/jenkins/inbound-agent:4.10-2
      - docker.io/ke/builder-base:v3.2.2
      - docker.io/ke/builder-nodejs:v3.2.0
@@ -257,7 +258,7 @@ KubePOP v2.1.0에서는 쿠버네티스 클러스터의 에어갭 설치를 위�
    
    {{< notice note >}}
 
-   - 내보낼 아티팩트 파일에 conntarck, chrony 등의 ISO 종속성이 포함된 경우 **operationSystem**의 **.repostiory.iso.url**에서 ISO 종속성을 다운로드할 IP 주소를 설정합니다. 또는 미리 ISO 패키지를 다운로드하여 **localPath**에 로컬 경로를 입력하고 `url` 구성 항목을 삭제할 수 있습니다.
+   - 내보낼 아티팩트 파일에 conntarck, chrony 등의 ISO 종속성이 포함된 경우 **operationSystem**의 **repostiory.iso.url**에서 ISO 종속성을 다운로드할 IP 주소를 설정합니다. 또는 미리 ISO 패키지를 다운로드하여 **localPath**에 로컬 경로를 입력하고 `url` 구성 항목을 삭제할 수 있습니다.
    
    - KubePOP를 사용하여 이미지 푸시를 위한 Harbor 레지스트리를 구축할 때 사용할 **harbor** 및 **docker-compose** 구성 항목을 활성화해야 합니다.
    
@@ -347,7 +348,7 @@ KubePOP v2.1.0에서는 쿠버네티스 클러스터의 에어갭 설치를 위�
        - master
        worker:
        - node1
-       # If you want to use KubeKey to automatically deploy the image registry, set this value. You are advised to separately deploy the registry and the cluster.
+       # If you want to use KubePOP to automatically deploy the image registry, set this value. You are advised to separately deploy the registry and the cluster.
        registry:
        - node1
      controlPlaneEndpoint:
@@ -396,7 +397,7 @@ KubePOP v2.1.0에서는 쿠버네티스 클러스터의 에어갭 설치를 위�
 
     - **config-sample.yaml**: air-gapped 환경에서 클러스터의 구성 파일을 지정합니다.
 
-    - **kubesphere.tar.gz**: 소스 클러스터의 이미지 패키지를 지정한다.
+    - **kuberixEnterprise.tar.gz**: 소스 클러스터의 이미지 패키지를 지정한다.
 
     {{</ notice >}}
 
@@ -514,8 +515,8 @@ KubePOP v2.1.0에서는 쿠버네티스 클러스터의 에어갭 설치를 위�
 
    {{< notice note >}}
 
-    - **auths**에서 **dockerhub.kubekey.local**과 사용자 이름 및 비밀번호를 추가합니다.
-    - **privateRegistry**에서 **dockerhub.kubekey.local**을 추가합니다.
+    - **auths**에서 **dockerhub.kubepop.local**과 사용자 이름 및 비밀번호를 추가합니다.
+    - **privateRegistry**에서 **dockerhub.kubepop.local**을 추가합니다.
 
     {{</ notice >}}
 
@@ -524,20 +525,20 @@ KubePOP v2.1.0에서는 쿠버네티스 클러스터의 에어갭 설치를 위�
      registry:
        type: harbor
        auths:
-         "dockerhub.kubekey.local":
+         "dockerhub.kubepop.local":
            username: admin
            password: Harbor12345
-       privateRegistry: "dockerhub.kubekey.local"
-       namespaceOverride: "kubesphereio"
+       privateRegistry: "dockerhub.kubepop.local"
+       namespaceOverride: "kuberixEnterpriseio"
        registryMirrors: []
        insecureRegistries: []
      addons: []
    ```
    {{< notice note >}}
 
-   - In **auths**, enter **dockerhub.kubekey.local**, username (**admin**) and password (**Harbor12345**).
-   - In **privateRegistry**, enter **dockerhub.kubekey.local**.
-   - In **namespaceOverride**, enter **kubesphereio**.
+   - In **auths**, enter **dockerhub.kubepop.local**, username (**admin**) and password (**Harbor12345**).
+   - In **privateRegistry**, enter **dockerhub.kubepop.local**.
+   - In **namespaceOverride**, enter **kuberixEnterpriseio**.
 
     {{</ notice >}}
     
@@ -550,13 +551,13 @@ KubePOP v2.1.0에서는 쿠버네티스 클러스터의 에어갭 설치를 위�
    매개변수는 다음과 같이 설명됩니다.：
 
     - **config-sample.yaml**: air-gapped 환경에서 클러스터에 대한 구성 파일을 지정합니다.
-    - **kubesphere.tar.gz**: 소스 클러스터가 패키징되는 tarball 이미지를 지정합니다.
+    - **kuberixEnterprise.tar.gz**: 소스 클러스터가 패키징되는 tarball 이미지를 지정합니다.
     - **--with-packages**: ISO 종속성을 설치하려는 경우 이 매개변수가 필요합니다.
 
 8. 다음 명령을 실행하여 클러스터 상태를 확인합니다.:
 
    ```bash
-   $ kubectl logs -n kubesphere-system $(kubectl get pod -n kubesphere-system -l 'app in (ks-install, ks-installer)' -o jsonpath='{.items[0].metadata.name}') -f
+   $ kubectl logs -n ke-system $(kubectl get pod -n ke-system -l 'app in (ke-install, ke-installer)' -o jsonpath='{.items[0].metadata.name}') -f
    ```
 
    After the installation is completed, the following information is displayed:
