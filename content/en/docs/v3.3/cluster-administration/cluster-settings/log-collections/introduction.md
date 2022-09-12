@@ -6,82 +6,82 @@ linkTitle: "Introduction"
 weight: 8621
 ---
 
-KubeSphere provides a flexible log receiver configuration method. Powered by [FluentBit Operator](https://github.com/kubesphere/fluentbit-operator/), users can easily add, modify, delete, enable, or disable Elasticsearch, Kafka and Fluentd receivers. Once a receiver is added, logs will be sent to this receiver.
+Kuberix Enterprise는 유연한 로그 수신기 구성 방법을 제공합니다. [FluentBit Operator](https://github.com/kubesphere/fluentbit-operator/)를 통해 사용자는 Elasticsearch, Kafka 및 Fluentd 수신기를 쉽게 추가, 수정, 삭제, 활성화 또는 비활성화할 수 있습니다. 수신자가 추가되면 이 수신자에게 로그가 전송됩니다.
 
-This tutorial gives a brief introduction about the general steps of adding log receivers in KubeSphere.
+이 튜토리얼은 Kuberix Enterprise에서 로그 수신기를 추가하는 일반적인 단계에 대한 간략한 소개를 제공합니다.
 
-## Prerequisites
+## 전제 조건
 
-- You need a user granted a role including the permission of **Cluster Management**. For example, you can log in to the console as `admin` directly or create a new role with the permission and assign it to a user.
+- **Cluster Management** 권한을 포함한 역할을 부여받은 사용자가 필요합니다. 예를 들어 콘솔에 직접 'admin'으로 로그인하거나 권한이 있는 새 역할을 생성하여 사용자에게 할당할 수 있습니다.
 
-- Before adding a log receiver, you need to enable any of the `Logging`, `Events` or `Auditing` components. For more information, see [Enable Pluggable Components](../../../../pluggable-components/).
+- 로그 수신기를 추가하기 전에 'Logging', 'Events' 또는 'Auditing' 구성 요소를 활성화해야 합니다. 자세한 내용은 [플러그 가능 구성 요소 활성화](../../../../pluggable-components/)를 참조하십시오.
 
-## Add a Log Receiver for Container Logs
+## 컨테이너 로그에 대한 로그 수신기 추가
 
-To add a log receiver:
+로그 수신기를 추가하려면:
 
-1. Log in to the web console of KubeSphere as `admin`.
+1. Kuberix Enterprise의 웹 콘솔에 `admin`으로 로그인합니다.
 
-2. Click **Platform** in the upper-left corner and select **Cluster Management**.
-
-   {{< notice note >}}
-
-   If you have enabled the [multi-cluster feature](../../../../multicluster-management/), you can select a specific cluster.
-
-   {{</ notice >}} 
-
-3. Go to **Log Receivers** under **Cluster Settings** in the sidebar.
-
-4. On the log receivers list page, click **Add Log Receiver**.
+2. 왼쪽 상단 모서리에서 **Platform**을 클릭하고 **Cluster Management**를 선택합니다.
 
    {{< notice note >}}
 
-- At most one receiver can be added for each receiver type.
-- Different types of receivers can be added simultaneously.
+   [멀티 클러스터 기능](../../../../multicluster-management/)을 활성화한 경우 특정 클러스터를 선택할 수 있습니다.
 
-{{</ notice >}}
+   {{</ notice >}}
 
-### Add Elasticsearch as a log receiver
+3. 사이드바의 **Cluster Settings** 아래에 있는 **Log Receiver**로 이동합니다.
 
-A default Elasticsearch receiver will be added with its service address set to an Elasticsearch cluster if `logging`, `events`, or `auditing` is enabled in [ClusterConfiguration](https://github.com/kubesphere/kubekey/blob/release-2.2/docs/config-example.md).
+4. 로그 수신자 목록 페이지에서 **Add Log Receiver**를 클릭합니다.
 
-An internal Elasticsearch cluster will be deployed to the Kubernetes cluster if neither `externalElasticsearchHost` nor `externalElasticsearchPort` is specified in [ClusterConfiguration](https://github.com/kubesphere/kubekey/blob/release-2.2/docs/config-example.md) when `logging`, `events`, or `auditing` is enabled. The internal Elasticsearch cluster is for testing and development only. It is recommended that you configure an external Elasticsearch cluster for production.
+   {{< notice note >}}
 
-Log searching relies on the internal or external Elasticsearch cluster configured.
+- 각 수신기 유형에 대해 최대 1개의 수신기를 추가할 수 있습니다.
+- 다른 유형의 수신기를 동시에 추가할 수 있습니다.
 
-If the default Elasticsearch log receiver is deleted, refer to [Add Elasticsearch as a Receiver](../add-es-as-receiver/) to add a new one.
+   {{</ notice >}}
 
-### Add Kafka as a log receiver
+### Elasticsearch를 로그 수신기로 추가
 
-Kafka is often used to receive logs and serves as a broker to other processing systems like Spark. [Add Kafka as a Receiver](../add-kafka-as-receiver/) demonstrates how to add Kafka to receive Kubernetes logs.
+[ClusterConfiguration](https://github.com/kubesphere/kubekey/blob/에서 'logging', 'events' 또는 'auditing'이 활성화된 경우 서비스 주소가 Elasticsearch 클러스터로 설정된 기본 Elasticsearch 수신기가 추가됩니다. 릴리스-2.2/docs/config-example.md).
 
-### Add Fluentd as a log receiver
+[ClusterConfiguration](https://github.com/kubesphere/kubekey/blob/release-2.2/docs/config-example)에 'externalElasticsearchHost'와 'externalElasticsearchPort'가 모두 지정되지 않은 경우 내부 Elasticsearch 클러스터가 쿠버네티스 클러스터에 배포됩니다. .md) 'logging', 'events' 또는 'auditing'이 활성화된 경우. 내부 Elasticsearch 클러스터는 테스트 및 개발 전용입니다. 프로덕션용으로 외부 Elasticsearch 클러스터를 구성하는 것이 좋습니다.
 
-If you need to output logs to more places other than Elasticsearch or Kafka, you can add Fluentd as a log receiver. Fluentd has numerous output plugins which can forward logs to various destinations such as S3, MongoDB, Cassandra, MySQL, syslog, and Splunk. [Add Fluentd as a Receiver](../add-fluentd-as-receiver/) demonstrates how to add Fluentd to receive Kubernetes logs.
+로그 검색은 구성된 내부 또는 외부 Elasticsearch 클러스터에 의존합니다.
 
-## Add a Log Receiver for Resource Events or Audit Logs
+기본 Elasticsearch 로그 수신기가 삭제된 경우 [Elasticsearch를 수신기로 추가](../add-es-as-receiver/)를 참조하여 새로 추가하세요.
 
-Starting from KubeSphere v3.0.0, resource events and audit logs can be archived in the same way as container logs. The tab **Resource Events** or **Audit Logs** on the **Log Receivers** page will appear if `events` or `auditing` is enabled accordingly in [ClusterConfiguration](https://github.com/kubesphere/kubekey/blob/release-2.2/docs/config-example.md). You can go to the corresponding tab to configure log receivers for resource events or audit logs.
+### Kafka를 로그 수신기로 추가
 
-Container logs, resource events, and audit logs should be stored in different Elasticsearch indices to be searched in KubeSphere. The index is automatically generated in <Index prefix>-<Year-month-date> format.
+Kafka는 종종 로그를 수신하는 데 사용되며 Spark와 같은 다른 처리 시스템에 대한 브로커 역할을 합니다. [카프카를 수신자로 추가](../add-kafka-as-receiver/)는 쿠버네티스 로그를 수신하기 위해 Kafka를 추가하는 방법을 보여줍니다.
 
-## Turn a Log Receiver on or Off
+### Fluentd를 로그 수신기로 추가
 
-You can turn a log receiver on or off without adding or deleting it. To turn a log receiver on or off:
+Elasticsearch나 Kafka가 아닌 다른 곳으로 로그를 출력해야 하는 경우 Fluentd를 로그 수신기로 추가할 수 있습니다. Fluentd에는 S3, MongoDB, Cassandra, MySQL, syslog 및 Splunk와 같은 다양한 대상으로 로그를 전달할 수 있는 수많은 출력 플러그인이 있습니다. [Fluentd를 수신기로 추가](../add-fluentd-as-receiver/)는 쿠버네티스 로그를 수신하기 위해 Fluentd를 추가하는 방법을 보여줍니다.
 
-1. On the **Log Receivers** page, click a log receiver and go to the receiver's detail page.
-2. Click **More** and select **Change Status**.
+## 리소스 이벤트 또는 감사 로그에 대한 로그 수신기 추가
 
-3. Select **Collecting** or **Disabled** to turn the log receiver on or off.
+Kuberix Enterprise는 리소스 이벤트 및 감사 로그를 컨테이너 로그와 동일한 방식으로 보관할 수 있습니다. **Log Receivers** 페이지의 **Resource Events** 또는 **Audit Logs** 탭은 [ClusterConfiguration](https://github.com/kubePOP/blob/release-2.2/docs/config-example.md). 해당 탭으로 이동하여 리소스 이벤트 또는 감사 로그에 대한 로그 수신기를 구성할 수 있습니다.
 
-4. A log receiver's status will be changed to **Disabled** if you turn it off, otherwise the status will be **Collecting** on the **Log Receivers** page.
+컨테이너 로그, 리소스 이벤트, 감사 로그는 Kuberix Enterprise에서 검색할 다른 Elasticsearch 인덱스에 저장되어야 합니다. 인덱스는 <인덱스 접두사>-<년-월-일> 형식으로 자동 생성됩니다.
+
+## 로그 수신기 켜기 또는 끄기
+
+로그 수신기를 추가하거나 삭제하지 않고 켜거나 끌 수 있습니다. 로그 수신기를 켜거나 끄려면:
+
+1. **Log Receivers** 페이지에서 로그 수신자를 클릭하고 수신자의 세부 정보 페이지로 이동합니다.
+2. **More**를 클릭하고 **Change Status**을 선택합니다.
+
+3. **Collecting** 또는 **Disabled**를 선택하여 로그 수신기를 켜거나 끕니다.
+
+4. 끄면 로그 수신자의 상태가 **Disabled**로 변경되고, 그렇지 않으면 **Log Receivers** 페이지에서 상태가 **Collecting**으로 변경됩니다.
 
 
-## Edit or Delete a Log Receiver
+## 로그 수신자 편집 또는 삭제
 
-You can edit a log receiver or delete it:
+로그 수신기를 편집하거나 삭제할 수 있습니다.
 
-1. On the **Log Receivers** page, click a log receiver and go to the receiver's detail page.
-2. Edit a log receiver by clicking **Edit** or **Edit YAML** from the drop-down list.
+1. **Log Receivers** 페이지에서 로그 수신자를 클릭하고 수신자의 세부 정보 페이지로 이동합니다.
+2. 드롭다운 목록에서 **Edit** 또는 **Edit YAML**을 클릭하여 로그 수신기를 편집합니다.
 
-3. Delete a log receiver by clicking **Delete**.
+3. **Delete**를 클릭하여 로그 수신자를 삭제합니다.
