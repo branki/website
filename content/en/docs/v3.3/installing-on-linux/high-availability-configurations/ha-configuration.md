@@ -1,75 +1,75 @@
 ---
 title: "Set up an HA Cluster Using a Load Balancer"
-keywords: 'KubeSphere, Kubernetes, HA, high availability, installation, configuration'
+keywords: 'Kuberix, Kubernetes, HA, high availability, installation, configuration'
 description: 'Learn how to create a highly available cluster using a load balancer.'
 linkTitle: "Set up an HA Cluster Using a Load Balancer"
 weight: 3220
 ---
 
-You can set up Kubernetes cluster (a control plane node) with KubeSphere installed based on the tutorial of [Multi-node Installation](../../../installing-on-linux/introduction/multioverview/). Clusters with a control plane node may be sufficient for development and testing in most cases. For a production environment, however, you need to consider the high availability of the cluster. If key components (for example, kube-apiserver, kube-scheduler, and kube-controller-manager) are all running on the same control plane node, Kubernetes and KubeSphere will be unavailable once the control plane node goes down. Therefore, you need to set up a high-availability cluster by provisioning load balancers with multiple control plane nodes. You can use any cloud load balancer, or any hardware load balancer (for example, F5). In addition, Keepalived and [HAproxy](https://www.haproxy.com/), or Nginx is also an alternative for creating high-availability clusters.
+[멀티 노드 설치](../../../installing-on-linux/introduction/multioverview/)의 튜토리얼을 기반으로 Kuberix Enterprise가 설치된 쿠버네티스 클러스터(제어 평면 노드)를 설정할 수 있습니다. 제어 평면 노드가 있는 클러스터는 대부분의 경우 개발 및 테스트에 충분할 수 있습니다. 그러나 프로덕션 환경의 경우 클러스터의 고가용성을 고려해야 합니다. 주요 구성 요소(예: kube-apiserver, kube-scheduler 및 kube-controller-manager)가 모두 동일한 제어 평면 노드에서 실행 중인 경우 제어 평면 노드가 다운되면 쿠버네티스 및 Kuberix Enterprise를 사용할 수 없습니다. 따라서 여러 컨트롤 플레인 노드가 있는 로드 밸런서를 프로비저닝하여 고가용성 클러스터를 설정해야 합니다. 모든 클라우드 로드 밸런서 또는 하드웨어 로드 밸런서(예: F5)를 사용할 수 있습니다. 또한 Keepalived 및 [HAproxy](https://www.haproxy.com/) 또는 Nginx도 고가용성 클러스터를 생성하기 위한 대안입니다.
 
-This tutorial demonstrates the general configurations of a high-availability cluster as you install KubeSphere on Linux.
+이 튜토리얼은 Linux에 Kuberix Enterprise를 설치할 때 고가용성 클러스터의 일반 구성을 보여줍니다.
 
-## Architecture
+## 건축물
 
-Make sure you have prepared six Linux machines before you begin, with three of them serving as control plane nodes and the other three as worker nodes. The following image shows details of these machines, including their private IP address and role. For more information about system and network requirements, see [Multi-node Installation](../../../installing-on-linux/introduction/multioverview/#step-1-prepare-linux-hosts).
+시작하기 전에 6개의 Linux 시스템을 준비했는지 확인하십시오. 이 중 3개는 제어 평면 노드로, 나머지 3개는 작업자 노드로 사용합니다. 다음 이미지는 개인 IP 주소 및 역할을 포함하여 이러한 머신의 세부 정보를 보여줍니다. 시스템 및 네트워크 요구 사항에 대한 자세한 내용은 [다중 노드 설치](../../../installing-on-linux/introduction/multioverview/#step-1-prepare-linux-hosts)를 참조하십시오.
 
 ![ha-architecture](/images/docs/v3.3/installing-on-linux/high-availability-configurations/set-up-ha-cluster-using-lb/ha-architecture.png)
 
-## Configure a Load Balancer
+## 로드 밸런서 구성
 
-You must create a load balancer in your environment to listen (also known as listeners on some cloud platforms) on key ports. Here is a table of recommended ports that need to be listened on.
+주요 포트에서 수신 대기(일부 클라우드 플랫폼에서는 리스너라고도 함)하려면 환경에 로드 밸런서를 생성해야 합니다. 다음은 청취해야 하는 권장 포트 표입니다.
 
 | Service    | Protocol | Port  |
 | ---------- | -------- | ----- |
 | apiserver  | TCP      | 6443  |
-| ks-console | TCP      | 30880 |
+| ke-console | TCP      | 30880 |
 | http       | TCP      | 80    |
 | https      | TCP      | 443   |
 
 {{< notice note >}}
 
-- Make sure your load balancer at least listens on the port of apiserver.
+- 로드 밸런서가 최소한 apiserver 포트에서 수신 대기하는지 확인하십시오.
 
-- You may need to open ports in your security group to ensure external traffic is not blocked depending on where your cluster is deployed. For more information, see [Port Requirements](../../../installing-on-linux/introduction/port-firewall/).
-- You can configure both internal and external load balancers on some cloud platforms. After assigning a public IP address to the external load balancer, you can use the IP address to access the cluster.
-- For more information about how to configure load balancers, see [Installing on Public Cloud](../../../installing-on-linux/public-cloud/install-kubesphere-on-azure-vms/) to see specific steps on major public cloud platforms.
+- 클러스터가 배포된 위치에 따라 외부 트래픽이 차단되지 않도록 보안 그룹에서 포트를 열어야 할 수도 있습니다. 자세한 내용은 [포트 요구 사항](../../../installing-on-linux/introduction/port-firewall/)을 참조하십시오.
+- 일부 클라우드 플랫폼에서는 내부 및 외부 부하 분산 장치를 모두 구성할 수 있습니다. 외부 로드 밸런서에 공용 IP 주소를 할당한 후 해당 IP 주소를 사용하여 클러스터에 액세스할 수 있습니다.
+- 로드 밸런서를 구성하는 방법에 대한 자세한 내용은 [공용 클라우드에 설치](../../../installing-on-linux/public-cloud/install-kubesphere-on-azure-vms/)를 참조하십시오. 주요 퍼블릭 클라우드 플랫폼에 대한 특정 단계를 참조하십시오.
 
 {{</ notice >}} 
 
-## Download KubeKey
+## KubePOP 다운로드
 
-[Kubekey](https://github.com/kubesphere/kubekey) is the next-gen installer which provides an easy, fast and flexible way to install Kubernetes and KubeSphere. Follow the steps below to download KubeKey.
+[KubePOP](https://github.com/ke/kubepop)는 쿠버네티스와 Kuberix Enterprise를 쉽고 빠르고 유연하게 설치할 수 있는 차세대 설치 프로그램입니다. 아래 단계에 따라 KubePOP를 다운로드하십시오.
 
 {{< tabs >}}
 
 {{< tab "Good network connections to GitHub/Googleapis" >}}
 
-Download KubeKey from its [GitHub Release Page](https://github.com/kubesphere/kubekey/releases) or use the following command directly.
+[GitHub 릴리스 페이지](https://github.com/ke/kubepop/releases)에서 KubePOP를 다운로드하거나 다음 명령을 직접 사용합니다.
 
 ```bash
-curl -sfL https://get-kk.kubesphere.io | VERSION=v2.2.2 sh -
+curl -sfL https://get-kp.kuberix.io | VERSION=v2.2.2 sh -
 ```
 
 {{</ tab >}}
 
 {{< tab "Poor network connections to GitHub/Googleapis" >}}
 
-Run the following command first to make sure you download KubeKey from the correct zone.
+다음 명령을 먼저 실행하여 올바른 영역에서 KubePOP를 다운로드했는지 확인하십시오.
 
 ```bash
-export KKZONE=cn
+export KPZONE=cn
 ```
 
-Run the following command to download KubeKey:
+다음 명령을 실행하여 KubePOP를 다운로드하십시오.:
 
 ```bash
-curl -sfL https://get-kk.kubesphere.io | VERSION=v2.2.2 sh -
+curl -sfL https://get-kp.kuberix.io | VERSION=v2.2.2 sh -
 ```
 
 {{< notice note >}}
 
-After you download KubeKey, if you transfer it to a new machine also with poor network connections to Googleapis, you must run `export KKZONE=cn` again before you proceed with the steps below.
+KubePOP를 다운로드한 후 Googleapis에 대한 네트워크 연결이 좋지 않은 새 컴퓨터로 전송하는 경우 아래 단계를 진행하기 전에 `export KPZONE=cn`을 다시 실행해야 합니다.
 
 {{</ notice >}} 
 
@@ -79,42 +79,42 @@ After you download KubeKey, if you transfer it to a new machine also with poor n
 
 {{< notice note >}}
 
-The commands above download the latest release (v2.2.2) of KubeKey. You can change the version number in the command to download a specific version.
+위의 명령은 KubePOP의 최신 릴리스(v2.2.2)를 다운로드합니다. 명령에서 버전 번호를 변경하여 특정 버전을 다운로드할 수 있습니다.
 
 {{</ notice >}} 
 
-Make `kk` executable:
+Make `kp` executable:
 
 ```bash
-chmod +x kk
+chmod +x kp
 ```
 
-Create an example configuration file with default configurations. Here Kubernetes v1.22.10 is used as an example.
+기본 구성으로 예제 구성 파일을 만듭니다. 여기에서 쿠버네티스 v1.22.10이 예로 사용됩니다.
 
 ```bash
-./kk create config --with-kubesphere v3.3.0 --with-kubernetes v1.22.10
+./kp create config --with-kuberixEnterprise v3.3.0 --with-kubernetes v1.22.10
 ```
 
 {{< notice note >}}
 
-- Recommended Kubernetes versions for KubeSphere 3.3.0: v1.19.x, v1.20.x, v1.21.x, v1.22.x, and v1.23.x (experimental support). If you do not specify a Kubernetes version, KubeKey will install Kubernetes v1.23.7 by default. For more information about supported Kubernetes versions, see [Support Matrix](../../../installing-on-linux/introduction/kubekey/#support-matrix).
+- Kuberix Enterprise 3.3.0의 권장 쿠버네티스 버전: v1.19.x, v1.20.x, v1.21.x, v1.22.x 및 v1.23.x(실험 지원). 쿠버네티스 버전을 지정하지 않으면 Kubepop는 기본적으로 쿠버네티스 v1.23.7을 설치합니다. 지원되는 쿠버네티스 버전에 대한 자세한 내용은 [지원 매트릭스](../../../installing-on-linux/introduction/kubepop/#support-matrix)를 참조하십시오.
 
-- If you do not add the flag `--with-kubesphere` in the command in this step, KubeSphere will not be deployed unless you install it using the `addons` field in the configuration file or add this flag again when you use `./kk create cluster` later.
-- If you add the flag `--with-kubesphere` without specifying a KubeSphere version, the latest version of KubeSphere will be installed.
+- 이 단계에서 명령에 `--with-KuberixEnterprise` 플래그를 추가하지 않으면 구성 파일의 `addons` 필드를 사용하여 설치하거나 `를 사용할 때 이 플래그를 다시 추가하지 않는 한 Kuberix Enterprise가 배포되지 않습니다. ./kp는 나중에 클러스터를 생성합니다.
+- Kuberix Enterprise 버전을 지정하지 않고 `--with-KuberixEnterprise` 플래그를 추가하면 최신 버전의 Kuberix Enterprise가 설치됩니다.
 
 {{</ notice >}}
 
-## Deploy KubeSphere and Kubernetes
+## Kuberix Enterprise 및 쿠버네티스 배포
 
-After you run the commands above, a configuration file `config-sample.yaml` will be created. Edit the file to add machine information, configure the load balancer and more.
+위의 명령어를 실행하면 'config-sample.yaml' 구성 파일이 생성됩니다. 파일을 편집하여 시스템 정보를 추가하고 로드 밸런서를 구성하는 등의 작업을 수행합니다.
 
 {{< notice note >}}
 
-The file name may be different if you customize it.
+사용자 정의하면 파일 이름이 다를 수 있습니다.
 
 {{</ notice >}} 
 
-### config-sample.yaml example
+### config-sample.yaml 예제
 
 ```yaml
 spec:
@@ -140,9 +140,9 @@ spec:
     - node3
 ```
 
-For more information about different fields in this configuration file, see [Kubernetes Cluster Configurations](../../../installing-on-linux/introduction/vars/) and [Multi-node Installation](../../../installing-on-linux/introduction/multioverview/#2-edit-the-configuration-file).
+이 구성 파일의 다른 필드에 대한 자세한 내용은 [쿠버네티스 클러스터 구성](../../../installing-on-linux/introduction/vars/) 및 [멀티 노드 설치](../. ./../installing-on-linux/introduction/multioverview/#2-edit-the-configuration-file)을 참조하십시오.
 
-### Configure the load balancer
+### 로드 밸런서 구성
 
 ```yaml
 spec:
@@ -150,51 +150,51 @@ spec:
     ##Internal loadbalancer for apiservers
     #internalLoadbalancer: haproxy
     
-    domain: lb.kubesphere.local
+    domain: lb.kuberix.local
     address: "192.168.0.xx"
     port: 6443
 ```
 
 {{< notice note >}}
 
-- The address and port should be indented by two spaces in `config-sample.yaml`.
-- In most cases, you need to provide the **private IP address** of the load balancer for the field `address`. However, different cloud providers may have different configurations for load balancers. For example, if you configure a Server Load Balancer (SLB) on Alibaba Cloud, the platform assigns a public IP address to the SLB, which means you need to specify the public IP address for the field `address`.
-- The domain name of the load balancer is `lb.kubesphere.local` by default for internal access.
-- To use an internal load balancer, uncomment the field `internalLoadbalancer`.
+- `config-sample.yaml`에서 주소와 포트는 두 칸 들여쓰기를 해야 합니다.
+- 대부분의 경우 'address' 필드에 로드 밸런서의 **private IP address**를 제공해야 합니다. 그러나 클라우드 공급자마다 로드 밸런서에 대한 구성이 다를 수 있습니다. 
+- 내부 접근을 위한 로드밸런서의 도메인 이름은 기본적으로 `lb.kuberix.local`이다.
+- 내부 로드 밸런서를 사용하려면 'internalLoadbalancer' 필드의 주석 처리를 제거합니다.
 
 {{</ notice >}}
 
-### Persistent storage plugin configurations
+### 영구 저장소 플러그인 구성
 
-For a production environment, you need to prepare persistent storage and configure the storage plugin (for example, CSI) in `config-sample.yaml` to define which storage service you want to use. For more information, see [Persistent Storage Configurations](../../../installing-on-linux/persistent-storage-configurations/understand-persistent-storage/).
+프로덕션 환경의 경우 영구 저장소를 준비하고 `config-sample.yaml`에서 저장소 플러그인(예: CSI)을 구성하여 사용할 저장소 서비스를 정의해야 합니다. 자세한 내용은 [영구 저장소 구성](../../../installing-on-linux/persistent-storage-configurations/understand-persistent-storage/)을 참조하십시오.
 
-### Enable pluggable components (Optional)
+### 연결 가능한 구성 요소 활성화(선택 사항)
 
-KubeSphere has decoupled some core feature components since v2.1.0. These components are designed to be pluggable which means you can enable them either before or after installation. By default, KubeSphere will be installed with the minimal package if you do not enable them.
+Kuberix Enterprise는 일부 핵심 기능 구성요소를 분리했습니다. 이러한 구성 요소는 플러그 가능하도록 설계되었으므로 설치 전이나 후에 활성화할 수 있습니다. 기본적으로 Kuberix Enterprise는 활성화하지 않으면 최소 패키지로 설치됩니다.
 
-You can enable any of them according to your demands. It is highly recommended that you install these pluggable components to discover the full-stack features and capabilities provided by KubeSphere. Make sure your machines have sufficient CPU and memory before enabling them. See [Enable Pluggable Components](../../../pluggable-components/) for details.
+요구 사항에 따라 이들 중 하나를 활성화할 수 있습니다. Kuberix Enterprise에서 제공하는 전체 스택 기능을 발견하려면 이러한 플러그형 구성 요소를 설치하는 것이 좋습니다. 컴퓨터를 활성화하기 전에 컴퓨터에 충분한 CPU와 메모리가 있는지 확인하십시오. 자세한 내용은 [플러그 가능 구성 요소 활성화](../../../pluggable-components/)를 참조하십시오.
 
-### Start installation
+### 설치 시작
 
-After you complete the configuration, you can execute the following command to start the installation:
+구성을 완료한 후 다음 명령을 실행하여 설치를 시작할 수 있습니다.:
 
 ```bash
-./kk create cluster -f config-sample.yaml
+./kp create cluster -f config-sample.yaml
 ```
 
-### Verify installation
+### 설치 확인
 
-1. Run the following command to inspect the logs of installation.
+1. 다음 명령어를 실행하여 설치 로그를 확인합니다.
 
    ```bash
-   kubectl logs -n kubesphere-system $(kubectl get pod -n kubesphere-system -l 'app in (ks-install, ks-installer)' -o jsonpath='{.items[0].metadata.name}') -f
+   kubectl logs -n ke-system $(kubectl get pod -n ke-system -l 'app in (ke-install, ke-installer)' -o jsonpath='{.items[0].metadata.name}') -f
    ```
 
 2. When you see the following message, it means your HA cluster is successfully created.
 
    ```bash
    #####################################################
-   ###              Welcome to KubeSphere!           ###
+   ###         Welcome to Kuberix Enterprise!        ###
    #####################################################
    
    Console: http://192.168.0.3:30880
@@ -210,7 +210,7 @@ After you complete the configuration, you can execute the following command to s
      2. Please change the default password after login.
    
    #####################################################
-   https://kubesphere.io             2020-xx-xx xx:xx:xx
+   https://kuberix.io                2020-xx-xx xx:xx:xx
    #####################################################
    ```
 
