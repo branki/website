@@ -1,17 +1,17 @@
 ---
 title: "Air-gapped Installation"
-keywords: 'Air-gapped, installation, KubeSphere'
-description: 'Understand how to install KubeSphere and Kubernetes in the air-gapped environment.'
+keywords: 'Air-gapped, installation, Kuberix, KubePOP'
+description: 'Understand how to install Kuberix Enterprise and Kubernetes in the air-gapped environment.'
 
 linkTitle: "Air-gapped Installation"
 weight: 3140
 ---
 
-KubeKey is an open-source, lightweight tool for deploying Kubernetes clusters. It allows you to install Kubernetes/K3s only, both Kubernetes/K3s and KubeSphere, and other cloud-native plugins in a flexible, fast, and convenient way. Additionally, it is an effective tool for scaling and upgrading clusters.
+KubePOP을 사용하면 쿠버네티스/K3s만(쿠버네티스/K3s 및 Kuberix Enterprise 둘 다) 및 기타 클라우드 네이티브 플러그인을 유연하고 빠르고 편리한 방식으로 설치할 수 있습니다. 또한 클러스터를 확장하고 업그레이드하는 데 효과적인 도구입니다.
 
-In KubeKey v2.1.0, we bring in concepts of manifest and artifact, which provides a solution for air-gapped installation of Kubernetes clusters. A manifest file describes information of the current Kubernetes cluster and defines content in an artifact. Previously, users had to prepare deployment tools, image (.tar) file, and other binaries as the Kubernetes version and image to deploy are different. Now, with KubeKey, air-gapped installation can never be so easy. You simply use a manifest file to define what you need for your cluster in air-gapped environments, and then export the artifact file to quickly and easily deploy image registries and Kubernetes cluster.
+KubePOP v2.1.0에서는 쿠버네티스 클러스터의 에어갭 설치를 위한 솔루션을 제공하는 매니페스트 및 아티팩트의 개념을 도입했습니다. 매니페스트 파일은 현재 쿠버네티스 클러스터의 정보를 설명하고 아티팩트의 콘텐츠를 정의합니다. 이전에는 배포할 쿠버네티스 버전과 이미지가 다르기 때문에 배포 도구, 이미지(.tar) 파일 및 기타 바이너리를 사용자가 준비해야 했습니다. 이제 KubePOP를 사용하면 에어 갭 설치가 그 어느 때보다 쉬워집니다. 매니페스트 파일을 사용하여 에어 갭 환경에서 클러스터에 필요한 것을 정의한 다음, 아티팩트 파일을 내보내 이미지 레지스트리와 쿠버네티스 클러스터를 빠르고 쉽게 배포할 수 있습니다.
 
-## Prerequisites
+## 전제 조건
 
 |Host IP| Host Name | Usage      |
 | ---------------- | ---- | ---------------- |
@@ -20,47 +20,48 @@ In KubeKey v2.1.0, we bring in concepts of manifest and artifact, which provides
 |192.168.0.4 | node3    | Image registry node of the air-gapped environment |
 ## Preparations
 
-1. Run the following commands to download KubeKey v2.2.2.
+1. 다음 명령을 실행하여 KubePOP v2.2.2를 다운로드합니다.
+
    {{< tabs >}}
 
    {{< tab "Good network connections to GitHub/Googleapis" >}}
 
-   Download KubeKey from its [GitHub Release Page](https://github.com/kubesphere/kubekey/releases) or use the following command directly.
+   [GitHub 릴리스 페이지](https://github.com/ke/kubepop/releases)에서 KubePOP를 다운로드하거나 다음 명령을 직접 사용합니다.
 
    ```bash
-   curl -sfL https://get-kk.kubesphere.io | VERSION=v2.2.2 sh -
+   curl -sfL https://get-kp.kuberix.io | VERSION=v2.2.2 sh -
    ```
 
    {{</ tab >}}
 
    {{< tab "Poor network connections to GitHub/Googleapis" >}}
 
-   Run the following command first to make sure you download KubeKey from the correct zone.
+   다음 명령을 먼저 실행하여 올바른 영역에서 KubeKey를 다운로드했는지 확인하십시오.
 
    ```bash
-   export KKZONE=cn
+   export KPZONE=cn
    ```
 
-   Run the following command to download KubeKey:
+   다음 명령을 실행하여 KubePOP를 다운로드하십시오.:
 
    ```bash
-   curl -sfL https://get-kk.kubesphere.io | VERSION=v2.2.2 sh -
+   curl -sfL https://get-kp.kuberix.io | VERSION=v2.2.2 sh -
    ```
    {{</ tab >}}
 
    {{</ tabs >}}
 
-2. In the source cluster, use KubeKey to create a manifest. The following two methods are supported:
+2. 소스 클러스터에서 KubePOP를 사용하여 매니페스트를 생성합니다. 다음 두 가지 방법이 지원됩니다.
 
-   - (Recommended) In the created cluster, run the following command to create a manifest file:
+   - (권장) 생성된 클러스터에서 다음 명령어를 실행하여 매니페스트 파일을 생성합니다.:
 
    ```bash
-   ./kk create manifest
+   ./kp create manifest
    ```
 
-   - Create and compile the manifest file manually according to the template. For more information, see [ manifest-example ](https://github.com/kubesphere/kubekey/blob/master/docs/manifest-example.md).
+   - 템플릿에 따라 수동으로 매니페스트 파일을 생성하고 컴파일합니다. 자세한 내용은 [ manifest-example ](https://github.com/ke/kubepop/blob/master/docs/manifest-example.md)을 참조하세요.
 
-3. Run the following command to modify the manifest configurations in the source cluster.
+3. 다음 명령을 실행하여 소스 클러스터에서 매니페스트 구성을 수정합니다.
    
    ```bash
    vim manifest.yaml
@@ -68,7 +69,7 @@ In KubeKey v2.1.0, we bring in concepts of manifest and artifact, which provides
    
    ```yaml
    ---
-   apiVersion: kubekey.kubesphere.io/v1alpha2
+   apiVersion: kubepop.kuberix.io/v1alpha2
    kind: Manifest
    metadata:
      name: sample
@@ -83,7 +84,7 @@ In KubeKey v2.1.0, we bring in concepts of manifest and artifact, which provides
        repository:
          iso:
            localPath:
-           url: https://github.com/kubesphere/kubekey/releases/download/v2.2.2/centos7-rpms-amd64.iso
+           url: https://github.com/ke/kubepop/releases/download/v2.2.2/centos7-rpms-amd64.iso
      - arch: amd64
        type: linux
        id: ubuntu
@@ -91,7 +92,7 @@ In KubeKey v2.1.0, we bring in concepts of manifest and artifact, which provides
        repository:
          iso:
            localPath:
-           url: https://github.com/kubesphere/kubekey/releases/download/v2.2.2/ubuntu-20.04-debs-amd64.iso
+           url: https://github.com/ke/kubepop/releases/download/v2.2.2/ubuntu-20.04-debs-amd64.iso
      kubernetesDistributions:
      - type: kubernetes
        version: v1.22.10
@@ -116,11 +117,11 @@ In KubeKey v2.1.0, we bring in concepts of manifest and artifact, which provides
        docker-compose:
          version: v2.2.2
      images:
-     - docker.io/kubesphere/kube-apiserver:v1.22.10
-     - docker.io/kubesphere/kube-controller-manager:v1.22.10
-     - docker.io/kubesphere/kube-proxy:v1.22.10
-     - docker.io/kubesphere/kube-scheduler:v1.22.10
-     - docker.io/kubesphere/pause:3.5
+     - docker.io/ke/kube-apiserver:v1.22.10
+     - docker.io/ke/kube-controller-manager:v1.22.10
+     - docker.io/ke/kube-proxy:v1.22.10
+     - docker.io/ke/kube-scheduler:v1.22.10
+     - docker.io/ke/pause:3.5
      - docker.io/coredns/coredns:1.8.0
      - docker.io/calico/cni:v3.23.2
      - docker.io/calico/kube-controllers:v3.23.2
@@ -131,103 +132,103 @@ In KubeKey v2.1.0, we bring in concepts of manifest and artifact, which provides
      - docker.io/openebs/provisioner-localpv:3.3.0
      - docker.io/openebs/linux-utils:3.3.0
      - docker.io/library/haproxy:2.3
-     - docker.io/kubesphere/nfs-subdir-external-provisioner:v4.0.2
-     - docker.io/kubesphere/k8s-dns-node-cache:1.15.12
-     - docker.io/kubesphere/ks-installer:v3.3.0
-     - docker.io/kubesphere/ks-apiserver:v3.3.0
-     - docker.io/kubesphere/ks-console:v3.3.0
-     - docker.io/kubesphere/ks-controller-manager:v3.3.0
-     - docker.io/kubesphere/kubectl:v1.20.0
-     - docker.io/kubesphere/kubectl:v1.21.0
-     - docker.io/kubesphere/kubectl:v1.22.0
-     - docker.io/kubesphere/kubefed:v0.8.1
-     - docker.io/kubesphere/tower:v0.2.0
+     - docker.io/ke/nfs-subdir-external-provisioner:v4.0.2
+     - docker.io/ke/k8s-dns-node-cache:1.15.12
+     - docker.io/ke/ke-installer:v3.3.0
+     - docker.io/ke/ke-apiserver:v3.3.0
+     - docker.io/ke/ke-console:v3.3.0
+     - docker.io/ke/ke-controller-manager:v3.3.0
+     - docker.io/ke/kubectl:v1.20.0
+     - docker.io/ke/kubectl:v1.21.0
+     - docker.io/ke/kubectl:v1.22.0
+     - docker.io/ke/kubefed:v0.8.1
+     - docker.io/ke/tower:v0.2.0
      - docker.io/minio/minio:RELEASE.2019-08-07T01-59-21Z
      - docker.io/minio/mc:RELEASE.2019-08-07T23-14-43Z
      - docker.io/csiplugin/snapshot-controller:v4.0.0
-     - docker.io/kubesphere/nginx-ingress-controller:v1.1.0
+     - docker.io/ke/nginx-ingress-controller:v1.1.0
      - docker.io/mirrorgooglecontainers/defaultbackend-amd64:1.4
-     - docker.io/kubesphere/metrics-server:v0.4.2
+     - docker.io/ke/metrics-server:v0.4.2
      - docker.io/library/redis:5.0.14-alpine
      - docker.io/library/haproxy:2.0.25-alpine
      - docker.io/library/alpine:3.14
      - docker.io/osixia/openldap:1.3.0
-     - docker.io/kubesphere/netshoot:v1.0
+     - docker.io/ke/netshoot:v1.0
      - docker.io/kubeedge/cloudcore:v1.9.2
      - docker.io/kubeedge/iptables-manager:v1.9.2
-     - docker.io/kubesphere/edgeservice:v0.2.0
-     - docker.io/kubesphere/openpitrix-jobs:v3.2.1
-     - docker.io/kubesphere/devops-apiserver:v3.3.0
-     - docker.io/kubesphere/devops-controller:v3.3.0
-     - docker.io/kubesphere/devops-tools:v3.3.0
-     - docker.io/kubesphere/ks-jenkins:v3.3.0-2.319.1
+     - docker.io/ke/edgeservice:v0.2.0
+     - docker.io/ke/openpitrix-jobs:v3.2.1
+     - docker.io/ke/devops-apiserver:v3.3.0
+     - docker.io/ke/devops-controller:v3.3.0
+     - docker.io/ke/devops-tools:v3.3.0
+     - docker.io/ke/ks-jenkins:v3.3.0-2.319.1
      - docker.io/jenkins/inbound-agent:4.10-2
-     - docker.io/kubesphere/builder-base:v3.2.2
-     - docker.io/kubesphere/builder-nodejs:v3.2.0
-     - docker.io/kubesphere/builder-maven:v3.2.0
-     - docker.io/kubesphere/builder-maven:v3.2.1-jdk11
-     - docker.io/kubesphere/builder-python:v3.2.0
-     - docker.io/kubesphere/builder-go:v3.2.0
-     - docker.io/kubesphere/builder-go:v3.2.2-1.16
-     - docker.io/kubesphere/builder-go:v3.2.2-1.17
-     - docker.io/kubesphere/builder-go:v3.2.2-1.18
-     - docker.io/kubesphere/builder-base:v3.2.2-podman
-     - docker.io/kubesphere/builder-nodejs:v3.2.0-podman
-     - docker.io/kubesphere/builder-maven:v3.2.0-podman
-     - docker.io/kubesphere/builder-maven:v3.2.1-jdk11-podman
-     - docker.io/kubesphere/builder-python:v3.2.0-podman
-     - docker.io/kubesphere/builder-go:v3.2.0-podman
-     - docker.io/kubesphere/builder-go:v3.2.2-1.16-podman
-     - docker.io/kubesphere/builder-go:v3.2.2-1.17-podman
-     - docker.io/kubesphere/builder-go:v3.2.2-1.18-podman
-     - docker.io/kubesphere/s2ioperator:v3.2.1
-     - docker.io/kubesphere/s2irun:v3.2.0
-     - docker.io/kubesphere/s2i-binary:v3.2.0
-     - docker.io/kubesphere/tomcat85-java11-centos7:v3.2.0
-     - docker.io/kubesphere/tomcat85-java11-runtime:v3.2.0
-     - docker.io/kubesphere/tomcat85-java8-centos7:v3.2.0
-     - docker.io/kubesphere/tomcat85-java8-runtime:v3.2.0
-     - docker.io/kubesphere/java-11-centos7:v3.2.0
-     - docker.io/kubesphere/java-8-centos7:v3.2.0
-     - docker.io/kubesphere/java-8-runtime:v3.2.0
-     - docker.io/kubesphere/java-11-runtime:v3.2.0
-     - docker.io/kubesphere/nodejs-8-centos7:v3.2.0
-     - docker.io/kubesphere/nodejs-6-centos7:v3.2.0
-     - docker.io/kubesphere/nodejs-4-centos7:v3.2.0
-     - docker.io/kubesphere/python-36-centos7:v3.2.0
-     - docker.io/kubesphere/python-35-centos7:v3.2.0
-     - docker.io/kubesphere/python-34-centos7:v3.2.0
-     - docker.io/kubesphere/python-27-centos7:v3.2.0
+     - docker.io/ke/builder-base:v3.2.2
+     - docker.io/ke/builder-nodejs:v3.2.0
+     - docker.io/ke/builder-maven:v3.2.0
+     - docker.io/ke/builder-maven:v3.2.1-jdk11
+     - docker.io/ke/builder-python:v3.2.0
+     - docker.io/ke/builder-go:v3.2.0
+     - docker.io/ke/builder-go:v3.2.2-1.16
+     - docker.io/ke/builder-go:v3.2.2-1.17
+     - docker.io/ke/builder-go:v3.2.2-1.18
+     - docker.io/ke/builder-base:v3.2.2-podman
+     - docker.io/ke/builder-nodejs:v3.2.0-podman
+     - docker.io/ke/builder-maven:v3.2.0-podman
+     - docker.io/ke/builder-maven:v3.2.1-jdk11-podman
+     - docker.io/ke/builder-python:v3.2.0-podman
+     - docker.io/ke/builder-go:v3.2.0-podman
+     - docker.io/ke/builder-go:v3.2.2-1.16-podman
+     - docker.io/ke/builder-go:v3.2.2-1.17-podman
+     - docker.io/ke/builder-go:v3.2.2-1.18-podman
+     - docker.io/ke/s2ioperator:v3.2.1
+     - docker.io/ke/s2irun:v3.2.0
+     - docker.io/ke/s2i-binary:v3.2.0
+     - docker.io/ke/tomcat85-java11-centos7:v3.2.0
+     - docker.io/ke/tomcat85-java11-runtime:v3.2.0
+     - docker.io/ke/tomcat85-java8-centos7:v3.2.0
+     - docker.io/ke/tomcat85-java8-runtime:v3.2.0
+     - docker.io/ke/java-11-centos7:v3.2.0
+     - docker.io/ke/java-8-centos7:v3.2.0
+     - docker.io/ke/java-8-runtime:v3.2.0
+     - docker.io/ke/java-11-runtime:v3.2.0
+     - docker.io/ke/nodejs-8-centos7:v3.2.0
+     - docker.io/ke/nodejs-6-centos7:v3.2.0
+     - docker.io/ke/nodejs-4-centos7:v3.2.0
+     - docker.io/ke/python-36-centos7:v3.2.0
+     - docker.io/ke/python-35-centos7:v3.2.0
+     - docker.io/ke/python-34-centos7:v3.2.0
+     - docker.io/ke/python-27-centos7:v3.2.0
      - quay.io/argoproj/argocd:v2.3.3
      - quay.io/argoproj/argocd-applicationset:v0.4.1
      - ghcr.io/dexidp/dex:v2.30.2
      - docker.io/library/redis:6.2.6-alpine
      - docker.io/jimmidyson/configmap-reload:v0.5.0
      - docker.io/prom/prometheus:v2.34.0
-     - docker.io/kubesphere/prometheus-config-reloader:v0.55.1
-     - docker.io/kubesphere/prometheus-operator:v0.55.1
-     - docker.io/kubesphere/kube-rbac-proxy:v0.11.0
-     - docker.io/kubesphere/kube-state-metrics:v2.3.0
+     - docker.io/ke/prometheus-config-reloader:v0.55.1
+     - docker.io/ke/prometheus-operator:v0.55.1
+     - docker.io/ke/kube-rbac-proxy:v0.11.0
+     - docker.io/ke/kube-state-metrics:v2.3.0
      - docker.io/prom/node-exporter:v1.3.1
      - docker.io/prom/alertmanager:v0.23.0
      - docker.io/thanosio/thanos:v0.25.2
      - docker.io/grafana/grafana:8.3.3
-     - docker.io/kubesphere/kube-rbac-proxy:v0.8.0
-     - docker.io/kubesphere/notification-manager-operator:v1.4.0
-     - docker.io/kubesphere/notification-manager:v1.4.0
-     - docker.io/kubesphere/notification-tenant-sidecar:v3.2.0
-     - docker.io/kubesphere/elasticsearch-curator:v5.7.6
-     - docker.io/kubesphere/elasticsearch-oss:6.8.22
-     - docker.io/kubesphere/fluentbit-operator:v0.13.0
+     - docker.io/ke/kube-rbac-proxy:v0.8.0
+     - docker.io/ke/notification-manager-operator:v1.4.0
+     - docker.io/ke/notification-manager:v1.4.0
+     - docker.io/ke/notification-tenant-sidecar:v3.2.0
+     - docker.io/ke/elasticsearch-curator:v5.7.6
+     - docker.io/ke/elasticsearch-oss:6.8.22
+     - docker.io/ke/fluentbit-operator:v0.13.0
      - docker.io/library/docker:19.03
-     - docker.io/kubesphere/fluent-bit:v1.8.11
-     - docker.io/kubesphere/log-sidecar-injector:1.1
+     - docker.io/ke/fluent-bit:v1.8.11
+     - docker.io/ke/log-sidecar-injector:1.1
      - docker.io/elastic/filebeat:6.7.0
-     - docker.io/kubesphere/kube-events-operator:v0.4.0
-     - docker.io/kubesphere/kube-events-exporter:v0.4.0
-     - docker.io/kubesphere/kube-events-ruler:v0.4.0
-     - docker.io/kubesphere/kube-auditing-operator:v0.2.0
-     - docker.io/kubesphere/kube-auditing-webhook:v0.2.0
+     - docker.io/ke/kube-events-operator:v0.4.0
+     - docker.io/ke/kube-events-exporter:v0.4.0
+     - docker.io/ke/kube-events-ruler:v0.4.0
+     - docker.io/ke/kube-auditing-operator:v0.2.0
+     - docker.io/ke/kube-auditing-webhook:v0.2.0
      - docker.io/istio/pilot:1.11.1
      - docker.io/istio/proxyv2:1.11.1
      - docker.io/jaegertracing/jaeger-operator:1.27
@@ -235,8 +236,8 @@ In KubeKey v2.1.0, we bring in concepts of manifest and artifact, which provides
      - docker.io/jaegertracing/jaeger-collector:1.27
      - docker.io/jaegertracing/jaeger-query:1.27
      - docker.io/jaegertracing/jaeger-es-index-cleaner:1.27
-     - docker.io/kubesphere/kiali-operator:v1.38.1
-     - docker.io/kubesphere/kiali:v1.38
+     - docker.io/ke/kiali-operator:v1.38.1
+     - docker.io/ke/kiali:v1.38
      - docker.io/library/busybox:1.31.1
      - docker.io/library/nginx:1.14-alpine
      - docker.io/joosthofman/wget:1.0
@@ -246,49 +247,50 @@ In KubeKey v2.1.0, we bring in concepts of manifest and artifact, which provides
      - docker.io/library/java:openjdk-8-jre-alpine
      - docker.io/fluent/fluentd:v1.4.2-2.0
      - docker.io/library/perl:latest
-     - docker.io/kubesphere/examples-bookinfo-productpage-v1:1.16.2
-     - docker.io/kubesphere/examples-bookinfo-reviews-v1:1.16.2
-     - docker.io/kubesphere/examples-bookinfo-reviews-v2:1.16.2
-     - docker.io/kubesphere/examples-bookinfo-details-v1:1.16.2
-     - docker.io/kubesphere/examples-bookinfo-ratings-v1:1.16.3
+     - docker.io/ke/examples-bookinfo-productpage-v1:1.16.2
+     - docker.io/ke/examples-bookinfo-reviews-v1:1.16.2
+     - docker.io/ke/examples-bookinfo-reviews-v2:1.16.2
+     - docker.io/ke/examples-bookinfo-details-v1:1.16.2
+     - docker.io/ke/examples-bookinfo-ratings-v1:1.16.3
      - docker.io/weaveworks/scope:1.13.0
    ```
    
    {{< notice note >}}
 
-   - If the artifact file to export contains ISO dependencies, such as conntarck and chrony, set the IP address for downloading the ISO dependencies in **.repostiory.iso.url** of **operationSystem**. Alternatively, you can download the ISO package in advance and fill in the local path in **localPath** and delete the `url` configuration item.
+   - 내보낼 아티팩트 파일에 conntarck, chrony 등의 ISO 종속성이 포함된 경우 **operationSystem**의 **.repostiory.iso.url**에서 ISO 종속성을 다운로드할 IP 주소를 설정합니다. 또는 미리 ISO 패키지를 다운로드하여 **localPath**에 로컬 경로를 입력하고 `url` 구성 항목을 삭제할 수 있습니다.
    
-   - You need to enable **harbor** and **docker-compose** configuration items, which will be used when you use KubeKey to build a Harbor registry for pushing images.
+   - KubePOP를 사용하여 이미지 푸시를 위한 Harbor 레지스트리를 구축할 때 사용할 **harbor** 및 **docker-compose** 구성 항목을 활성화해야 합니다.
    
-   - By default, the list of images in the created manifest is obtained from **docker.io**.
+   - 기본적으로 생성된 매니페스트의 이미지 목록은 **docker.io**에서 가져옵니다.
    
-   - You can customize the **manifest-sample.yaml** file to export the desired artifact file.
+   - **manifest-sample.yaml** 파일을 사용자 지정하여 원하는 아티팩트 파일을 내보낼 수 있습니다.
 
-   - You can download the ISO files at https://github.com/kubesphere/kubekey/releases/tag/v2.2.2.
+   - ISO 파일은 https://github.com/ke/kubepop/releases/tag/v2.2.2에서 다운로드할 수 있습니다.
    
    {{</ notice >}}
    
-4. Export the artifact from the source cluster.
+4. 소스 클러스터에서 아티팩트를 내보냅니다.
+
    {{< tabs >}}
 
    {{< tab "Good network connections to GitHub/Googleapis" >}}
 
-   Run the following command directly:
+   다음 명령을 직접 실행합니다.:
 
    ```bash
-   ./kk artifact export -m manifest-sample.yaml -o kubesphere.tar.gz
+   ./kp artifact export -m manifest-sample.yaml -o kuberixEnterprise.tar.gz
    ```
 
    {{</ tab >}}
 
    {{< tab "Poor network connections to GitHub/Googleapis" >}}
 
-   Run the following commands:
+   다음 명령을 실행합니다.:
 
    ```bash
-   export KKZONE=cn
+   export KPZONE=cn
    
-   ./kk artifact export -m manifest-sample.yaml -o kubesphere.tar.gz
+   ./kp artifact export -m manifest-sample.yaml -o kuberixEnterprise.tar.gz
    ```
    {{</ tab >}}
 
@@ -296,23 +298,25 @@ In KubeKey v2.1.0, we bring in concepts of manifest and artifact, which provides
 
    {{< notice note >}}
 
-   An artifact is a .tgz package containing the image package (.tar) and associated binaries exported from the specified manifest file. You can specify an artifact in the KubeKey commands for initializing the image registry, creating clusters, adding nodes, and upgrading clusters, and then KubeKey will automatically unpack the artifact and use the unpacked file when running the command.
+   아티팩트는 지정된 매니페스트 파일에서 내보낸 이미지 패키지(.tar) 및 관련 바이너리를 포함하는 .tgz 패키지입니다. KubePOP 명령에서 이미지 레지스트리 초기화, 클러스터 생성, 노드 추가 및 클러스터 업그레이드를 위해 아티팩트를 지정할 수 있으며, 그러면 KubePOP는 명령을 실행할 때 자동으로 아티팩트의 압축을 풀고 압축이 풀린 파일을 사용합니다.
 
-   - Make sure the network connection is working.
+   - 네트워크 연결이 작동하는지 확인하십시오.
 
-   - KubeKey will resolve image names in the image list. If the image registry requires authentication, you can configure it in **.registry.auths** in the manifest file.
+   - KubePOP는 이미지 목록에서 이미지 이름을 확인합니다. 이미지 레지스트리에 인증이 필요한 경우 매니페스트 파일의 **.registry.auths**에서 구성할 수 있습니다.
+   
    {{</ notice >}}
-## Install Clusters in the Air-gapped Environment
+   
+## 에어 갭 환경에 클러스터 설치
 
-1. Copy the downloaded KubeKey and artifact to nodes in the air-gapped environment using a USB device.
+1. USB 장치를 사용하여 에어 갭 환경의 노드에 다운로드한 KubePOP 아티팩트를 복사합니다.
 
-2. Run the following command to create a configuration file for the air-gapped cluster:
+2. 다음 명령을 실행하여 air-gapped 클러스터에 대한 구성 파일을 생성합니다.:
 
    ```bash
-   ./kk create config --with-kubesphere v3.3.0 --with-kubernetes v1.22.10 -f config-sample.yaml
+   ./kp create config --with-kuberixEnterprise v3.3.0 --with-kubernetes v1.22.10 -f config-sample.yaml
    ```
 
-3. Run the following command to modify the configuration file:
+3. 다음 명령을 실행하여 구성 파일을 수정합니다.:
 
    ```bash
    vim config-sample.yaml
@@ -320,14 +324,14 @@ In KubeKey v2.1.0, we bring in concepts of manifest and artifact, which provides
 
    {{< notice note >}}
 
-   - Modify the node information according to the actual configuration of the air-gapped environment.
-   - You must specify the node where the `registry` to deploy (for KubeKey deployment of self-built Harbor registries).
-   - In `registry`, the value of `type` must be specified as that of `harbor`. Otherwise, the docker registry is installed by default.
+   - 에어갭 환경의 실제 구성에 따라 노드 정보를 수정한다.
+   - 배포할 '레지스트리'가 있는 노드를 지정해야 합니다(자체 구축 Harbour 레지스트리의 KubePOP 배포의 경우).
+   - `registry`에서 `type`의 값은 `harbor`의 값으로 지정되어야 합니다. 그렇지 않으면 기본적으로 도커 레지스트리가 설치됩니다.
    
    {{</ notice >}}
 
    ```yaml
-   apiVersion: kubekey.kubesphere.io/v1alpha2
+   apiVersion: kubepop.kuberix.io/v1alpha2
    kind: Cluster
    metadata:
      name: sample
@@ -350,7 +354,7 @@ In KubeKey v2.1.0, we bring in concepts of manifest and artifact, which provides
        ## Internal loadbalancer for apiservers
        # internalLoadbalancer: haproxy
    
-       domain: lb.kubesphere.local
+       domain: lb.kuberix.local
        address: ""
        port: 6443
      kubernetes:
@@ -364,12 +368,12 @@ In KubeKey v2.1.0, we bring in concepts of manifest and artifact, which provides
        multusCNI:
          enabled: false
      registry:
-       # To use KubeKey to deploy Harbor, set the value of this parameter to harbor. If you do not set this parameter and still use KubeKey to create an container image registry, the docker registry is used by default.
+       # To use KubePOP to deploy Harbor, set the value of this parameter to harbor. If you do not set this parameter and still use KubePOP to create an container image registry, the docker registry is used by default.
        type: harbor
-       # If Harbor or other registries deployed by using KubeKey requires login, you can set the auths parameter of the registry. However, if you create a docker registry using KubeKey, you do not need to set the auths parameter.
-       # Note: If you use KubeKey to deploy Harbor, do not set this parameter until Harbor is started.
+       # If Harbor or other registries deployed by using KubePOP requires login, you can set the auths parameter of the registry. However, if you create a docker registry using KubePOP, you do not need to set the auths parameter.
+       # Note: If you use KubePOP to deploy Harbor, do not set this parameter until Harbor is started.
        #auths:
-       #  "dockerhub.kubekey.local":
+       #  "dockerhub.kubepop.local":
        #    username: admin
        #    password: Harbor12345
        # Set the private registry to use during cluster deployment.
@@ -381,46 +385,44 @@ In KubeKey v2.1.0, we bring in concepts of manifest and artifact, which provides
    ```
 
 
-4. Run the following command to install an image registry:
+4. 다음 명령을 실행하여 이미지 레지스트리를 설치합니다.:
 
    ```bash
-   ./kk init registry -f config-sample.yaml -a kubesphere.tar.gz
+   ./kp init registry -f config-sample.yaml -a kuberixEnterprise.tar.gz
    ```
    {{< notice note >}}
 
-   The parameters in the command are explained as follows:
+   명령의 매개변수는 다음과 같이 설명됩니다.
 
-   - **config-sample.yaml**: Specifies the configuration file of the cluster in the air-gapped environment.
+    - **config-sample.yaml**: air-gapped 환경에서 클러스터의 구성 파일을 지정합니다.
 
-   - **kubesphere.tar.gz**: Specifies the image package of the source cluster.
+    - **kubesphere.tar.gz**: 소스 클러스터의 이미지 패키지를 지정한다.
 
     {{</ notice >}}
 
-5. Create a Harbor project.
+5. 하버 프로젝트를 생성합니다.
    
-   {{< notice note >}}
+    {{< notice note >}}
 
-   As Harbor adopts the Role-based Access Control (RBAC) mechanism, which means that only specified users can perform certain operations. Therefore, you must create a project before pushing images to Harbor. Harbor supports two types of projects:
+    Harbor는 RBAC(역할 기반 액세스 제어) 메커니즘을 채택하므로 지정된 사용자만 특정 작업을 수행할 수 있습니다. 따라서 Harbour에 이미지를 푸시하기 전에 프로젝트를 생성해야 합니다. Harbor는 두 가지 유형의 프로젝트를 지원합니다.
 
-   - **Public**: All users can pull images from the project.
+    - **공개**: 모든 사용자가 프로젝트에서 이미지를 가져올 수 있습니다.
 
-   - **Private**: Only project members can pull images from the project.
+    - **비공개**: 프로젝트 구성원만 프로젝트에서 이미지를 가져올 수 있습니다.
 
-   The username and password for logging in to Harbor is **admin** and **Harbor12345** by default. The installation file of Harbor is located in **/opt/harbor**, where you can perform O&M of Harbor.
-
-
+    Harbor 로그인을 위한 사용자 이름과 비밀번호는 기본적으로 **admin** 및 **Harbor12345**입니다. Harbor의 설치 파일은 **/opt/harbor**에 있으며, 여기서 Harbour의 O&M을 수행할 수 있습니다.
   
     {{</ notice >}}
 
-   Method 1: Run the following commands to create a Harbor project.
+   방법 1: 다음 명령을 실행하여 하버 프로젝트를 생성합니다.
 
-   a. Run the following command to download the specified script to initialize the Harbor registry:
+   a. 다음 명령을 실행하여 지정된 스크립트를 다운로드하여 Harbour 레지스트리를 초기화합니다.:
 
       ```bash
-      curl -O https://raw.githubusercontent.com/kubesphere/ks-installer/master/scripts/create_project_harbor.sh
+      curl -O https://raw.githubusercontent.com/ke/ke-installer/master/scripts/create_project_harbor.sh
       ```
 
-   b. Run the following command to modify the script configuration file:
+   b. 다음 명령을 실행하여 스크립트 구성 파일을 수정하십시오.:
 
       ```bash
       vim create_project_harbor.sh
@@ -429,7 +431,7 @@ In KubeKey v2.1.0, we bring in concepts of manifest and artifact, which provides
       ```yaml
       #!/usr/bin/env bash
       
-      # Copyright 2018 The KubeSphere Authors.
+      # Copyright 2018 The Kuberix Enterprise Authors.
       #
       # Licensed under the Apache License, Version 2.0 (the "License");
       # you may not use this file except in compliance with the License.
@@ -443,13 +445,13 @@ In KubeKey v2.1.0, we bring in concepts of manifest and artifact, which provides
       # See the License for the specific language governing permissions and
       # limitations under the License.
       
-      url="https://dockerhub.kubekey.local"  #Change the value of url to https://dockerhub.kubekey.local.
+      url="https://dockerhub.kubepop.local"  #Change the value of url to https://dockerhub.kubepop.local.
       user="admin"
       passwd="Harbor12345"
       
       harbor_projects=(library
-          kubesphereio
-          kubesphere
+          kuberixEnterpriseio
+          kuberixEnterprise
           calico
           coredns
           openebs
@@ -482,15 +484,15 @@ In KubeKey v2.1.0, we bring in concepts of manifest and artifact, which provides
 
    {{< notice note >}}
 
-   - Change the value of **url** to **https://dockerhub.kubekey.local**.
+   - **url**의 값을 **https://dockerhub.kubepop.local**로 변경합니다.
 
-   - The project name of the registry must be the same as that of the image list.
+   - 레지스트리의 프로젝트 이름은 이미지 목록과 동일해야 합니다.
 
-   - Add **-k** at the end of the **curl** command.
+   - **curl** 명령 끝에 **-k**를 추가합니다.
 
    {{</ notice >}}
 
-   c. Run the following commands to create a Harbor project:
+   c. 다음 명령어를 실행하여 Harbour 프로젝트를 생성합니다.:
    
       ```bash
       chmod +x create_project_harbor.sh
@@ -500,11 +502,11 @@ In KubeKey v2.1.0, we bring in concepts of manifest and artifact, which provides
       ./create_project_harbor.sh
       ```
    
-   Method 2: Log in to Harbor and create a project. Set the project to **Public**, so that any user can pull images from this project. For more information, please refer to [Create Projects]( https://goharbor.io/docs/1.10/working-with-projects/create-projects/).
+   방법 2: Harbour에 로그인하여 프로젝트를 생성합니다. 모든 사용자가 이 프로젝트에서 이미지를 가져올 수 있도록 프로젝트를 **공개**로 설정합니다. 자세한 내용은 [프로젝트 생성]( https://goharbor.io/docs/1.10/working-with-projects/create-projects/)을 참조하세요.
    
    ![harbor-login](/images/docs/v3.3/appstore/built-in-apps/harbor-app/harbor-login.jpg)
    
-6. Run the following command again to modify the cluster configuration file：
+6. 다음 명령을 다시 실행하여 클러스터 구성 파일을 수정합니다.：
 
    ```bash
    vim config-sample.yaml
@@ -512,8 +514,8 @@ In KubeKey v2.1.0, we bring in concepts of manifest and artifact, which provides
 
    {{< notice note >}}
 
-   - In **auths**, add **dockerhub.kubekey.local** and the username and password.
-   - In **privateRegistry**, add **dockerhub.kubekey.local**.
+    - **auths**에서 **dockerhub.kubekey.local**과 사용자 이름 및 비밀번호를 추가합니다.
+    - **privateRegistry**에서 **dockerhub.kubekey.local**을 추가합니다.
 
     {{</ notice >}}
 
@@ -538,19 +540,20 @@ In KubeKey v2.1.0, we bring in concepts of manifest and artifact, which provides
    - In **namespaceOverride**, enter **kubesphereio**.
 
     {{</ notice >}}
-7. Run the following command to install a KubeSphere cluster:
+    
+7. 다음 명령을 실행하여 Kuberix Enterprise 클러스터를 설치합니다.:
 
    ```bash
-   ./kk create cluster -f config-sample1.yaml -a kubesphere.tar.gz --with-packages
+   ./kp create cluster -f config-sample1.yaml -a kuberixEnterprise.tar.gz --with-packages
    ```
 
-   The parameters are explained as follows：
+   매개변수는 다음과 같이 설명됩니다.：
 
-   - **config-sample.yaml**: Specifies the configuration file for the cluster in the air-gapped environment.
-   - **kubesphere.tar.gz**: Specifies the  tarball image from which the source cluster is packaged.
-   - **--with-packages**: This parameter is required if you want to install the ISO dependencies.
+    - **config-sample.yaml**: air-gapped 환경에서 클러스터에 대한 구성 파일을 지정합니다.
+    - **kubesphere.tar.gz**: 소스 클러스터가 패키징되는 tarball 이미지를 지정합니다.
+    - **--with-packages**: ISO 종속성을 설치하려는 경우 이 매개변수가 필요합니다.
 
-8. Run the following command to view the cluster status:
+8. 다음 명령을 실행하여 클러스터 상태를 확인합니다.:
 
    ```bash
    $ kubectl logs -n kubesphere-system $(kubectl get pod -n kubesphere-system -l 'app in (ks-install, ks-installer)' -o jsonpath='{.items[0].metadata.name}') -f
@@ -561,7 +564,7 @@ In KubeKey v2.1.0, we bring in concepts of manifest and artifact, which provides
    ```bash
    **************************************************
    #####################################################
-   ###              Welcome to KubeSphere!           ###
+   ###          Welcome to Kuberix Enterprise!       ###
    #####################################################
    
    Console: http://192.168.0.3:30880
@@ -577,16 +580,17 @@ In KubeKey v2.1.0, we bring in concepts of manifest and artifact, which provides
    1. Please change the default password after login.
    
    #####################################################
-   https://kubesphere.io             2022-02-28 23:30:06
+   https://kuberix.io                2022-02-28 23:30:06
    #####################################################
    ```
 
-9.  Access KubeSphere's web console at `http://{IP}:30880` using the default account and password `admin/P@88w0rd`.
+9. 기본 계정 및 비밀번호 `admin/P@88w0rd`를 사용하여 `http://{IP}:30880`에서 Kuberix Enterprise 웹 콘솔에 액세스합니다.
 
    ![login](/images/docs/v3.3/installing-on-kubernetes/introduction/overview/login.png)
 
    {{< notice note >}}
 
-   To access the console, make sure that port 30880 is enabled in your security group.
+   콘솔에 액세스하려면 보안 그룹에서 포트 30880이 활성화되어 있는지 확인하십시오.
    
    {{</ notice >}}
+   
