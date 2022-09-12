@@ -35,7 +35,7 @@ weight: 8726
    
    현재 Kuberix Enterprise는 TLS 연결(HTTPS)을 지원하지 않습니다. HTTPS URL을 사용하는 경우 **Skip TLS verification (insecure)**를 선택해야 합니다.
 
-   {{</notice>}}
+   {{</ notice >}}
 
 5. **Notification Conditions** 왼쪽의 체크박스를 선택하여 알림 조건을 설정합니다.
 
