@@ -1,37 +1,36 @@
 ---
 title: "Add New Nodes to a Kubernetes Cluster"
-keywords: 'Kubernetes, KubeSphere, scale-out, add-nodes'
+keywords: 'Kubernetes, Kuberix, scale-out, add-nodes'
 description: 'Add more nodes to scale out your cluster.'
 linkTitle: "Add New Nodes"
 weight: 3610
 ---
 
-After you use KubeSphere for a certain period of time, it is likely that you need to scale out your cluster with an increasing number of workloads. From KubeSphere v3.0.0, you can use the brand-new installer [KubeKey](https://github.com/kubesphere/kubekey) to add new nodes to a Kubernetes cluster. Fundamentally, the operation is based on Kubelet's registration mechanism. In other words, the new nodes will automatically join the existing Kubernetes cluster. KubeSphere supports hybrid environments, which means the newly-added host OS can be CentOS or Ubuntu.
+일정 기간 Kuberix Enterprise를 사용한 후에는 워크로드 수가 증가하면서 클러스터를 확장해야 할 가능성이 높습니다. Kuberix Enterprise 설치 프로그램 [KubePOP](https://github.com/ke/kubepop)를 사용하여 쿠버네티스 클러스터에 새 노드를 추가할 수 있습니다. 기본적으로 작업은 Kubelet의 등록 메커니즘을 기반으로 합니다. 즉, 새 노드는 기존 쿠버네티스 클러스터에 자동으로 조인됩니다. Kuberix Enterprise는 하이브리드 환경을 지원하므로 새로 추가된 호스트 OS는 CentOS 또는 Ubuntu가 될 수 있습니다.
 
-This tutorial demonstrates how to add new nodes to a single-node cluster. To scale out a multi-node cluster, the steps are basically the same.
+이 자습서에서는 단일 노드 클러스터에 새 노드를 추가하는 방법을 보여줍니다. 다중 노드 클러스터를 확장하는 단계는 기본적으로 동일합니다.
 
-## Prerequisites
+## 전제 조건
 
-- You need to have a single-node cluster. For more information, see [All-in-One Installation on Linux](../../../quick-start/all-in-one-on-linux/).
+- 단일 노드 클러스터가 있어야 합니다. 자세한 내용은 [Linux에서 일체형 설치](../../../quick-start/all-in-one-on-linux/)를 참조하십시오.
 
-- You have [downloaded KubeKey](../../../installing-on-linux/introduction/multioverview/#step-2-download-kubekey).
+- [KubePOP 다운로드](../../../installing-on-linux/introduction/multioverview/#step-2-download-kubepop)가 있습니다.
 
-## Add Worker Nodes to Kubernetes
+## 쿠버네티스에 작업자 노드 추가
 
-1. Retrieve your cluster information using KubeKey. The command below creates a configuration file (`sample.yaml`).
+1. KubePOP를 사용하여 클러스터 정보를 검색합니다. 아래 명령은 구성 파일(`sample.yaml`)을 생성합니다.
 
-   ```bash
-   ./kk create config --from-cluster
+   ```배쉬
+   ./kp 구성 --from-cluster 생성
    ```
    
    {{< notice note >}}
-   
 
-You can skip this step if you already have the configuration file on your machine. For example, if you want to add nodes to a multi-node cluster which was set up by KubeKey, you might still have the configuration file if you have not deleted it.
+컴퓨터에 이미 구성 파일이 있는 경우 이 단계를 건너뛸 수 있습니다. 예를 들어 KubePOP에서 설정한 다중 노드 클러스터에 노드를 추가하려는 경우 구성 파일을 삭제하지 않은 경우 여전히 구성 파일이 있을 수 있습니다.
 
-{{</ notice >}} 
+    {{</ notice >}}
 
-2. In the configuration file, put the information of your new nodes under `hosts` and `roleGroups`. The example adds two new nodes (i.e. `node1` and `node2`). Here `master1` is the existing node.
+2. 구성 파일에서 `hosts` 및 `roleGroups` 아래에 새 노드의 정보를 입력합니다. 이 예에서는 두 개의 새 노드(예: `node1` 및 `node2`)를 추가합니다. 여기서 'master1'은 기존 노드입니다.
 
    ```bash
    ···
@@ -53,18 +52,19 @@ You can skip this step if you already have the configuration file on your machin
    
    {{< notice note >}}
    
-- For more information about the configuration file, see [Edit the configuration file](../../../installing-on-linux/introduction/multioverview/#2-edit-the-configuration-file).
-- You are not allowed to modify the host name of existing nodes when adding new nodes.
-- Replace the host name in the example with your own.
+- 설정 파일에 대한 자세한 내용은 [설정 파일 편집](../../../installing-on-linux/introduction/multioverview/#2-edit-the-configuration-file)을 참조하십시오.
+- 새 노드를 추가할 때 기존 노드의 호스트 이름을 수정할 수 없습니다.
+- 예제의 호스트 이름을 자신의 호스트 이름으로 바꾸십시오.
   
-   {{</ notice >}}
-3. Execute the following command:
+    {{</ notice >}}
+    
+3. 다음 명령을 실행합니다.
 
    ```bash
    ./kk add nodes -f sample.yaml
    ```
 
-4. You will be able to see the new nodes and their information on the KubeSphere console when the installation finishes. On the **Cluster Management** page, select **Cluster Nodes** under **Nodes** from the left menu, or execute the command `kubectl get node` to check the changes.
+4. 설치가 완료되면 Kuberix Enterprise 콘솔에서 새 노드와 해당 정보를 볼 수 있습니다. **Cluster Management** 페이지에서 왼쪽 메뉴의 **Nodes** 아래에 있는 **Cluster Nodes**를 선택하거나 `kubectl get node` 명령을 실행하여 변경 사항을 확인합니다.
 
    ```bash
    $ kubectl get node
@@ -74,20 +74,20 @@ You can skip this step if you already have the configuration file on your machin
    node2         Ready    worker          31h   v1.17.9
    ```
 
-## Add New Master Nodes for High Availability
+## 고가용성을 위한 새 마스터 노드 추가
 
-The steps of adding master nodes are generally the same as adding worker nodes while you need to configure a load balancer for your cluster. You can use any cloud load balancers or hardware load balancers (for example, F5). In addition, Keepalived and [HAproxy](https://www.haproxy.com/), or Nginx is also an alternative for creating highly available clusters.
+마스터 노드를 추가하는 단계는 일반적으로 작업자 노드를 추가하는 단계와 동일하지만 클러스터에 대한 로드 밸런서를 구성해야 합니다. 모든 클라우드 로드 밸런서 또는 하드웨어 로드 밸런서(예: F5)를 사용할 수 있습니다. 또한 Keepalived 및 [HAproxy](https://www.haproxy.com/) 또는 Nginx도 고가용성 클러스터를 생성하기 위한 대안입니다.
 
-1. Create a configuration file using KubeKey.
+1. KubePOP를 사용하여 구성 파일을 생성합니다.
 
    ```
-   ./kk create config --from-cluster
+   ./kp create config --from-cluster
    ```
 
-2. Open the file and you can see some fields are pre-populated with values. Add the information of new nodes and your load balancer to the file. Here is an example for your reference:
+2. 파일을 열면 일부 필드에 값이 미리 채워져 있는 것을 볼 수 있습니다. 파일에 새 노드 및 로드 밸런서 정보를 추가합니다. 다음은 참조용 예입니다.:
 
    ```yaml
-   apiVersion: kubekey.kubesphere.io/v1alpha1
+   apiVersion: kubepop.kuberix.io/v1alpha1
    kind: Cluster
    metadata:
      name: sample
@@ -115,12 +115,12 @@ The steps of adding master nodes are generally the same as adding worker nodes w
        - worker3
      controlPlaneEndpoint:
        # If loadbalancer is used, 'address' should be set to loadbalancer's ip.
-       domain: lb.kubesphere.local
+       domain: lb.kuberix.local
        address: 172.16.0.253
        port: 6443
      kubernetes:
        version: v1.17.9
-       imageRepo: kubesphere
+       imageRepo: kuberix
        clusterName: cluster.local
        proxyMode: ipvs
        masqueradeAll: false
@@ -139,18 +139,18 @@ The steps of adding master nodes are generally the same as adding worker nodes w
    ```yaml
      controlPlaneEndpoint:
        # If you use a load balancer, the address should be set to the load balancer's ip.
-       domain: lb.kubesphere.local
+       domain: lb.kuberix.local
        address: 172.16.0.253
        port: 6443
    ```
 
-   - The domain name of the load balancer is `lb.kubesphere.local` by default for internal access. You can change it based on your needs.
-   - In most cases, you need to provide the **private IP address** of the load balancer for the field `address`. However, different cloud providers may have different configurations for load balancers. For example, if you configure a Server Load Balancer (SLB) on Alibaba Cloud, the platform assigns a public IP address to the SLB, which means you need to specify the public IP address for the field `address`.
-   - The field `port` indicates the port of `api-server`.
+    - 내부 접근을 위한 로드밸런서의 도메인 이름은 기본적으로 `lb.kuberix.local`이다. 필요에 따라 변경할 수 있습니다.
+    - 대부분의 경우 'address' 필드에 로드 밸런서의 **private IP address**를 제공해야 합니다. 그러나 클라우드 공급자마다 로드 밸런서에 대한 구성이 다를 수 있습니다.
+    - 'port' 필드는 'api-server'의 포트를 나타냅니다.
 
-4. Save the file and execute the following command to apply the configuration.
+4. 파일을 저장하고 다음 명령을 실행하여 구성을 적용합니다.
 
    ```bash
-   ./kk add nodes -f sample.yaml
+   ./kp add nodes -f sample.yaml
    ```
 
