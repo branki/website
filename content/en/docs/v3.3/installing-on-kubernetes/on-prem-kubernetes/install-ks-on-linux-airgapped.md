@@ -1,22 +1,22 @@
 ---
 title: "Air-gapped Installation on Kubernetes"
-keywords: 'Kubernetes, KubeSphere, air-gapped, installation'
-description: 'Explore the best practice of installing KubeSphere in an air-gapped environment.'
+keywords: 'Kubernetes, Kuberix, air-gapped, installation'
+description: 'Explore the best practice of installing Kuberix Enterprise in an air-gapped environment.'
 linkTitle: "Air-gapped Installation"
 weight: 4310
 ---
 
-The air-gapped installation is almost the same as the online installation except that you must create a local registry to host Docker images. This tutorial demonstrates how to install KubeSphere on Kubernetes in an air-gapped environment.
+에어 갭 설치는 Docker 이미지를 호스팅하기 위해 로컬 레지스트리를 생성해야 한다는 점을 제외하고는 온라인 설치와 거의 동일합니다. 이 튜토리얼은 에어 갭 환경에서 쿠버네티스에 Kuberix Enterprise를 설치하는 방법을 보여줍니다.
 
-Before you follow the steps below, read [Prerequisites](../../../installing-on-kubernetes/introduction/prerequisites/) first.
+아래 단계를 수행하기 전에 먼저 [Prerequisites](../../../installing-on-kubernetes/introduction/prerequisites/)를 읽으십시오.
 
-## Step 1: Prepare a Private Image Registry
+## 1단계: 개인 이미지 레지스트리 준비
 
-You can use Harbor or any other private image registries. This tutorial uses Docker registry as an example with [self-signed certificates](https://docs.docker.com/registry/insecure/#use-self-signed-certificates) (If you have your own private image registry, you can skip this step).
+Harbour 또는 기타 개인 이미지 레지스트리를 사용할 수 있습니다. 이 자습서에서는 [자체 서명된 인증서](https://docs.docker.com/registry/insecure/#use-self-signed-certificates)와 함께 Docker 레지스트리를 예로 사용합니다(자체 프라이빗 이미지 레지스트리가 있는 경우 이 단계를 건너뛸 수 있습니다).
 
-### Use self-signed certificates
+### 자체 서명 인증서 사용
 
-1. Generate your own certificate by executing the following commands:
+1. 다음 명령을 실행하여 자체 인증서를 생성합니다.
 
    ```bash
    mkdir -p certs
@@ -28,13 +28,13 @@ You can use Harbor or any other private image registries. This tutorial uses Doc
    -x509 -days 36500 -out certs/domain.crt
    ```
 
-2. Make sure you specify a domain name in the field `Common Name` when you are generating your own certificate. For instance, the field is set to `dockerhub.kubekey.local` in this example. 
+2. 자신의 인증서를 생성할 때 '일반 이름' 필드에 도메인 이름을 지정해야 합니다. 예를 들어, 이 예에서 필드는 'dockerhub.kubePOP.local'로 설정됩니다.
 
    ![self-signed-cert](/images/docs/v3.3/installing-on-linux/introduction/air-gapped-installation/self-signed-cert.jpg)
 
-### Start the Docker registry
+### Docker 레지스트리 시작
 
-Run the following commands to start the Docker registry:
+다음 명령을 실행하여 Docker 레지스트리를 시작하십시오.:
 
 ```
 docker run -d \
@@ -51,66 +51,66 @@ docker run -d \
 
 {{< notice note >}}
 
-Docker uses `/var/lib/docker` as the default directory where all Docker related files, including images, are stored. It is recommended you add additional storage volumes with at least **100G** mounted to `/var/lib/docker` and `/mnt/registry` respectively. See [fdisk](https://www.computerhope.com/unix/fdisk.htm) command for reference.
+Docker는 이미지를 포함한 모든 Docker 관련 파일이 저장되는 기본 디렉토리로 `/var/lib/docker`를 사용합니다. 최소 **100GB**가 `/var/lib/docker` 및 `/mnt/registry`에 각각 마운트된 추가 스토리지 볼륨을 추가하는 것이 좋습니다. 참고로 [fdisk](https://www.computerhope.com/unix/fdisk.htm) 명령어를 참고하세요.
 
 {{</ notice >}}
 
-### Configure the registry
+### 레지스트리 구성
 
-1. Add an entry to `/etc/hosts` to map the hostname (i.e. the registry domain name; in this case, it is `dockerhub.kubekey.local`) to the private IP address of your machine as below.
+1. `/etc/hosts`에 항목을 추가하여 아래와 같이 호스트 이름(예: 레지스트리 도메인 이름, 이 경우 `dockerhub.kubePOP.local`)을 컴퓨터의 개인 IP 주소에 매핑합니다.
 
    ```bash
    # docker registry
-   192.168.0.2 dockerhub.kubekey.local
+   192.168.0.2 dockerhub.kubePOP.local
    ```
 
-2. Execute the following commands to copy the certificate to a specified directory and make Docker trust it.
+2. 다음 명령을 실행하여 인증서를 지정된 디렉터리에 복사하고 Docker가 이를 신뢰하도록 합니다.
 
    ```bash
-   mkdir -p  /etc/docker/certs.d/dockerhub.kubekey.local
+   mkdir -p  /etc/docker/certs.d/dockerhub.kubePOP.local
    ```
 
    ```bash
-   cp certs/domain.crt  /etc/docker/certs.d/dockerhub.kubekey.local/ca.crt
+   cp certs/domain.crt  /etc/docker/certs.d/dockerhub.kubePOP.local/ca.crt
    ```
 
    {{< notice note >}}
 
-   The path of the certificate is related to the domain name. When you copy the path, use your actual domain name if it is different from the one set above.
+   인증서의 경로는 도메인 이름과 관련이 있습니다. 경로를 복사할 때 위에 설정한 것과 다른 경우 실제 도메인 이름을 사용하십시오.
 
    {{</ notice >}} 
 
-3. To verify whether the private registry is effective, you can copy an image to your local machine first, and use `docker push` and `docker pull` to test it.
+3. 개인 레지스트리가 효과적인지 확인하려면 먼저 이미지를 로컬 컴퓨터에 복사하고 `docker push` 및 `docker pull`을 사용하여 테스트할 수 있습니다.
 
-## Step 2: Prepare Installation Images
+## 2단계: 설치 이미지 준비
 
-As you install KubeSphere in an air-gapped environment, you need to prepare an image package containing all the necessary images in advance.
+에어갭 환경에 Kuberix Enterprise를 설치할 때 필요한 모든 이미지가 포함된 이미지 패키지를 미리 준비해야 합니다.
 
-1. Download the image list file `images-list.txt` from a machine that has access to the Internet through the following command:
+1. 다음 명령을 통해 인터넷에 액세스할 수 있는 컴퓨터에서 이미지 목록 파일 `images-list.txt`를 다운로드합니다.
 
    ```bash
-   curl -L -O https://github.com/kubesphere/ks-installer/releases/download/v3.3.0/images-list.txt
+   curl -L -O https://github.com/ke/ke-installer/releases/download/v3.3.0/images-list.txt
    ```
 
    {{< notice note >}}
 
-   This file lists images under `##+modulename` based on different modules. You can add your own images to this file following the same rule. To view the complete file, see [Appendix](#appendix).
+   이 파일은 다른 모듈을 기반으로 `##+modulename` 아래에 이미지를 나열합니다. 동일한 규칙에 따라 이 파일에 자신의 이미지를 추가할 수 있습니다. 
 
    {{</ notice >}} 
 
-2. Download `offline-installation-tool.sh`. 
+2. `offline-installation-tool.sh` 파일을 다운로드 합니다.. 
 
    ```bash
-   curl -L -O https://github.com/kubesphere/ks-installer/releases/download/v3.3.0/offline-installation-tool.sh
+   curl -L -O https://github.com/ke/ke-installer/releases/download/v3.3.0/offline-installation-tool.sh
    ```
 
-3. Make the `.sh` file executable.
+3. `.sh` 파일을 실행 가능하게 만듭니다.
 
    ```bash
    chmod +x offline-installation-tool.sh
    ```
 
-4. You can execute the command `./offline-installation-tool.sh -h` to see how to use the script:
+4. `./offline-installation-tool.sh -h` 명령을 실행하여 스크립트 사용 방법을 확인할 수 있습니다.:
 
    ```bash
    root@master:/home/ubuntu# ./offline-installation-tool.sh -h
@@ -120,7 +120,7 @@ As you install KubeSphere in an air-gapped environment, you need to prepare an i
    
    Description:
      -b                     : save kubernetes' binaries.
-     -d IMAGES-DIR          : the dir of files (tar.gz) which generated by `docker save`. default: ./kubesphere-images
+     -d IMAGES-DIR          : the dir of files (tar.gz) which generated by `docker save`. default: ./ke-images
      -l IMAGES-LIST         : text file with list of images.
      -r PRIVATE-REGISTRY    : target private registry:port.
      -s                     : save model will be applied. Pull the images in the IMAGES-LIST and save images as a tar.gz file.
@@ -128,44 +128,44 @@ As you install KubeSphere in an air-gapped environment, you need to prepare an i
      -h                     : usage message
    ```
 
-5. Pull images in `offline-installation-tool.sh`.
+5. `offline-installation-tool.sh`에서 이미지를 가져옵니다.
 
    ```bash
-   ./offline-installation-tool.sh -s -l images-list.txt -d ./kubesphere-images
+   ./offline-installation-tool.sh -s -l images-list.txt -d ./ke-images
    ```
 
    {{< notice note >}}
 
-   You can choose to pull images as needed. For example, you can delete `##k8s-images` and related images under it in `images-list.text` as you already have a Kubernetes cluster.
+   필요에 따라 이미지를 가져오도록 선택할 수 있습니다. 예를 들어, 이미 쿠버네티스 클러스터가 있으므로 `images-list.text`에서 `##k8s-images` 및 그 아래 관련 이미지를 삭제할 수 있습니다.
 
    {{</ notice >}} 
 
-## Step 3: Push Images to Your Private Registry
+## 3단계: 개인 레지스트리에 이미지 푸시
 
-Transfer your packaged image file to your local machine and execute the following command to push it to the registry.
+패키지된 이미지 파일을 로컬 시스템으로 전송하고 다음 명령을 실행하여 레지스트리에 푸시합니다.
 
 ```bash
-./offline-installation-tool.sh -l images-list.txt -d ./kubesphere-images -r dockerhub.kubekey.local
+./offline-installation-tool.sh -l images-list.txt -d ./ke-images -r dockerhub.kubePOP.local
 ```
 
 {{< notice note >}}
 
-The domain name is `dockerhub.kubekey.local` in the command. Make sure you use your **own registry address**.
+도메인 이름은 명령에서 `dockerhub.kubekey.local`입니다. **own registry address**를 사용해야 합니다.
 
 {{</ notice >}} 
 
-## Step 4: Download Deployment Files
+## 4단계: 배포 파일 다운로드
 
-Similar to installing KubeSphere on an existing Kubernetes cluster in an online environment, you also need to download `cluster-configuration.yaml` and `kubesphere-installer.yaml` first.
+온라인 환경에서 기존 쿠버네티스 클러스터에 Kuberix Enterprise를 설치하는 것과 마찬가지로 `cluster-configuration.yaml`과 `ke-installer.yaml`도 먼저 다운로드해야 합니다.
 
-1. Execute the following commands to download these two files and transfer them to your machine that serves as the taskbox for installation.
+1. 다음 명령을 실행하여 이 두 파일을 다운로드하고 설치를 위한 작업 상자 역할을 하는 컴퓨터로 전송합니다.
 
    ```bash
-   curl -L -O https://github.com/kubesphere/ks-installer/releases/download/v3.3.0/cluster-configuration.yaml
-   curl -L -O https://github.com/kubesphere/ks-installer/releases/download/v3.3.0/kubesphere-installer.yaml
+   curl -L -O https://github.com/ke/ks-installer/releases/download/v3.3.0/cluster-configuration.yaml
+   curl -L -O https://github.com/ke/ks-installer/releases/download/v3.3.0/ke-installer.yaml
    ```
 
-2. Edit `cluster-configuration.yaml` to add your private image registry. For example, `dockerhub.kubekey.local` is the registry address in this tutorial, then use it as the value of `.spec.local_registry` as below:
+2. `cluster-configuration.yaml`을 편집하여 개인 이미지 레지스트리를 추가합니다. 예를 들어 `dockerhub.kubePOP.local`은 이 튜토리얼에서 레지스트리 주소이고, 아래와 같이 `.spec.local_registry`의 값으로 사용합니다.:
 
    ```yaml
    spec:
@@ -178,39 +178,39 @@ Similar to installing KubeSphere on an existing Kubernetes cluster in an online 
 
    {{< notice note >}}
 
-   You can enable pluggable components in this YAML file to explore more features of KubeSphere. Refer to [Enable Pluggle Components](../../../pluggable-components/) for more details.
+   이 YAML 파일에서 플러그형 구성 요소를 활성화하여 Kuberix Enterprise의 더 많은 기능을 탐색할 수 있습니다. 자세한 내용은 [플러그 구성 요소 활성화](../../../pluggable-components/)를 참조하십시오.
 
    {{</ notice >}}
 
-3. Save `cluster-configuration.yaml` after you finish editing. Replace `ks-installer` with your **own registry address** with the following command:
+3. 편집이 끝나면 `cluster-configuration.yaml`을 저장합니다. 다음 명령을 사용하여 `ke-installer`를 **own registry address**로 바꿉니다.:
 
    ```bash
-   sed -i "s#^\s*image: kubesphere.*/ks-installer:.*#        image: dockerhub.kubekey.local/kubesphere/ks-installer:v3.0.0#" kubesphere-installer.yaml
+   sed -i "s#^\s*image: kuberix.*/ke-installer:.*#        image: dockerhub.kubePOP.local/ke/ke-installer:v3.0.0#" ke-installer.yaml
    ```
 
    {{< notice warning >}}
 
-   `dockerhub.kubekey.local` is the registry address in the command. Make sure you use your own registry address.
+   `dockerhub.kubePOP.local`은 명령의 레지스트리 주소입니다. 자신의 레지스트리 주소를 사용해야 합니다.
 
    {{</ notice >}}
 
 
-## Step 5: Start Installation
+## 5단계: 설치 시작
 
-Execute the following commands after you make sure that all steps above are completed.
+위의 모든 단계가 완료되었는지 확인한 후 다음 명령을 실행합니다.
 
 ```bash
-kubectl apply -f kubesphere-installer.yaml
+kubectl apply -f ke-installer.yaml
 kubectl apply -f cluster-configuration.yaml
 ```
 
-## Step 6: Verify Installation
+## 6단계: 설치 확인
 
-When the installation finishes, you can see the content as follows:
+설치가 완료되면 다음과 같은 내용을 볼 수 있습니다.:
 
 ```bash
 #####################################################
-###              Welcome to KubeSphere!           ###
+###        Welcome to Kuberix Enterprise!         ###
 #####################################################
 
 Console: http://192.168.0.2:30880
@@ -226,46 +226,46 @@ NOTES：
   2. Please modify the default password after login.
 
 #####################################################
-https://kubesphere.io             20xx-xx-xx xx:xx:xx
+https://kuberixEnterprise.io      20xx-xx-xx xx:xx:xx
 #####################################################
 ```
 
-Now, you will be able to access the web console of KubeSphere through `http://{IP}:30880` with the default account and password `admin/P@88w0rd`.
+이제 기본 계정 및 비밀번호 `admin/P@88w0rd`로 `http://{IP}:30880`을 통해 Kuberix Enterprise의 웹 콘솔에 액세스할 수 있습니다.
 
 {{< notice note >}}
 
-To access the console, make sure port 30880 is opened in your security group.
+콘솔에 액세스하려면 보안 그룹에서 포트 30880이 열려 있는지 확인하십시오.
 
 {{</ notice >}}
 
-![kubesphere-login](https://ap3.qingstor.com/kubesphere-website/docs/login.png)
+![ke-login](https://ap3.qingstor.com/ke-website/docs/login.png)
 
 ## Appendix
 
-### Image list of KubeSphere 3.3.0
+### Image list of Kuberix Enterprise 3.3.0
 
 ```txt
 ##k8s-images
-kubesphere/kube-apiserver:v1.23.7
-kubesphere/kube-controller-manager:v1.23.7
-kubesphere/kube-proxy:v1.23.7
-kubesphere/kube-scheduler:v1.23.7
-kubesphere/kube-apiserver:v1.24.1
-kubesphere/kube-controller-manager:v1.24.1
-kubesphere/kube-proxy:v1.24.1
-kubesphere/kube-scheduler:v1.24.1
-kubesphere/kube-apiserver:v1.22.10
-kubesphere/kube-controller-manager:v1.22.10
-kubesphere/kube-proxy:v1.22.10
-kubesphere/kube-scheduler:v1.22.10
-kubesphere/kube-apiserver:v1.21.13
-kubesphere/kube-controller-manager:v1.21.13
-kubesphere/kube-proxy:v1.21.13
-kubesphere/kube-scheduler:v1.21.13
-kubesphere/pause:3.7
-kubesphere/pause:3.6
-kubesphere/pause:3.5
-kubesphere/pause:3.4.1
+ke/kube-apiserver:v1.23.7
+ke/kube-controller-manager:v1.23.7
+ke/kube-proxy:v1.23.7
+ke/kube-scheduler:v1.23.7
+ke/kube-apiserver:v1.24.1
+ke/kube-controller-manager:v1.24.1
+ke/kube-proxy:v1.24.1
+ke/kube-scheduler:v1.24.1
+ke/kube-apiserver:v1.22.10
+ke/kube-controller-manager:v1.22.10
+ke/kube-proxy:v1.22.10
+ke/kube-scheduler:v1.22.10
+ke/kube-apiserver:v1.21.13
+ke/kube-controller-manager:v1.21.13
+ke/kube-proxy:v1.21.13
+ke/kube-scheduler:v1.21.13
+ke/pause:3.7
+ke/pause:3.6
+ke/pause:3.5
+ke/pause:3.4.1
 coredns/coredns:1.8.0
 coredns/coredns:1.8.6
 calico/cni:v3.20.0
@@ -273,33 +273,33 @@ calico/kube-controllers:v3.20.0
 calico/node:v3.20.0
 calico/pod2daemon-flexvol:v3.20.0
 calico/typha:v3.20.0
-kubesphere/flannel:v0.12.0
+ke/flannel:v0.12.0
 openebs/provisioner-localpv:2.10.1
 openebs/linux-utils:2.10.0
 library/haproxy:2.3
-kubesphere/nfs-subdir-external-provisioner:v4.0.2
-kubesphere/k8s-dns-node-cache:1.15.12
-##kubesphere-images
-kubesphere/ks-installer:v3.3.0
-kubesphere/ks-apiserver:v3.3.0
-kubesphere/ks-console:v3.3.0
-kubesphere/ks-controller-manager:v3.3.0
-kubesphere/kubectl:v1.22.0
-kubesphere/kubectl:v1.21.0
-kubesphere/kubectl:v1.20.0
-kubesphere/kubefed:v0.8.1
-kubesphere/tower:v0.2.0
+ke/nfs-subdir-external-provisioner:v4.0.2
+ke/k8s-dns-node-cache:1.15.12
+##ke-images
+ke/ke-installer:v3.3.0
+ke/ke-apiserver:v3.3.0
+ke/ke-console:v3.3.0
+ke/ke-controller-manager:v3.3.0
+ke/kubectl:v1.22.0
+ke/kubectl:v1.21.0
+ke/kubectl:v1.20.0
+ke/kubefed:v0.8.1
+ke/tower:v0.2.0
 minio/minio:RELEASE.2019-08-07T01-59-21Z
 minio/mc:RELEASE.2019-08-07T23-14-43Z
 csiplugin/snapshot-controller:v4.0.0
-kubesphere/nginx-ingress-controller:v1.1.0
+ke/nginx-ingress-controller:v1.1.0
 mirrorgooglecontainers/defaultbackend-amd64:1.4
 kubesphere/metrics-server:v0.4.2
 redis:5.0.14-alpine
 haproxy:2.0.25-alpine
 alpine:3.14
 osixia/openldap:1.3.0
-kubesphere/netshoot:v1.0
+ke/netshoot:v1.0
 ##kubeedge-images
 kubeedge/cloudcore:v1.9.2
 kubeedge/iptables-manager:v1.9.2
@@ -307,81 +307,81 @@ kubesphere/edgeservice:v0.2.0
 ##gatekeeper-images
 openpolicyagent/gatekeeper:v3.5.2
 ##openpitrix-images
-kubesphere/openpitrix-jobs:v3.2.1
-##kubesphere-devops-images
-kubesphere/devops-apiserver:v3.3.0
-kubesphere/devops-controller:v3.3.0
-kubesphere/devops-tools:v3.3.0
-kubesphere/ks-jenkins:v3.3.0-2.319.1
+ke/openpitrix-jobs:v3.2.1
+##ke-devops-images
+ke/devops-apiserver:v3.3.0
+ke/devops-controller:v3.3.0
+ke/devops-tools:v3.3.0
+ke/ks-jenkins:v3.3.0-2.319.1
 jenkins/inbound-agent:4.10-2
-kubesphere/builder-base:v3.2.2
-kubesphere/builder-nodejs:v3.2.0
-kubesphere/builder-maven:v3.2.0
-kubesphere/builder-maven:v3.2.1-jdk11
-kubesphere/builder-python:v3.2.0
-kubesphere/builder-go:v3.2.0
-kubesphere/builder-go:v3.2.2-1.16
-kubesphere/builder-go:v3.2.2-1.17
-kubesphere/builder-go:v3.2.2-1.18
-kubesphere/builder-base:v3.2.2-podman
-kubesphere/builder-nodejs:v3.2.0-podman
-kubesphere/builder-maven:v3.2.0-podman
-kubesphere/builder-maven:v3.2.1-jdk11-podman
-kubesphere/builder-python:v3.2.0-podman
-kubesphere/builder-go:v3.2.0-podman
-kubesphere/builder-go:v3.2.2-1.16-podman
-kubesphere/builder-go:v3.2.2-1.17-podman
-kubesphere/builder-go:v3.2.2-1.18-podman
-kubesphere/s2ioperator:v3.2.1
-kubesphere/s2irun:v3.2.0
-kubesphere/s2i-binary:v3.2.0
-kubesphere/tomcat85-java11-centos7:v3.2.0
-kubesphere/tomcat85-java11-runtime:v3.2.0
-kubesphere/tomcat85-java8-centos7:v3.2.0
-kubesphere/tomcat85-java8-runtime:v3.2.0
-kubesphere/java-11-centos7:v3.2.0
-kubesphere/java-8-centos7:v3.2.0
-kubesphere/java-8-runtime:v3.2.0
-kubesphere/java-11-runtime:v3.2.0
-kubesphere/nodejs-8-centos7:v3.2.0
-kubesphere/nodejs-6-centos7:v3.2.0
-kubesphere/nodejs-4-centos7:v3.2.0
-kubesphere/python-36-centos7:v3.2.0
-kubesphere/python-35-centos7:v3.2.0
-kubesphere/python-34-centos7:v3.2.0
-kubesphere/python-27-centos7:v3.2.0
+ke/builder-base:v3.2.2
+ke/builder-nodejs:v3.2.0
+ke/builder-maven:v3.2.0
+ke/builder-maven:v3.2.1-jdk11
+ke/builder-python:v3.2.0
+ke/builder-go:v3.2.0
+ke/builder-go:v3.2.2-1.16
+ke/builder-go:v3.2.2-1.17
+ke/builder-go:v3.2.2-1.18
+ke/builder-base:v3.2.2-podman
+ke/builder-nodejs:v3.2.0-podman
+ke/builder-maven:v3.2.0-podman
+ke/builder-maven:v3.2.1-jdk11-podman
+ke/builder-python:v3.2.0-podman
+ke/builder-go:v3.2.0-podman
+ke/builder-go:v3.2.2-1.16-podman
+ke/builder-go:v3.2.2-1.17-podman
+ke/builder-go:v3.2.2-1.18-podman
+ke/s2ioperator:v3.2.1
+ke/s2irun:v3.2.0
+ke/s2i-binary:v3.2.0
+ke/tomcat85-java11-centos7:v3.2.0
+ke/tomcat85-java11-runtime:v3.2.0
+ke/tomcat85-java8-centos7:v3.2.0
+ke/tomcat85-java8-runtime:v3.2.0
+ke/java-11-centos7:v3.2.0
+ke/java-8-centos7:v3.2.0
+ke/java-8-runtime:v3.2.0
+ke/java-11-runtime:v3.2.0
+ke/nodejs-8-centos7:v3.2.0
+ke/nodejs-6-centos7:v3.2.0
+ke/nodejs-4-centos7:v3.2.0
+ke/python-36-centos7:v3.2.0
+ke/python-35-centos7:v3.2.0
+ke/python-34-centos7:v3.2.0
+ke/python-27-centos7:v3.2.0
 quay.io/argoproj/argocd:v2.3.3
 quay.io/argoproj/argocd-applicationset:v0.4.1
 ghcr.io/dexidp/dex:v2.30.2
 redis:6.2.6-alpine
-##kubesphere-monitoring-images
+##ke-monitoring-images
 jimmidyson/configmap-reload:v0.5.0
 prom/prometheus:v2.34.0
-kubesphere/prometheus-config-reloader:v0.55.1
-kubesphere/prometheus-operator:v0.55.1
-kubesphere/kube-rbac-proxy:v0.11.0
-kubesphere/kube-state-metrics:v2.3.0
+ke/prometheus-config-reloader:v0.55.1
+ke/prometheus-operator:v0.55.1
+ke/kube-rbac-proxy:v0.11.0
+ke/kube-state-metrics:v2.3.0
 prom/node-exporter:v1.3.1
 prom/alertmanager:v0.23.0
 thanosio/thanos:v0.25.2
 grafana/grafana:8.3.3
-kubesphere/kube-rbac-proxy:v0.8.0
-kubesphere/notification-manager-operator:v1.4.0
-kubesphere/notification-manager:v1.4.0
-kubesphere/notification-tenant-sidecar:v3.2.0
-##kubesphere-logging-images
-kubesphere/elasticsearch-curator:v5.7.6
-kubesphere/elasticsearch-oss:6.8.22
-kubesphere/fluentbit-operator:v0.13.0
+ke/kube-rbac-proxy:v0.8.0
+ke/notification-manager-operator:v1.4.0
+ke/notification-manager:v1.4.0
+ke/notification-tenant-sidecar:v3.2.0
+##ke-logging-images
+ke/elasticsearch-curator:v5.7.6
+ke/elasticsearch-oss:6.8.22
+ke/fluentbit-operator:v0.13.0
 docker:19.03
-kubesphere/fluent-bit:v1.8.11
-kubesphere/log-sidecar-injector:1.1
+ke/fluent-bit:v1.8.11
+ke/log-sidecar-injector:1.1
 elastic/filebeat:6.7.0
-kubesphere/kube-events-operator:v0.4.0
-kubesphere/kube-events-exporter:v0.4.0
-kubesphere/kube-events-ruler:v0.4.0
-kubesphere/kube-auditing-operator:v0.2.0
-kubesphere/kube-auditing-webhook:v0.2.0
+ke/kube-events-operator:v0.4.0
+ke/kube-events-exporter:v0.4.0
+ke/kube-events-ruler:v0.4.0
+ke/kube-auditing-operator:v0.2.0
+ke/kube-auditing-webhook:v0.2.0
 ##istio-images
 istio/pilot:1.11.1
 istio/proxyv2:1.11.1
@@ -390,8 +390,8 @@ jaegertracing/jaeger-agent:1.27
 jaegertracing/jaeger-collector:1.27
 jaegertracing/jaeger-query:1.27
 jaegertracing/jaeger-es-index-cleaner:1.27
-kubesphere/kiali-operator:v1.38.1
-kubesphere/kiali:v1.38
+ke/kiali-operator:v1.38.1
+ke/kiali:v1.38
 ##example-images
 busybox:1.31.1
 nginx:1.14-alpine
@@ -402,11 +402,11 @@ mirrorgooglecontainers/hpa-example:latest
 java:openjdk-8-jre-alpine
 fluent/fluentd:v1.4.2-2.0
 perl:latest
-kubesphere/examples-bookinfo-productpage-v1:1.16.2
-kubesphere/examples-bookinfo-reviews-v1:1.16.2
-kubesphere/examples-bookinfo-reviews-v2:1.16.2
-kubesphere/examples-bookinfo-details-v1:1.16.2
-kubesphere/examples-bookinfo-ratings-v1:1.16.3
+ke/examples-bookinfo-productpage-v1:1.16.2
+ke/examples-bookinfo-reviews-v1:1.16.2
+ke/examples-bookinfo-reviews-v2:1.16.2
+ke/examples-bookinfo-details-v1:1.16.2
+ke/examples-bookinfo-ratings-v1:1.16.3
 ##weave-scope-images
 weaveworks/scope:1.13.0
 ```
