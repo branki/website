@@ -26,4 +26,4 @@ Kuberix Enterise는 사용자를 위한 기본 인프라의 세부 정보를 숨
 
 Kuberix Enterprise 사용자는 KT Cloud, Naver Cloud, AWS, Azure와 같은 클라우드 플랫폼에 Kuberix Enterprise 를 설치하고 기존 쿠버네티스 클러스터를 가져오고 관리할 수도 있습니다.
 
-Kuberix Enterprise를 기존 쿠버네티스 플랫폼에 원활하게 통합한다는 것은 사용자의 비즈니스가 현재 자원이나 자산을 수정하지 않고는 영향을 받지 않는다는 것을 의미합니다. 자세한 내용은 [Linux에 설치](.. /.. /installing-on-linux/) and [Installing on Kubernetes](.. /.. /installing-on-kubernetes/)를 참조하십시오.
+Kuberix Enterprise를 기존 쿠버네티스 플랫폼에 원활하게 통합한다는 것은 사용자의 비즈니스가 현재 자원이나 자산을 수정하지 않고는 영향을 받지 않는다는 것을 의미합니다. 자세한 내용은 [Linux에 설치](.. /.. /installing-on-linux/) and [쿠버네티스에 설치](.. /.. /installing-on-kubernetes/)를 참조하십시오.
