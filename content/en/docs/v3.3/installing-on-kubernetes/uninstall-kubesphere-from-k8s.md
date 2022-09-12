@@ -1,15 +1,15 @@
 ---
-title: "Uninstall KubeSphere from Kubernetes"
-keywords: 'Kubernetes, KubeSphere, uninstall, remove-cluster'
-description: 'Remove KubeSphere from a Kubernetes cluster.'
-linkTitle: "Uninstall KubeSphere from Kubernetes"
+title: "Uninstall Kuberix Enterprise from Kubernetes"
+keywords: 'Kubernetes, Kuberix, uninstall, remove-cluster'
+description: 'Remove Kuberix Enterprise from a Kubernetes cluster.'
+linkTitle: "Uninstall Kuberix Enterprise from Kubernetes"
 weight: 4400
 ---
 
-You can uninstall KubeSphere from your existing Kubernetes cluster by using [kubesphere-delete.sh](https://github.com/kubesphere/ks-installer/blob/release-3.1/scripts/kubesphere-delete.sh). Copy it from the [GitHub source file](https://raw.githubusercontent.com/kubesphere/ks-installer/release-3.1/scripts/kubesphere-delete.sh) and execute this script on your local machine.
+[kubesphere-delete.sh](https://github.com/kubesphere/ks-installer/blob/release-3.1/scripts/kubesphere-delete.sh)를 사용하여 기존 쿠버네티스 클러스터에서 Kuberix Enterprise를 제거할 수 있습니다. [GitHub 소스 파일](https://raw.githubusercontent.com/kubesphere/ks-installer/release-3.1/scripts/kubesphere-delete.sh)에서 복사하고 로컬 머신에서 이 스크립트를 실행합니다.
 
 {{< notice warning >}}
 
-Uninstalling will remove KubeSphere from your Kubernetes cluster. This operation is irreversible and does not have any backup. Please be cautious with this operation.
+제거하면 쿠버네티스 클러스터에서 Kuberix Enterprise가 제거됩니다. 이 작업은 되돌릴 수 없으며 백업이 없습니다. 이 작업에 주의하십시오.
 
 {{</ notice >}}
