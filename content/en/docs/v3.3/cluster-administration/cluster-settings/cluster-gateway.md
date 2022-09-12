@@ -1,82 +1,82 @@
 ---
 title: "Cluster Gateway"
-keywords: 'KubeSphere, Kubernetes, Cluster, Gateway, NodePort, LoadBalancer'
-description: 'Learn how to create a cluster-scope gateway on KubeSphere.'
+keywords: 'Kuberix, Kubernetes, Cluster, Gateway, NodePort, LoadBalancer'
+description: 'Learn how to create a cluster-scope gateway on Kuberix Enterprise.'
 linkTitle: "Cluster Gateway"
 weight: 8630
 ---
 
-KubeSphere 3.3.0 provides cluster-scope gateways to let all projects share a global gateway. This document describes how to set a cluster gateway on KubeSphere.
+Kuberix Enterprise는 모든 프로젝트가 글로벌 게이트웨이를 공유할 수 있도록 클러스터 범위 게이트웨이를 제공합니다. 이 문서에서는 Kuberix Enterprise에서 클러스터 게이트웨이를 설정하는 방법을 설명합니다.
 
-## Prerequisites
+## 전제 조건
 
-You need to prepare a user with the `platform-admin` role, for example, `admin`. For more information, see [Create Workspaces, Projects, Users and Roles](../../../quick-start/create-workspace-and-project/).
+`platform-admin` 역할을 가진 사용자를 준비해야 합니다(예: `admin`). 자세한 내용은 [작업 공간, 프로젝트, 사용자 및 역할 생성](../../../quick-start/create-workspace-and-project/)을 참조하십시오.
 
-## Create a Cluster Gateway
+## 클러스터 게이트웨이 생성
 
-1. Log in to the KubeSphere web console as `admin`. Click **Platform** in the upper-left corner and select **Cluster Management**.
+1. Kuberix Enterprise 웹 콘솔에 'admin'으로 로그인합니다. 왼쪽 상단 모서리에서 **Platform**을 클릭하고 **Cluster Management**를 선택합니다.
 
-2. Go to **Gateway Settings** under **Cluster Settings** from the navigation pane, select the **Cluster Gateway** tab, and click **Enable Gateway**.
+2. 탐색 창에서 **Cluster Settings** 아래의 **Gateway Settings**으로 이동하고 **Cluster Gateway** 탭을 선택한 다음 **Enable Gateway**를 클릭합니다.
 
-3. In the displayed dialog box, select an access mode for the gateway from the following two options:
+3. 표시된 대화 상자에서 다음 두 가지 옵션 중에서 게이트웨이에 대한 액세스 모드를 선택합니다.
 
-   - **NodePort**: Access Services with corresponding node ports through the gateway. The NodePort access mode provides the following configurations:
-     - **Tracing**: Turn on the **Tracing** toggle to enable the Tracing feature on KubeSphere. Once it is enabled, check whether an annotation (`nginx.ingress.kubernetes.io/service-upstream: true`) is added for your route when the route is inaccessible. If not, add an annotation to your route.
-     - **Configuration Options**: Add key-value pairs to the cluster gateway.
-   - **LoadBalancer**: Access Services with a single IP address through the gateway. The LoadBalancer access mode provides the following configurations:
-     - **Tracing**: Turn on the **Tracing** toggle to enable the Tracing feature on KubeSphere. Once it is enabled, check whether an annotation (`nginx.ingress.kubernetes.io/service-upstream: true`) is added for your route when the route is inaccessible. If not, add an annotation to your route.
-     - **Load Balancer Provider**: Select a load balancer provider from the drop-down list.
-     - **Annotations**: Add annotations to the cluster gateway.
-     - **Configuration Options**: Add key-value pairs to the cluster gateway.
-
-   {{< notice info >}}
-
-   - To use the Tracing feature, turn on **Application Governance** when you create composed applications.
-   - For more information about how to use configuration options, see [Configuration options](https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/configmap/#configuration-options).
-
-   {{</ notice >}}
-
-4. Click **OK** to create the cluster gateway.
-
-5. The cluster gateway created is displayed and the basic information of the gateway is also shown on the page.
+   - **NodePort**: 게이트웨이를 통해 해당 노드 포트로 서비스에 액세스합니다. NodePort 액세스 모드는 다음 구성을 제공합니다.
+     - **추적**: **추적** 토글을 켜서 Kuberix Enterprise에서 추적 기능을 활성화합니다. 활성화되면 경로에 액세스할 수 없을 때 경로에 주석(`nginx.ingress.kubernetes.io/service-upstream: true`)이 추가되는지 확인합니다. 그렇지 않은 경우 경로에 주석을 추가하십시오.
+     - **구성 옵션**: 클러스터 게이트웨이에 키-값 쌍을 추가합니다.
+   - **LoadBalancer**: 게이트웨이를 통해 단일 IP 주소로 서비스에 액세스합니다. LoadBalancer 액세스 모드는 다음 구성을 제공합니다.
+     - **추적**: **추적** 토글을 켜서 Kuberix Enterprise에서 추적 기능을 활성화합니다. 활성화되면 경로에 액세스할 수 없을 때 경로에 주석(`nginx.ingress.kubernetes.io/service-upstream: true`)이 추가되는지 확인합니다. 그렇지 않은 경우 경로에 주석을 추가하십시오.
+     - **로드 밸런서 제공자**: 드롭다운 목록에서 로드 밸런서 제공자를 선택합니다.
+     - **주석**: 클러스터 게이트웨이에 주석을 추가합니다.
+     - **구성 옵션**: 클러스터 게이트웨이에 키-값 쌍을 추가합니다.
 
    {{< notice note >}}
 
-   A gateway named `kubesphere-router-kubesphere-system` is also created, which serves as a global gateway for all projects in your cluster.
+   - 추적 기능을 사용하려면 구성된 응용 프로그램을 만들 때 **Application Governance**를 켜십시오.
+   - 구성 옵션 사용에 대한 자세한 내용은 [구성 옵션](https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/configmap/#configuration-options)을 참조하십시오.
 
    {{</ notice >}}
 
-6. Click **Manage** to select an operation from the drop-down menu:
+4. **OK**을 클릭하여 클러스터 게이트웨이를 만듭니다.
 
-   - **View Details**: Go to the details page of the cluster gateway.
-   - **Edit**: Edit configurations of the cluster gateway.
-   - **Disable**: Disable the cluster gateway.
+5. 생성된 클러스터 게이트웨이가 표시되고 게이트웨이의 기본 정보도 페이지에 표시됩니다.
 
-7. After a cluster gateway is created, see [Routes](../../../project-user-guide/application-workloads/routes/#create-a-route) for more information about how to create a route.
+   {{< notice note >}}
 
-## Cluster Gateway Details Page
+   클러스터의 모든 프로젝트에 대한 전역 게이트웨이 역할을 하는 'ke-router-ke-system'이라는 게이트웨이도 생성됩니다.
 
-1. Under the **Cluster Gateway** tab, click **Manage** on the right of a cluster gateway and select **View Details** to open its details page.
-2. On the details page, click **Edit** to edit configurations of the cluster gateway or click **Disable** to disable the gateway.
-3. Click the **Monitoring** tab to view the monitoring metrics of the cluster gateway.
-4. Click the **Configuration Options** tab to view configuration options of the cluster gateway.
-5. Click the **Gateway Logs** tab to view logs of the cluster gateway.
-6. Click the **Resource Status** tab to view workload status of the cluster gateway. Click <img src="/images/docs/v3.3/common-icons/replica-plus-icon.png" width="15" alt="icon" /> or <img src="/images/docs/v3.3/common-icons/replica-minus-icon.png" width="15" /> to scale up or scale down the number of replicas.
-7. Click the **Metadata** tab to view annotations of the cluster gateway.
+   {{</ notice >}}
 
-## View Project Gateways
+6. **Manage**를 클릭하여 드롭다운 메뉴에서 작업을 선택합니다.
 
-On the **Gateway Settings** page, click the **Project Gateway** tab to view project gateways.
+   - **View Details**: 클러스터 게이트웨이의 세부 정보 페이지로 이동합니다.
+   - **Edit**: 클러스터 게이트웨이의 구성을 편집합니다.
+   - **Disable**: 클러스터 게이트웨이를 비활성화합니다.
 
-Click <img src="/images/docs/v3.3/project-administration/role-and-member-management/three-dots.png" width="20px" alt="icon"> on the right of a project gateway to select an operation from the drop-down menu:
+7. 클러스터 게이트웨이 생성 후 생성 방법에 대한 자세한 내용은 [경로](../../../project-user-guide/application-workloads/routes/#create-a-route)를 참조하십시오. 노선.
 
-- **Edit**: Edit configurations of the project gateway.
-- **Disable**: Disable the project gateway.
+## 클러스터 게이트웨이 세부 정보 페이지
 
-{{< notice note >}}
+1. **Cluster Gateway** 탭 아래에서 클러스터 게이트웨이 오른쪽의 **Management**를 클릭하고 **View Details**를 선택하여 세부 정보 페이지를 엽니다.
+2. 세부 정보 페이지에서 **Edit**를 클릭하여 클러스터 게이트웨이의 구성을 편집하거나 **Disable**을 클릭하여 게이트웨이를 비활성화합니다.
+3. **Monitoring** 탭을 클릭하여 클러스터 게이트웨이의 모니터링 메트릭을 봅니다.
+4. **Configuration Options** 탭을 클릭하여 클러스터 게이트웨이의 구성 옵션을 봅니다.
+5. **Gateway Logs** 탭을 클릭하여 클러스터 게이트웨이의 로그를 봅니다.
+6. **Resource Status** 탭을 클릭하여 클러스터 게이트웨이의 작업 부하 상태를 봅니다. <img src="/images/docs/v3.3/common-icons/replica-plus-icon.png" width="15" alt="icon" /> 또는 <img src="/images/docs/ v3.3/common-icons/replica-minus-icon.png" width="15" /> 복제본 수를 확장하거나 축소합니다.
+7. **Metadata** 탭을 클릭하여 클러스터 게이트웨이의 주석을 봅니다.
 
-If a project gateway exists prior to the creation of a cluster gateway, the project gateway address may switch between the address of the cluster gateway and that of the project gateway. It is recommended that you should use either the cluster gateway or project gateway.
+## 프로젝트 게이트웨이 보기
+
+**Gateway Settings** 페이지에서 **Project Gateway** 탭을 클릭하여 프로젝트 게이트웨이를 봅니다.
+
+프로젝트 오른쪽의 <img src="/images/docs/v3.3/project-administration/role-and-member-management/three-dots.png" width="20px" alt="icon"> 클릭 게이트웨이를 사용하여 드롭다운 메뉴에서 작업을 선택합니다.
+
+- **Edit**: 프로젝트 게이트웨이의 구성을 편집합니다.
+- **Disable**: 프로젝트 게이트웨이를 비활성화합니다.
+
+{{< 공notice note >}}
+
+클러스터 게이트웨이 생성 이전에 프로젝트 게이트웨이가 존재하는 경우 프로젝트 게이트웨이 주소가 클러스터 게이트웨이 주소와 프로젝트 게이트웨이 주소 간에 전환될 수 있습니다. 클러스터 게이트웨이 또는 프로젝트 게이트웨이를 사용하는 것이 좋습니다.
 
 {{</ notice >}}
 
-For more information about how to create project gateways, see [Project Gateway](../../../project-administration/project-gateway/).
+프로젝트 게이트웨이 생성 방법에 대한 자세한 내용은 [프로젝트 게이트웨이](../../../project-administration/project-gateway/)를 참조하세요.
