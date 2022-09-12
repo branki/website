@@ -1,29 +1,29 @@
 ---
 title: "Set up an HA Kubernetes Cluster Using Keepalived and HAproxy"
-keywords: 'Kubernetes, KubeSphere, HA, high availability, installation, configuration, Keepalived, HAproxy'
+keywords: 'Kubernetes, Kuberix, HA, high availability, installation, configuration, Keepalived, HAproxy'
 description: 'Learn how to create a highly available cluster using Keepalived and HAproxy.'
 linkTitle: "Set up an HA Cluster Using Keepalived and HAproxy"
 weight: 3230
 showSubscribe: true
 ---
 
-A highly available Kubernetes cluster ensures your applications run without outages which is required for production. In this connection, there are plenty of ways for you to choose from to achieve high availability.
+고가용성 쿠버네티스 클러스터는 프로덕션에 필요한 중단 없이 애플리케이션이 실행되도록 합니다. 이와 관련하여 고가용성을 달성하기 위해 선택할 수 있는 많은 방법이 있습니다.
 
-This tutorial demonstrates how to configure Keepalived and HAproxy for load balancing and achieve high availability. The steps are listed as below:
+이 자습서는 부하 분산을 위해 Keepalived 및 HAproxy를 구성하고 고가용성을 달성하는 방법을 보여줍니다. 단계는 다음과 같습니다.
 
-1. Prepare hosts.
-2. Configure Keepalived and HAproxy.
-3. Use KubeKey to set up a Kubernetes cluster and install KubeSphere.
+1. 호스트를 준비합니다.
+2. Keepalive 및 HAproxy를 구성합니다.
+3. KubePOP를 사용하여 쿠버네티스 클러스터를 설정하고 Kuberix Enterprise를 설치합니다.
 
-## Cluster Architecture
+## 클러스터 아키텍처
 
-The example cluster has three master nodes, three worker nodes, two nodes for load balancing and one virtual IP address. The virtual IP address in this example may also be called "a floating IP address". That means in the event of node failures, the IP address can be passed between nodes allowing for failover, thus achieving high availability.
+예제 클러스터에는 마스터 노드 3개, 작업자 노드 3개, 로드 밸런싱을 위한 노드 2개, 가상 IP 주소 1개가 있습니다. 이 예에서 가상 IP 주소는 "유동 IP 주소"라고도 합니다. 즉, 노드 오류가 발생하는 경우 노드 간에 IP 주소를 전달하여 장애 조치를 허용하여 고가용성을 달성할 수 있습니다.
 
 ![architecture-ha-k8s-cluster](/images/docs/v3.3/installing-on-linux/high-availability-configurations/set-up-ha-cluster-using-keepalived-haproxy/architecture-ha-k8s-cluster.png)
 
-Notice that in this example, Keepalived and HAproxy are not installed on any of the master nodes. Admittedly, you can do that and high availability can also be achieved. That said, configuring two specific nodes for load balancing (You can add more nodes of this kind as needed) is more secure. Only Keepalived and HAproxy will be installed on these two nodes, avoiding any potential conflicts with any Kubernetes components and services.
+이 예에서 Keepalived 및 HAproxy는 마스터 노드에 설치되어 있지 않습니다. 물론 그렇게 할 수 있으며 고가용성도 달성할 수 있습니다. 즉, 로드 밸런싱을 위해 두 개의 특정 노드를 구성하는 것이 더 안전합니다(필요에 따라 이러한 종류의 노드를 더 추가할 수 있음). Keepalived 및 HAproxy만 이 두 노드에 설치되어 쿠버네티스 구성 요소 및 서비스와의 잠재적 충돌을 방지합니다.
 
-## Prepare Hosts
+## 호스트 준비
 
 | IP Address  | Hostname | Role                 |
 | ----------- | -------- | -------------------- |
@@ -37,29 +37,29 @@ Notice that in this example, Keepalived and HAproxy are not installed on any of 
 | 172.16.0.9  | worker3  | worker               |
 | 172.16.0.10 |          | Virtual IP address   |
 
-For more information about requirements for nodes, network, and dependencies, see [Multi-node Installation](../../../installing-on-linux/introduction/multioverview/#step-1-prepare-linux-hosts).
+노드, 네트워크 및 종속성에 대한 요구 사항에 대한 자세한 내용은 [다중 노드 설치](../../../installing-on-linux/introduction/multioverview/#step-1-prepare-linux-hosts)를 참조하십시오. ).
 
-## Configure Load Balancing
+## 로드 밸런싱 구성
 
-[Keepalived](https://www.keepalived.org/) provides a VRPP implementation and allows you to configure Linux machines for load balancing, preventing single points of failure. [HAProxy](https://www.haproxy.org/), providing reliable, high performance load balancing, works perfectly with Keepalived.
+[Keepalived](https://www.keepalived.org/)는 VRPP 구현을 제공하고 로드 밸런싱을 위해 Linux 시스템을 구성하여 단일 실패 지점을 방지할 수 있습니다. 안정적인 고성능 로드 밸런싱을 제공하는 [HAProxy](https://www.haproxy.org/)는 Keepalived와 완벽하게 작동합니다.
 
-As Keepalived and HAproxy are installed on `lb1` and `lb2`, if either one goes down, the virtual IP address (i.e. the floating IP address) will be automatically associated with another node so that the cluster is still functioning well, thus achieving high availability. If you want, you can add more nodes all with Keepalived and HAproxy installed for that purpose.
+Keepalived와 HAproxy가 `lb1`과 `lb2`에 설치되어 있기 때문에 둘 중 하나가 다운되면 가상 IP 주소(즉, 유동 IP 주소)가 자동으로 다른 노드와 연결되어 클러스터가 여전히 잘 작동하므로 다음을 달성할 수 있습니다. 고가용성. 원하는 경우 Keepalived 및 HAproxy가 해당 목적으로 설치된 노드를 더 추가할 수 있습니다.
 
-Run the following command to install Keepalived and HAproxy first.
+다음 명령을 실행하여 Keepalived 및 HAproxy를 먼저 설치합니다.
 
 ```bash
 yum install keepalived haproxy psmisc -y
 ```
 
-### HAproxy Configuration
+### HAproxy 구성
 
-1. The configuration of HAproxy is exactly the same on the two machines for load balancing. Run the following command to configure HAproxy.
+1. HAproxy의 구성은 로드 밸런싱을 위해 두 시스템에서 정확히 동일합니다. 다음 명령을 실행하여 HAproxy를 구성합니다.
 
    ```bash
    vi /etc/haproxy/haproxy.cfg
    ```
 
-2. Here is an example configuration for your reference (Pay attention to the `server` field. Note that `6443` is the `apiserver` port):
+2. 다음은 참조용 구성의 예입니다(`server` 필드에 주의하십시오. `6443`은 `apiserver` 포트임에 유의하십시오):
 
    ```bash
    global
@@ -98,31 +98,31 @@ yum install keepalived haproxy psmisc -y
        server kube-apiserver-3 172.16.0.6:6443 check # Replace the IP address with your own.
    ```
 
-3. Save the file and run the following command to restart HAproxy.
+3. 파일을 저장하고 다음 명령을 실행하여 HAproxy를 다시 시작합니다.
 
    ```bash
    systemctl restart haproxy
    ```
 
-4. Make it persist through reboots:
+4. 재부팅 후에도 유지되도록 합니다.
 
    ```bash
    systemctl enable haproxy
    ```
 
-5. Make sure you configure HAproxy on the other machine (`lb2`) as well.
+5. 다른 머신(`lb2`)에서도 HAproxy를 구성해야 합니다.
 
-### Keepalived Configuration
+### 연결 유지 구성
 
-Keepalived must be installed on both machines while the configuration of them is slightly different.
+Keepalived는 구성이 약간 다르지만 두 시스템에 모두 설치되어야 합니다.
 
-1. Run the following command to configure Keepalived.
+1. 다음 명령을 실행하여 Keepalive를 구성합니다.
 
    ```bash
    vi /etc/keepalived/keepalived.conf
    ```
 
-2. Here is an example configuration (`lb1`) for your reference:
+2. 다음은 참조용 구성(`lb1`)의 예입니다.:
 
    ```bash
    global_defs {
@@ -167,31 +167,30 @@ Keepalived must be installed on both machines while the configuration of them is
 
    {{< notice note >}} 
 
-   - For the `interface` field, you must provide your own network card information. You can run `ifconfig` on your machine to get the value.
-
-   - The IP address provided for `unicast_src_ip` is the IP address of your current machine. For other machines where HAproxy and Keepalived are also installed for load balancing, their IP address must be provided for the field `unicast_peer`.
+    - '인터페이스' 필드에는 자신의 네트워크 카드 정보를 제공해야 합니다. 값을 얻기 위해 머신에서 `ifconfig`를 실행할 수 있습니다.
+    - `unicast_src_ip`에 제공된 IP 주소는 현재 컴퓨터의 IP 주소입니다. 로드 밸런싱을 위해 HAproxy 및 Keepalived도 설치된 다른 시스템의 경우 'unicast_peer' 필드에 해당 IP 주소를 제공해야 합니다.
 
      {{</ notice >}} 
 
-3. Save the file and run the following command to restart Keepalived.
+3. 파일을 저장하고 다음 명령을 실행하여 Keepalive를 다시 시작합니다.
 
    ```bash
    systemctl restart keepalived
    ```
 
-4. Make it persist through reboots:
+4. 재부팅 후에도 유지되도록 합니다.:
 
    ```bash
    systemctl enable keepalived
    ```
 
-5. Make sure you configure Keepalived on the other machine (`lb2`) as well.
+5. 다른 머신(`lb2`)에서도 Keepalived를 구성했는지 확인하십시오.
 
-## Verify High Availability
+## 고가용성 확인
 
-Before you start to create your Kubernetes cluster, make sure you have tested the high availability. 
+쿠버네티스 클러스터 생성을 시작하기 전에 고가용성을 테스트했는지 확인하십시오.
 
-1. On the machine `lb1`, run the following command:
+1. `lb1` 머신에서 다음 명령을 실행합니다.
 
    ```bash
    [root@lb1 ~]# ip a s
@@ -211,13 +210,13 @@ Before you start to create your Kubernetes cluster, make sure you have tested th
           valid_lft forever preferred_lft forever
    ```
 
-2. As you can see above, the virtual IP address is successfully added. Simulate a failure on this node:
+2. 위와 같이 가상 IP 주소가 성공적으로 추가되었습니다. 이 노드에서 오류를 시뮬레이션합니다.:
 
    ```bash
    systemctl stop haproxy
    ```
 
-3. Check the floating IP address again and you can see it disappear on `lb1`.
+3. 유동 IP 주소를 다시 확인하면 `lb1`에서 사라지는 것을 확인할 수 있습니다.
 
    ```bash
    [root@lb1 ~]# ip a s
@@ -235,7 +234,7 @@ Before you start to create your Kubernetes cluster, make sure you have tested th
           valid_lft forever preferred_lft forever
    ```
 
-4. Theoretically, the virtual IP will be failed over to the other machine (`lb2`) if the configuration is successful. On `lb2`, run the following command and here is the expected output:
+4. 이론적으로 가상 IP는 구성이 성공하면 다른 머신(`lb2`)으로 장애 조치됩니다. `lb2`에서 다음 명령을 실행하고 예상되는 출력은 다음과 같습니다.:
 
    ```bash
    [root@lb2 ~]# ip a s
@@ -255,41 +254,41 @@ Before you start to create your Kubernetes cluster, make sure you have tested th
           valid_lft forever preferred_lft forever
    ```
 
-5. As you can see above, high availability is successfully configured.
+5. 위에서 볼 수 있듯이 고가용성이 성공적으로 구성되었습니다.
 
-## Use KubeKey to Create a Kubernetes Cluster
+## KubePOP를 사용하여 쿠버네티스 클러스터 생성
 
-[KubeKey](https://github.com/kubesphere/kubekey) is an efficient and convenient tool to create a Kubernetes cluster. Follow the steps below to download KubeKey.
+[KubePOP](https://github.com/ke/kubepop)는 쿠버네티스 클러스터를 생성하는 효율적이고 편리한 도구입니다. 아래 단계에 따라 KubePOP를 다운로드하십시오
 
 {{< tabs >}}
 
 {{< tab "Good network connections to GitHub/Googleapis" >}}
 
-Download KubeKey from its [GitHub Release Page](https://github.com/kubesphere/kubekey/releases) or use the following command directly.
+[GitHub 릴리스 페이지](https://github.com/ke/kubepop/releases)에서 KubePOP를 다운로드하거나 다음 명령을 직접 사용합니다.
 
 ```bash
-curl -sfL https://get-kk.kubesphere.io | VERSION=v2.2.2 sh -
+curl -sfL https://get-kp.kuberix.io | VERSION=v2.2.2 sh -
 ```
 
 {{</ tab >}}
 
 {{< tab "Poor network connections to GitHub/Googleapis" >}}
 
-Run the following command first to make sure you download KubeKey from the correct zone.
+다음 명령을 먼저 실행하여 올바른 영역에서 KubePOP를 다운로드했는지 확인하십시오.
 
 ```bash
-export KKZONE=cn
+export KPZONE=cn
 ```
 
-Run the following command to download KubeKey:
+다음 명령을 실행하여 KubePOP를 다운로드하십시오.:
 
 ```bash
-curl -sfL https://get-kk.kubesphere.io | VERSION=v2.2.2 sh -
+curl -sfL https://get-kp.kuberix.io | VERSION=v2.2.2 sh -
 ```
 
 {{< notice note >}}
 
-After you download KubeKey, if you transfer it to a new machine also with poor network connections to Googleapis, you must run `export KKZONE=cn` again before you proceed with the steps below.
+KubePOP를 다운로드한 후 Googleapis에 대한 네트워크 연결이 좋지 않은 새 컴퓨터로 전송하는 경우 아래 단계를 진행하기 전에 `export KPZONE=cn`을 다시 실행해야 합니다.
 
 {{</ notice >}} 
 
@@ -299,42 +298,42 @@ After you download KubeKey, if you transfer it to a new machine also with poor n
 
 {{< notice note >}}
 
-The commands above download the latest release (v2.2.2) of KubeKey. You can change the version number in the command to download a specific version.
+위의 명령은 KubePOP의 최신 릴리스(v2.2.2)를 다운로드합니다. 명령에서 버전 번호를 변경하여 특정 버전을 다운로드할 수 있습니다.
 
 {{</ notice >}} 
 
-Make `kk` executable:
+`kp` 파일을 실행 가능하게 만듭니다.:
 
 ```bash
-chmod +x kk
+chmod +x kp
 ```
 
-Create an example configuration file with default configurations. Here Kubernetes v1.22.10 is used as an example.
+기본 구성으로 예제 구성 파일을 만듭니다. 여기에서 쿠버네티스 v1.22.10이 예로 사용됩니다.
 
 ```bash
-./kk create config --with-kubesphere v3.3.0 --with-kubernetes v1.22.10
+./kp create config --with-kuberixEnterprise v3.3.0 --with-kubernetes v1.22.10
 ```
 
 {{< notice note >}}
 
-- Recommended Kubernetes versions for KubeSphere 3.3.0: v1.19.x, v1.20.x, v1.21.x, v1.22.x, and v1.23.x (experimental support). If you do not specify a Kubernetes version, KubeKey will install Kubernetes v1.23.7 by default. For more information about supported Kubernetes versions, see [Support Matrix](../../../installing-on-linux/introduction/kubekey/#support-matrix).
+- Kuberix Enterprise 3.3.0의 권장 쿠버네티스 버전: v1.19.x, v1.20.x, v1.21.x, v1.22.x 및 v1.23.x(실험 지원). 쿠버네티스 버전을 지정하지 않으면 KubePOP는 기본적으로 쿠버네티스 v1.23.7을 설치합니다. 지원되는 쿠버네티스 버전에 대한 자세한 내용은 [지원 매트릭스](../../../installing-on-linux/introduction/kubepop/#support-matrix)를 참조하십시오.
 
-- If you do not add the flag `--with-kubesphere` in the command in this step, KubeSphere will not be deployed unless you install it using the `addons` field in the configuration file or add this flag again when you use `./kk create cluster` later.
-- If you add the flag `--with-kubesphere` without specifying a KubeSphere version, the latest version of KubeSphere will be installed.
+- 이 단계에서 명령에 `--with-kuberixEnterprise` 플래그를 추가하지 않으면 구성 파일의 `addons` 필드를 사용하여 설치하거나 `를 사용할 때 이 플래그를 다시 추가하지 않는 한 Kuberix Enterprise가 배포되지 않습니다. ./kp는 나중에 클러스터를 생성합니다.
+- Kuberix Enterprise 버전을 지정하지 않고 `--with-kuberixEnterprisee` 플래그를 추가하면 최신 버전의 Kuberix Enterprise가 설치됩니다.
 
 {{</ notice >}}
 
-## Deploy KubeSphere and Kubernetes
+## Kuberix Enterprise 및 쿠버네티스 배포
 
-After you run the commands above, a configuration file `config-sample.yaml` will be created. Edit the file to add machine information, configure the load balancer and more.
+위의 명령어를 실행하면 'config-sample.yaml' 구성 파일이 생성됩니다. 파일을 편집하여 시스템 정보를 추가하고 로드 밸런서를 구성하는 등의 작업을 수행합니다.
 
 {{< notice note >}}
 
-The file name may be different if you customize it.
+사용자 정의하면 파일 이름이 다를 수 있습니다.
 
 {{</ notice >}} 
 
-### config-sample.yaml example
+### config-sample.yaml 
 
 ```yaml
 ...
@@ -360,7 +359,7 @@ spec:
     - worker2
     - worker3
   controlPlaneEndpoint:
-    domain: lb.kubesphere.local
+    domain: lb.kuberix.local
     address: 172.16.0.10   # The VIP address
     port: 6443
 ...
@@ -368,32 +367,32 @@ spec:
 
 {{< notice note >}}
 
-- Replace the value of `controlPlaneEndpoint.address` with your own VIP address.
-- For more information about different parameters in this configuration file, see [Multi-node Installation](../../../installing-on-linux/introduction/multioverview/#2-edit-the-configuration-file).
+- `controlPlaneEndpoint.address`의 값을 자신의 VIP 주소로 바꿉니다.
+- 이 구성 파일의 다른 매개변수에 대한 자세한 내용은 [멀티 노드 설치](../../../installing-on-linux/introduction/multioverview/#2-edit-the-configuration-file)를 참조하십시오. .
 
 {{</ notice >}} 
 
-### Start installation
+### 설치 시작
 
-After you complete the configuration, you can execute the following command to start the installation:
+구성을 완료한 후 다음 명령을 실행하여 설치를 시작할 수 있습니다.:
 
 ```bash
-./kk create cluster -f config-sample.yaml
+./kp create cluster -f config-sample.yaml
 ```
 
-### Verify installation
+### 설치 확인
 
-1. Run the following command to inspect the logs of installation.
+1. 다음 명령어를 실행하여 설치 로그를 확인합니다.
 
    ```bash
-   kubectl logs -n kubesphere-system $(kubectl get pod -n kubesphere-system -l 'app in (ks-install, ks-installer)' -o jsonpath='{.items[0].metadata.name}') -f
+   kubectl logs -n ke-system $(kubectl get pod -n ke-system -l 'app in (ke-install, ke-installer)' -o jsonpath='{.items[0].metadata.name}') -f
    ```
 
-2. When you see the following message, it means your HA cluster is successfully created.
+2. 다음 메시지가 표시되면 HA 클러스터가 성공적으로 생성되었음을 의미합니다.
 
    ```bash
    #####################################################
-   ###              Welcome to KubeSphere!           ###
+   ###          Welcome to Kuberix Enterprise!       ###
    #####################################################
    
    Console: http://172.16.0.4:30880
@@ -409,6 +408,6 @@ After you complete the configuration, you can execute the following command to s
      2. Please change the default password after login.
    
    #####################################################
-   https://kubesphere.io             2020-xx-xx xx:xx:xx
+   https://kuberix.io                2020-xx-xx xx:xx:xx
    #####################################################
    ```
