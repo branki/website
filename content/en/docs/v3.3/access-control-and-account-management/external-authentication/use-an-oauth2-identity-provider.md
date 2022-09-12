@@ -13,7 +13,7 @@ weight: 12230
 
 ## 전제 조건
 
-Kubernetes 클러스터를 배포하고 클러스터에 Kuberix Enterprise를 설치해야 합니다. 자세한 내용은 [Linux에 설치](/docs/v3.3/installing-on-linux/) 및 [Kubernetes에 설치](/docs/v3.3/installing-on-kubernetes/)를 참조하십시오.
+쿠버네티스 클러스터를 배포하고 클러스터에 Kuberix Enterprise를 설치해야 합니다. 자세한 내용은 [Linux에 설치](/docs/v3.3/installing-on-linux/) 및 [쿠버네티스에 설치](/docs/v3.3/installing-on-kubernetes/)를 참조하십시오.
 
 ## OAuth 2.0 플러그인 개발
 
