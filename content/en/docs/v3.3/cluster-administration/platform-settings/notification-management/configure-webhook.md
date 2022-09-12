@@ -1,63 +1,66 @@
 ---
 title: "Configure Webhook Notifications"
-keywords: 'KubeSphere, Kubernetes, custom, platform, webhook'
+keywords: 'Kuberix, Kubernetes, custom, platform, webhook'
 description: 'Configure a webhook server to receive platform notifications through the webhook.'
 linkTitle: "Configure Webhook Notifications"
 weight: 8726
 ---
 
-A webhook is a way for an app to send notifications triggered by specific events. It delivers information to other applications in real time, allowing users to receive notifications immediately.
+웹훅은 앱이 특정 이벤트에 의해 트리거되는 알림을 보내는 방법입니다. 실시간으로 다른 애플리케이션에 정보를 전달하여 사용자가 즉시 알림을 받을 수 있도록 합니다.
 
-This tutorial describes how to configure a webhook server to receive platform notifications.
+이 자습서에서는 플랫폼 알림을 수신하도록 웹훅 서버를 구성하는 방법을 설명합니다.
 
-## Prerequisites
+## 전제 조건
 
-You need to prepare a user granted the `platform-admin` role. For more information, see [Create Workspaces, Projects, Users and Roles](../../../../quick-start/create-workspace-and-project/).
+`platform-admin` 역할이 부여된 사용자를 준비해야 합니다. 자세한 내용은 [작업 공간, 프로젝트, 사용자 및 역할 생성](../../../../quick-start/create-workspace-and-project/)을 참조하십시오.
 
-## Configure the Webhook Server
+## 웹훅 서버 구성
 
-1. Log in to the KubeSphere web console as the `platform-admin` user.
+1. Kuberix Enterprise 웹 콘솔에 `platform-admin` 사용자로 로그인합니다.
 
-2. Click **Platform** in the upper-left corner and select **Platform Settings**.
+2. 왼쪽 상단의 **Platform**을 클릭하고 **Platform Settings**을 선택합니다.
 
-3. In the left nevigation pane, click **Notification Configuration** under **Notification Management**, and select **Webhook**.
+3. 왼쪽 탐색 창에서 **Notification Management** 아래의 **Notification Configuration**을 클릭하고 **Webhook**을 선택합니다.
 
-4. On the **Webhook** tab page, set the following parameters:
+4. **Webhook** 탭 페이지에서 다음 매개변수를 설정합니다.
 
-   - **Webhook URL**: URL of the webhook server.
+   - **Webhook URL**: Webhook 서버의 URL입니다.
 
-   - **Verification Type**: Webhook authentication method.
-     - **No authentication**: Skips authentication. All notifications can be sent to the URL.
-     - **Bearer token**: Uses a token for authentication.
-     - **Basic authentication**: Uses a username and password for authentication.
+   - **Verification Type**: 웹훅 인증 방식입니다.
+     - **No authentication**: 인증을 건너뜁니다. 모든 알림은 URL로 보낼 수 있습니다.
+     - **Bearer token**: 인증을 위해 토큰을 사용합니다.
+     - **Basic authentication**: 사용자 이름과 비밀번호를 사용하여 인증합니다.
 
-   {{< notice note>}}Currently, KubeSphere does not suppot TLS connections (HTTPS). You need to select **Skip TLS verification (insecure)** if you use an HTTPS URL.
+   {{< notice note >}}
+   
+   현재 Kuberix Enterprise는 TLS 연결(HTTPS)을 지원하지 않습니다. HTTPS URL을 사용하는 경우 **Skip TLS verification (insecure)**를 선택해야 합니다.
 
    {{</notice>}}
 
-5. Select the checkbox on the left of **Notification Conditions** to set notification conditions.
+5. **Notification Conditions** 왼쪽의 체크박스를 선택하여 알림 조건을 설정합니다.
 
-    - **Label**: Name, severity, or monitoring target of an alerting policy. You can select a label or customize a label.
-    - **Operator**: Mapping between the label and the values. The operator includes **Includes values**, **Does not include values**, **Exists**, and **Does not exist**.
-    - **Values**: Values associated with the label.
+    - **Label**: 알림 정책의 이름, 심각도 또는 모니터링 대상입니다. 레이블을 선택하거나 레이블을 사용자 정의할 수 있습니다.
+    - **Operator**: 레이블과 값 간의 매핑. 연산자에는 **Includes values**, **Does not include values**, **Exists** 및 **Does not exist**이 포함됩니다.
+    - **Values**: 레이블과 관련된 값입니다.
+    
     {{< notice note >}}
 
-   - Operators **Includes values** and **Does not include values** require one or more label values. Use a carriage return to separate values.
-   - Operators **Exists** and **Does not exist** determine whether a label exists, and do not require a label value.
+   - 연산자 **Includes values** 및 **Does not include values**에는 하나 이상의 레이블 값이 필요합니다. 캐리지 리턴을 사용하여 값을 구분합니다.
+   - 연산자 **Exists** 및 **Does not exist**는 레이블이 있는지 여부를 결정하며 레이블 값이 필요하지 않습니다.
 
-   {{</ notice >}} 
+    {{</ notice >}}
 
-6. You can click **Add** to add notification conditions, or click <img src="/images/docs/v3.3/common-icons/trashcan.png" width='25' height='25' alt="icon" /> on the right of a notification condition to delete the condition.
+6. **Add**를 클릭하여 알림 조건을 추가하거나 <img src="/images/docs/v3.3/common-icons/trashcan.png" width='25' height='25' alt를 클릭할 수 있습니다. ="icon" /> 알림 조건 오른쪽에 있는 조건을 삭제합니다.
 
-7. After the configurations are complete, you can click **Send Test Message** for verification.
+7. 구성이 완료되면 **Send Test Message**를 클릭하여 확인할 수 있습니다.
 
-8. On the upper-right corner, you can turn on the **Disabled** toggle to enbale notifications, or turn off the **Enabled** toggle to diable them.
+8. 오른쪽 상단 모서리에서 **Disabled** 토글을 켜서 알림을 활성화하거나 **Enabled** 토글을 꺼서 비활성화할 수 있습니다.
 
-9. Click **OK** after you finish.
+9. 완료한 후 **OK**을 클릭합니다.
 
    {{< notice note >}}
 
-   - After the notification conditions are set, the recepients will receive only notifications that meet the conditions.
-   - If you change the existing configuration, you must click **OK** to apply it.
+   - 알림 조건이 설정되면 수신자는 조건에 맞는 알림만 받게 됩니다.
+   - 기존 설정을 변경할 경우 **OK**을 눌러 적용해야 합니다.
 
    {{</ notice >}} 
