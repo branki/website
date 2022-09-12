@@ -1,14 +1,14 @@
 ---
 title: "Port Requirements"
-keywords: 'Kubernetes, KubeSphere, port-requirements, firewall-rules'
-description: 'Understand the specific port requirements for different services in KubeSphere.'
+keywords: 'Kubernetes, Kuberix, port-requirements, firewall-rules'
+description: 'Understand the specific port requirements for different services in Kuberix Enterprise.'
 
 linkTitle: "Port Requirements"
 weight: 3150
 ---
 
 
-KubeSphere requires certain ports for the communications among services. If your network is configured with firewall rules, you need to ensure infrastructure components can communicate with each other through specific ports that act as communication endpoints for certain processes or services.
+Kuberix Enterprise는 서비스 간 통신을 위해 특정 포트가 필요합니다. 네트워크가 방화벽 규칙으로 구성된 경우 인프라 구성 요소가 특정 프로세스 또는 서비스의 통신 끝점 역할을 하는 특정 포트를 통해 서로 통신할 수 있도록 해야 합니다.
 
 |Service|Protocol|Action|Start Port|End Port|Notes
 |---|---|---|---|---|---|
@@ -29,5 +29,7 @@ KubeSphere requires certain ports for the communications among services. If your
 
 
 {{< notice note >}}
-When you use the Calico network plugin and run your cluster in a classic network on cloud, you need to enable both IPENCAP and IPIP protocol for the source IP.
+
+Calico 네트워크 플러그인을 사용하고 클라우드의 클래식 네트워크에서 클러스터를 실행할 때 소스 IP에 대해 IPENCAP 및 IPIP 프로토콜을 모두 활성화해야 합니다.
+
 {{</ notice >}}
