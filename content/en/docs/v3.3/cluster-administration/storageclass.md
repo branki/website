@@ -142,7 +142,7 @@ NFS(Net File System)는 외부 제공자 볼륨 플러그인과 함께 Kubernete
 | 회수 정책 | 매니페스트의 'reclaimPolicy'에 의해 지정됩니다. 값은 기본적으로 '삭제'입니다. |
 | 스토리지 시스템 | 매니페스트에서 '프로비저너'로 지정됩니다. [charts for nfs-client](https://github.com/kubesphere/helm-charts/tree/master/src/main/nfs-client-provisioner)로 스토리지 클래스를 설치하면 `cluster. 로컬/nfs-client-nfs-client-provisioner`. |
 | 액세스 모드 | 매니페스트에서 `.metadata.annotations.storageclass.kubesphere.io/supported-access-modes`로 지정됩니다. 기본적으로 `ReadWriteOnce`, `ReadOnlyMany` 및 `ReadWriteMany`가 모두 선택되어 있습니다. |
-| 볼륨 바인딩 모드 | 매니페스트에서 'volumeBindingMode'로 지정됩니다. 사용되는 바인딩 모드를 결정합니다. **지연된 바인딩**은 볼륨이 생성된 후 이 볼륨을 사용하는 Pod가 생성될 때 볼륨 인스턴스에 바인딩됨을 의미합니다. **즉시 바인딩**은 볼륨이 생성된 후 즉시 볼륨 인스턴스에 바인딩됨을 의미합니다. |
+| 볼륨 바인딩 모드 | 매니페스트에서 'volumeBindingMode'로 지정됩니다. 사용되는 바인딩 모드를 결정합니다. **Delayed binding**은 볼륨이 생성된 후 이 볼륨을 사용하는 Pod가 생성될 때 볼륨 인스턴스에 바인딩됨을 의미합니다. **Immediate binding**은 볼륨이 생성된 후 즉시 볼륨 인스턴스에 바인딩됨을 의미합니다. |
 
 | 키| 설명 | 가치 |
 | :---- | :---- | :----|
