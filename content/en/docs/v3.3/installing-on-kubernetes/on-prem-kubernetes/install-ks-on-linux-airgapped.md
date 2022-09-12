@@ -28,7 +28,7 @@ Harbour 또는 기타 개인 이미지 레지스트리를 사용할 수 있습�
    -x509 -days 36500 -out certs/domain.crt
    ```
 
-2. 자신의 인증서를 생성할 때 '일반 이름' 필드에 도메인 이름을 지정해야 합니다. 예를 들어, 이 예에서 필드는 'dockerhub.kubePOP.local'로 설정됩니다.
+2. 자신의 인증서를 생성할 때 '일반 이름' 필드에 도메인 이름을 지정해야 합니다. 예를 들어, 이 예에서 필드는 'dockerhub.kubepop.local'로 설정됩니다.
 
    ![self-signed-cert](/images/docs/v3.3/installing-on-linux/introduction/air-gapped-installation/self-signed-cert.jpg)
 
@@ -57,21 +57,21 @@ Docker는 이미지를 포함한 모든 Docker 관련 파일이 저장되는 기
 
 ### 레지스트리 구성
 
-1. `/etc/hosts`에 항목을 추가하여 아래와 같이 호스트 이름(예: 레지스트리 도메인 이름, 이 경우 `dockerhub.kubePOP.local`)을 컴퓨터의 개인 IP 주소에 매핑합니다.
+1. `/etc/hosts`에 항목을 추가하여 아래와 같이 호스트 이름(예: 레지스트리 도메인 이름, 이 경우 `dockerhub.kubepop.local`)을 컴퓨터의 개인 IP 주소에 매핑합니다.
 
    ```bash
    # docker registry
-   192.168.0.2 dockerhub.kubePOP.local
+   192.168.0.2 dockerhub.kubepop.local
    ```
 
 2. 다음 명령을 실행하여 인증서를 지정된 디렉터리에 복사하고 Docker가 이를 신뢰하도록 합니다.
 
    ```bash
-   mkdir -p  /etc/docker/certs.d/dockerhub.kubePOP.local
+   mkdir -p  /etc/docker/certs.d/dockerhub.kubepop.local
    ```
 
    ```bash
-   cp certs/domain.crt  /etc/docker/certs.d/dockerhub.kubePOP.local/ca.crt
+   cp certs/domain.crt  /etc/docker/certs.d/dockerhub.kubepop.local/ca.crt
    ```
 
    {{< notice note >}}
@@ -145,7 +145,7 @@ Docker는 이미지를 포함한 모든 Docker 관련 파일이 저장되는 기
 패키지된 이미지 파일을 로컬 시스템으로 전송하고 다음 명령을 실행하여 레지스트리에 푸시합니다.
 
 ```bash
-./offline-installation-tool.sh -l images-list.txt -d ./ke-images -r dockerhub.kubePOP.local
+./offline-installation-tool.sh -l images-list.txt -d ./ke-images -r dockerhub.kubepop.local
 ```
 
 {{< notice note >}}
@@ -303,7 +303,7 @@ ke/netshoot:v1.0
 ##kubeedge-images
 kubeedge/cloudcore:v1.9.2
 kubeedge/iptables-manager:v1.9.2
-kubesphere/edgeservice:v0.2.0
+ke/edgeservice:v0.2.0
 ##gatekeeper-images
 openpolicyagent/gatekeeper:v3.5.2
 ##openpitrix-images
@@ -312,7 +312,7 @@ ke/openpitrix-jobs:v3.2.1
 ke/devops-apiserver:v3.3.0
 ke/devops-controller:v3.3.0
 ke/devops-tools:v3.3.0
-ke/ks-jenkins:v3.3.0-2.319.1
+ke/ke-jenkins:v3.3.0-2.319.1
 jenkins/inbound-agent:4.10-2
 ke/builder-base:v3.2.2
 ke/builder-nodejs:v3.2.0
