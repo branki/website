@@ -5,22 +5,22 @@ description: 'Learn how to add Kafka to receive container logs, resource events,
 linkTitle: "Add Kafka as a Receiver"
 weight: 8623
 ---
-You can use Elasticsearch, Kafka and Fluentd as log receivers in KubeSphere. This tutorial demonstrates:
+Elasticsearch, Kafka 및 Fluentd를 Kuberix Enterprise에서 로그 수신기로 사용할 수 있습니다. 이 튜토리얼에서는 다음을 보여줍니다.
 
-- Deploy [strimzi-kafka-operator](https://github.com/strimzi/strimzi-kafka-operator) and then create a Kafka cluster and a Kafka topic by creating `Kafka` and `KafkaTopic` CRDs.
-- Add Kafka as a log receiver to receive logs sent from Fluent Bit.
-- Verify whether the Kafka cluster is receiving logs using [Kafkacat](https://github.com/edenhill/kafkacat).
+- [strimzi-kafka-operator](https://github.com/strimzi/strimzi-kafka-operator)를 배포한 다음 'Kafka' 및 'KafkaTopic' CRD를 생성하여 Kafka 클러스터 및 Kafka 주제를 생성합니다.
+- Fluent Bit에서 보낸 로그를 수신하려면 Kafka를 로그 수신기로 추가합니다.
+- [Kafkacat](https://github.com/edenhill/kafkacat)을 사용하여 Kafka 클러스터가 로그를 수신하는지 확인합니다.
 
-## Prerequisites
+## 전제 조건
 
-- You need a user granted a role including the permission of **Cluster Management**. For example, you can log in to the console as `admin` directly or create a new role with the permission and assign it to a user.
-- Before adding a log receiver, you need to enable any of the `logging`, `events` or `auditing` components. For more information, see [Enable Pluggable Components](../../../../pluggable-components/). `logging` is enabled as an example in this tutorial.
+- **클러스터 관리** 권한을 포함한 역할을 부여받은 사용자가 필요합니다. 예를 들어 콘솔에 직접 'admin'으로 로그인하거나 권한이 있는 새 역할을 생성하여 사용자에게 할당할 수 있습니다.
+- 로그 수신기를 추가하기 전에 'logging', 'events' 또는 'auditing' 구성 요소를 활성화해야 합니다. 자세한 내용은 [플러그 가능 구성 요소 활성화](../../../../pluggable-components/)를 참조하십시오. 이 튜토리얼에서는 '로깅'을 예로 사용합니다.
 
-## Step 1: Create a Kafka Cluster and a Kafka Topic
+## 1단계: Kafka 클러스터 및 Kafka 주제 생성
 
-You can use [strimzi-kafka-operator](https://github.com/strimzi/strimzi-kafka-operator) to create a Kafka cluster and a Kafka topic. If you already have a Kafka cluster, you can start from the next step.
+[strimzi-kafka-operator](https://github.com/strimzi/strimzi-kafka-operator)를 사용하여 Kafka 클러스터 및 Kafka 주제를 생성할 수 있습니다. 이미 Kafka 클러스터가 있는 경우 다음 단계부터 시작할 수 있습니다.
 
-1. Install [strimzi-kafka-operator](https://github.com/strimzi/strimzi-kafka-operator) in the `default` namespace:
+1. `default` 네임스페이스에 [strimzi-kafka-operator](https://github.com/strimzi/strimzi-kafka-operator)를 설치합니다.
 
     ```bash
     helm repo add strimzi https://strimzi.io/charts/
@@ -31,7 +31,7 @@ You can use [strimzi-kafka-operator](https://github.com/strimzi/strimzi-kafka-op
     ```
 
 
-2. Create a Kafka cluster and a Kafka topic in the `default` namespace by running the following commands. The commands create Kafka and Zookeeper clusters with storage type `ephemeral` which is `emptyDir` for demonstration purposes. For other storage types in a production environment, refer to [kafka-persistent](https://github.com/strimzi/strimzi-kafka-operator/blob/0.19.0/examples/kafka/kafka-persistent.yaml).
+2. 다음 명령을 실행하여 'default' 네임스페이스에 Kafka 클러스터와 Kafka 주제를 생성합니다. 이 명령은 데모용으로 'emptyDir'인 스토리지 유형이 '임시'인 Kafka 및 Zookeeper 클러스터를 생성합니다. 프로덕션 환경의 다른 스토리지 유형은 [kafka-persistent](https://github.com/strimzi/strimzi-kafka-operator/blob/0.19.0/examples/kafka/kafka-persistent.yaml)를 참조하세요.
 
     ```yaml
     cat <<EOF | kubectl apply -f -
@@ -78,7 +78,7 @@ You can use [strimzi-kafka-operator](https://github.com/strimzi/strimzi-kafka-op
     EOF
     ```
 
-3. Run the following command to check Pod status and wait for Kafka and Zookeeper are all up and running.
+3. 다음 명령을 실행하여 Pod 상태를 확인하고 Kafka와 Zookeeper가 모두 실행될 때까지 기다립니다.
 
     ```bash
     $ kubectl -n default get pod 
@@ -93,25 +93,25 @@ You can use [strimzi-kafka-operator](https://github.com/strimzi/strimzi-kafka-op
     strimzi-cluster-operator-7d6cd6bdf7-9cf6t    1/1     Running   0          104m
     ```
 
-    Run the following command to check the metadata of the Kafka cluster:
+    다음 명령을 실행하여 Kafka 클러스터의 메타데이터를 확인합니다.
 
     ```bash
     kafkacat -L -b my-cluster-kafka-0.my-cluster-kafka-brokers.default.svc:9092,my-cluster-kafka-1.my-cluster-kafka-brokers.default.svc:9092,my-cluster-kafka-2.my-cluster-kafka-brokers.default.svc:9092
     ```
 
-## Step 2: Add Kafka as a Log Receiver
+## 2단계: Kafka를 로그 수신기로 추가
 
-1. Log in to KubeSphere as `admin`. Click **Platform** in the upper-left corner and select **Cluster Management**.
+1. Kuberix Enterprise에 'admin'으로 로그인합니다. 왼쪽 상단 모서리에서 **Platform**을 클릭하고 **Cluster Management**를 선택합니다.
 
-   {{< notice note >}}
+    {{< notice note >}}
 
-   If you have enabled the [multi-cluster feature](../../../../multicluster-management/), you can select a specific cluster.
+    [멀티 클러스터 기능](../../../../multicluster-management/)을 활성화한 경우 특정 클러스터를 선택할 수 있습니다.
 
-   {{</ notice >}} 
+    {{</ notice >}}
 
-2. On the **Cluster Management** page, go to **Log Receivers** in **Cluster Settings**.
+2. **Cluster Management** 페이지에서 **Cluster Settings**의 **Log Receiver**로 이동합니다.
 
-3. Click **Add Log Receiver** and select **Kafka**. Enter the Kafka service address and port number, and then click **OK** to continue.
+3. **Add Log Receiver**를 클릭하고 **Kafka**를 선택합니다. Kafka 서비스 주소와 포트 번호를 입력한 다음 **OK**을 클릭하여 계속합니다.
 
    | Service Address                                         | Port Number |
    | ------------------------------------------------------- | ---- |
@@ -119,7 +119,7 @@ You can use [strimzi-kafka-operator](https://github.com/strimzi/strimzi-kafka-op
    | my-cluster-kafka-1.my-cluster-kafka-brokers.default.svc | 9092 |
    | my-cluster-kafka-2.my-cluster-kafka-brokers.default.svc | 9092 |
 
-4. Run the following commands to verify whether the Kafka cluster is receiving logs sent from Fluent Bit:
+4. 다음 명령을 실행하여 Kafka 클러스터가 Fluent Bit에서 보낸 로그를 수신하는지 확인합니다.
 
    ```bash
    # Start a util container
@@ -129,3 +129,5 @@ You can use [strimzi-kafka-operator](https://github.com/strimzi/strimzi-kafka-op
    # Run the following command to consume log messages from kafka topic: my-topic
    kafkacat -C -b my-cluster-kafka-0.my-cluster-kafka-brokers.default.svc:9092,my-cluster-kafka-1.my-cluster-kafka-brokers.default.svc:9092,my-cluster-kafka-2.my-cluster-kafka-brokers.default.svc:9092 -t my-topic
    ```
+   
+   
