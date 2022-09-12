@@ -68,7 +68,7 @@ KubePOP를 다운로드한 후 Googleapis에 대한 네트워크 연결이 좋�
 
 {{</ notice >}}
 
-Make `kp` executable:
+kp 파일을 실행 가능하게 만듭니다:
 
 ```bash
 chmod +x kp
