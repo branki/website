@@ -1,33 +1,33 @@
 ---
 title: "Add Edge Nodes"
-keywords: 'Kubernetes, KubeSphere, KubeEdge'
+keywords: 'Kubernetes, Kuberix, KubeEdge'
 description: 'Add edge nodes to your cluster.'
 linkTitle: "Add Edge Nodes"
 weight: 3630
 ---
 
-KubeSphere leverages [KubeEdge](https://kubeedge.io/en/), to extend native containerized application orchestration capabilities to hosts at edge. With separate cloud and edge core modules, KubeEdge provides complete edge computing solutions while the installation may be complex and difficult.
+Kuberix Enterprise는 [KubeEdge](https://kubeedge.io/en/)를 활용하여 네이티브 컨테이너화된 애플리케이션 오케스트레이션 기능을 에지의 호스트로 확장합니다. 별도의 클라우드 및 에지 코어 모듈을 통해 KubeEdge는 설치가 복잡하고 어려울 수 있지만 완전한 에지 컴퓨팅 솔루션을 제공합니다.
 
 ![kubeedge_arch](/images/docs/v3.3/installing-on-linux/add-and-delete-nodes/add-edge-nodes/kubeedge_arch.png)
 
-{{< notice note >}}
+{{< 공지사항 >}}
 
-For more information about different components of KubeEdge, see [the KubeEdge documentation](https://docs.kubeedge.io/en/docs/kubeedge/#components).
+KubeEdge의 다양한 구성 요소에 대한 자세한 내용은 [KubeEdge 문서](https://docs.kubeedge.io/en/docs/kubeedge/#components)를 참조하세요.
 
-{{</ notice >}} 
+{{</ 공지 >}}
 
-This tutorial demonstrates how to add an edge node to your cluster.
+이 자습서에서는 클러스터에 에지 노드를 추가하는 방법을 보여줍니다.
 
-## Prerequisites
+## 전제 조건
 
-- You have enabled [KubeEdge](../../../pluggable-components/kubeedge/).
-- To prevent compatability issues, you are advised to install Kubernetes v1.21.x or earlier.
-- You have an available node to serve as an edge node. The node can run either Ubuntu (recommended) or CentOS. This tutorial uses Ubuntu 18.04 as an example.
-- Edge nodes, unlike Kubernetes cluster nodes, should work in a separate network.
+- [KubeEdge](../../../pluggable-components/kubeedge/)를 활성화했습니다.
+- 호환성 문제를 방지하기 위해 Kubernetes v1.21.x 또는 이전 버전을 설치하는 것이 좋습니다.
+- 에지 노드로 사용할 수 있는 노드가 있습니다. 노드는 Ubuntu(권장) 또는 CentOS를 실행할 수 있습니다. 이 자습서에서는 Ubuntu 18.04를 예로 사용합니다.
+- 에지 노드는 쿠버네티스 클러스터 노드와 달리 별도의 네트워크에서 작동해야 합니다.
 
-## Prevent non-edge workloads from being scheduled to edge nodes
+## 비-에지 워크로드가 에지 노드에 예약되는 것을 방지
 
-Due to the tolerations some daemonsets (for example, Calico) have, to ensure that the newly added edge nodes work properly, you need to run the following command to manually patch the pods so that non-edge workloads will not be scheduled to the edge nodes.
+일부 데몬 세트(예: Calico)의 허용 오차로 인해 새로 추가된 에지 노드가 제대로 작동하도록 하려면 다음 명령을 실행하여 비-에지 워크로드가 에지로 예약되지 않도록 포드를 수동으로 패치해야 합니다. 노드.
 
 ```bash
 #!/bin/bash
@@ -51,12 +51,12 @@ do
 done
 ```
 
-## Create Firewall Rules and Port Forwarding Rules
+## 방화벽 규칙 및 포트 전달 규칙 만들기
 
-To make sure edge nodes can successfully talk to your cluster, you must forward ports for outside traffic to get into your network. Specifically, map an external port to the corresponding internal IP address (control plane node) and port based on the table below. Besides, you also need to create firewall rules to allow traffic to these ports (`10000` to `10004`).
+에지 노드가 클러스터와 성공적으로 통신할 수 있도록 하려면 외부 트래픽이 네트워크로 들어갈 수 있도록 포트를 전달해야 합니다. 구체적으로, 아래 표에 따라 외부 포트를 해당 내부 IP 주소(제어 평면 노드) 및 포트에 매핑합니다. 또한 이러한 포트('10000' ~ '10004')로의 트래픽을 허용하는 방화벽 규칙도 만들어야 합니다.
 
    {{< notice note >}}
-   In `ClusterConfiguration` of the ks-installer, if you set an internal IP address, you need to set the forwarding rule. If you have not set the forwarding rule, you can directly connect to ports 30000 to 30004.
+   ke-installer의 'ClusterConfiguration'에서 내부 IP 주소를 설정하면 포워딩 규칙을 설정해야 합니다. 포워딩 규칙을 설정하지 않은 경우 포트 30000~30004에 직접 연결할 수 있습니다.
    {{</ notice >}} 
 
 | Fields              | External Ports | Fields                  | Internal Ports |
@@ -67,23 +67,23 @@ To make sure edge nodes can successfully talk to your cluster, you must forward 
 | `cloudstreamPort`   | `10003`        | `cloudstreamNodePort`   | `30003`        |
 | `tunnelPort`        | `10004`        | `tunnelNodePort`        | `30004`        |
 
-## Configure an Edge Node
+## 에지 노드 구성
 
-You need to configure the edge node as follows.
+다음과 같이 에지 노드를 구성해야 합니다.
 
-### Install a container runtime
+### 컨테이너 런타임 설치
 
-[KubeEdge](https://docs.kubeedge.io/en/docs/) supports several container runtimes including Docker, containerd, CRI-O and Virtlet. For more information, see [the KubeEdge documentation](https://docs.kubeedge.io/en/docs/advanced/cri/).
+[KubeEdge](https://docs.kubeedge.io/en/docs/)는 Docker, containerd, CRI-O 및 Virtlet을 포함한 여러 컨테이너 런타임을 지원합니다. 자세한 내용은 [KubeEdge 문서](https://docs.kubeedge.io/en/docs/advanced/cri/)를 참조하세요.
 
 {{< notice note >}}
 
-If you use Docker as the container runtime for your edge node, Docker v19.3.0 or later must be installed so that KubeSphere can get Pod metrics of it.
+에지 노드의 컨테이너 런타임으로 Docker를 사용하는 경우 Kuberix Enterprise가 Pod 메트릭을 가져올 수 있도록 Docker v19.3.0 이상이 설치되어 있어야 합니다.
 
 {{</ notice >}}
 
-### Configure EdgeMesh
+### EdgeMesh 구성
 
-Perform the following steps to configure [EdgeMesh](https://kubeedge.io/en/docs/advanced/edgemesh/) on your edge node.
+에지 노드에서 [EdgeMesh](https://kubeedge.io/en/docs/advanced/edgemesh/)를 구성하려면 다음 단계를 수행하십시오.
 
 1. Edit `/etc/nsswitch.conf`.
 
@@ -91,19 +91,19 @@ Perform the following steps to configure [EdgeMesh](https://kubeedge.io/en/docs/
    vi /etc/nsswitch.conf
    ```
 
-2. Add the following content to this file:
+2. 이 파일에 다음 내용을 추가합니다.:
 
    ```bash
    hosts:          dns files mdns4_minimal [NOTFOUND=return]
    ```
 
-3. Save the file and run the following command to enable IP forwarding:
+3. 파일을 저장하고 다음 명령을 실행하여 IP 전달을 활성화합니다.:
 
    ```bash
    sudo echo "net.ipv4.ip_forward = 1" >> /etc/sysctl.conf
    ```
 
-4. Verify your modification:
+4. 수정 사항을 확인합니다.:
 
    ```bash
    sudo sysctl -p | grep ip_forward
@@ -115,69 +115,70 @@ Perform the following steps to configure [EdgeMesh](https://kubeedge.io/en/docs/
    net.ipv4.ip_forward = 1
    ```
 
-## Add an Edge Node
+## 에지 노드 추가
 
-1. Log in to the console as `admin` and click **Platform** in the upper-left corner.
+1. 콘솔에 `admin`으로 로그인하고 왼쪽 상단의 **Platform**을 클릭합니다.
 
-2. Select **Cluster Management** and navigate to **Edge Nodes** under **Nodes**.
+2. **Cluster Management**를 선택하고 **Nodes**에서 **Edge Nodes**로 이동합니다.
 
-   {{< notice note >}}
+    {{< notice note >}}
 
-   If you have enabled [multi-cluster management](../../../multicluster-management/), you need to select a cluster first.
+    [멀티 클러스터 관리](../../../multicluster-management/)를 활성화한 경우 먼저 클러스터를 선택해야 합니다.
 
-   {{</ notice >}} 
+    {{</ notice >}}
 
-3. Click **Add**. In the dialog that appears, set a node name and enter an internal IP address of your edge node. Click **Validate** to continue.
+3. **Add**를 클릭합니다. 표시되는 대화 상자에서 노드 이름을 설정하고 에지 노드의 내부 IP 주소를 입력합니다. 계속하려면 **OK**을 클릭하세요.
 
    ![add-edge-node](/images/docs/v3.3/installing-on-linux/add-and-delete-nodes/add-edge-nodes/add-edge-node.png)
 
    {{< notice note >}} 
 
-   - The internal IP address is only used for inter-node communication and you do not necessarily need to use the actual internal IP address of the edge node. As long as the IP address is successfully validated, you can use it.
-   - It is recommended that you check the box to add the default taint.
+    - 내부 IP 주소는 노드 간 통신에만 사용되며 반드시 Edge 노드의 실제 내부 IP 주소를 사용할 필요는 없습니다. IP 주소가 성공적으로 확인되면 사용할 수 있습니다.
+    - 기본 taint를 추가하려면 체크박스를 선택하는 것을 권장합니다.
 
    {{</ notice >}} 
 
-4. Copy the command automatically created under **Edge Node Configuration Command** and run it on your edge node.
+4. **Edge Node Configuration Command** 아래에 자동으로 생성된 명령을 복사하여 Edge 노드에서 실행합니다.
 
    ![edge-command](/images/docs/v3.3/installing-on-linux/add-and-delete-nodes/add-edge-nodes/edge-command.png)
 
    {{< notice note >}}
 
-   Make sure `wget` is installed on your edge node before you run the command.
+   명령을 실행하기 전에 에지 노드에 `wget`이 설치되어 있는지 확인하십시오.
 
    {{</ notice >}} 
 
-5. Close the dialog, refresh the page, and the edge node will appear in the list.
+5. 대화 상자를 닫고 페이지를 새로 고치면 에지 노드가 목록에 나타납니다.
 
    {{< notice note >}}
 
-   After an edge node is added, if you cannot see CPU and memory resource usage on the **Edge Nodes** page, make sure [Metrics Server](../../../pluggable-components/metrics-server/) 0.4.1 or later is installed in your cluster.
+   에지 노드를 추가한 후 **Edge nodes** 페이지에서 CPU 및 메모리 리소스 사용량을 볼 수 없으면 [Metrics Server](../../../pluggable-components/metrics-server/ ) 0.4.1 이상이 클러스터에 설치되어 있습니다.
 
    {{</ notice >}}
 
-## Collect Monitoring Information on Edge Nodes
+## 에지 노드에 대한 모니터링 정보 수집
 
-To collect monitoring information on edge node, you need to enable `metrics_server` in `ClusterConfiguration` and `edgeStream` in KubeEdge.
+에지 노드에 대한 모니터링 정보를 수집하려면 'ClusterConfiguration'에서 'metrics_server'를 활성화하고 KubeEdge에서 'edgeStream'을 활성화해야 합니다.
 
-1. On the KubeSphere web console, choose **Platform > Cluster Management**.
+1. Kuberix Enterprise 웹 콘솔에서 **Platform > Cluster Management**를 선택합니다.
 
-2. On the navigation pane on the left, click **CRDs**.
+2. 왼쪽 탐색 창에서 **CRD**를 클릭합니다.
 
-3. In the search bar on the right pane, enter `clusterconfiguration`, and click the result to go to its details page.
+3. 오른쪽 창의 검색 창에 'clusterconfiguration'을 입력하고 결과를 클릭하여 세부 정보 페이지로 이동합니다.
 
-4. Click <img src="/images/docs/v3.3/common-icons/three-dots.png" width="15" alt="icon" /> on the right of ks-installer, and click **Edit YAML**.
+4. ke-installer 오른쪽 <img src="/images/docs/v3.3/common-icons/three-dots.png" width="15" alt="icon" /> 클릭 후 * 클릭 *YAML 편집**.
 
-5. Search for **metrics_server**, and change the value of `enabled` from `false` to `true`.
+5. **metrics_server**를 검색하고 'enabled' 값을 'false'에서 'true'로 변경합니다.
 
     ```yaml
       metrics_server:
       enabled: true # Change "false" to "true".
     ```
 
-6. Click **OK** in the lower right corner to save the change.
+6. 오른쪽 하단의 **OK**을 클릭하여 변경 사항을 저장합니다.
 
-7. Open the `/etc/kubeedge/config` file, search for `edgeStream`, change `false` to `true`, and save the change.
+7. `/etc/kubeedge/config` 파일을 열고 `edgeStream`을 검색하고 `false`를 `true`로 변경하고 변경 사항을 저장합니다.
+
     ```bash
     cd /etc/kubeedge/config
     vi edgecore.yaml
@@ -195,12 +196,13 @@ To collect monitoring information on edge node, you need to enable `metrics_serv
     writeDeadline: 15
     ```
 
-8. Run the following command to restart `edgecore.service`.
+8. 다음 명령을 실행하여 `edgecore.service`를 다시 시작합니다.
+
     ```bash
     systemctl restart edgecore.service
     ```
 
-9. If you still cannot see the monitoring data, run the following command:
+9. 여전히 모니터링 데이터가 표시되지 않으면 다음 명령을 실행합니다.:
 
     ```bash
     journalctl -u edgecore.service -b -r
@@ -208,15 +210,15 @@ To collect monitoring information on edge node, you need to enable `metrics_serv
     
     {{< notice note >}}
      
-   If `failed to check the running environment: kube-proxy should not running on edge node when running edgecore` is displayed, refer to Step 8 to restart `edgecore.service` again.
+   '실행 환경을 확인하지 못했습니다: edgecore를 실행할 때 kube-proxy가 edge 노드에서 실행되지 않아야 합니다'가 표시되면 8단계를 참조하여 'edgecore.service'를 다시 시작합니다.
      
    {{</ notice >}} 
 
-## Remove an Edge Node
+## 에지 노드 제거
 
-Before you remove an edge node, delete all your workloads running on it.
+에지 노드를 제거하기 전에 에지 노드에서 실행 중인 모든 워크로드를 삭제하십시오.
 
-1. On your edge node, run the following commands:
+1. 에지 노드에서 다음 명령을 실행합니다.:
 
    ```bash
    ./keadm reset
@@ -232,17 +234,17 @@ Before you remove an edge node, delete all your workloads running on it.
 
    {{< notice note >}}
 
-   If you cannot delete the tmpfs-mounted folder, restart the node or unmount the folder first.
+   tmpfs-mount 폴더를 삭제할 수 없는 경우 노드를 다시 시작하거나 폴더를 먼저 마운트 해제합니다.
 
    {{</ notice >}} 
 
-2. Run the following command to remove the edge node from your cluster:
+2. 다음 명령을 실행하여 클러스터에서 에지 노드를 제거합니다.:
 
    ```bash
    kubectl delete node <edgenode-name>
    ```
 
-3. To uninstall KubeEdge from your cluster, run the following commands:
+3. 클러스터에서 KubeEdge를 제거하려면 다음 명령을 실행하십시오.:
 
    ```bash
    helm uninstall kubeedge -n kubeedge
@@ -254,6 +256,6 @@ Before you remove an edge node, delete all your workloads running on it.
    
    {{< notice note >}}
    
-   After uninstallation, you will not be able to add edge nodes to your cluster.
+   제거 후에는 클러스터에 에지 노드를 추가할 수 없습니다.
    
    {{</ notice >}} 
