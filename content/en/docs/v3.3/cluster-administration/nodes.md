@@ -1,62 +1,67 @@
 ---
 title: "Node Management"
-keywords: "Kubernetes, KubeSphere, taints, nodes, labels, requests, limits"
+keywords: "Kubernetes, Kuberix, taints, nodes, labels, requests, limits"
 description: "Monitor node status and learn how to add node labels or taints."
 
 linkTitle: "Node Management"
 weight: 8100
 ---
 
-Kubernetes runs your workloads by placing containers into Pods to run on nodes. A node may be a virtual or physical machine, depending on the cluster. Each node contains the services necessary to run Pods, managed by the control plane. For more information about nodes, see the [official documentation of Kubernetes](https://kubernetes.io/docs/concepts/architecture/nodes/).
+쿠버네티스는 노드에서 실행할 컨테이너를 Pod에 배치하여 워크로드를 실행합니다. 노드는 클러스터에 따라 가상 또는 물리적 시스템일 수 있습니다. 각 노드에는 컨트롤 플레인에서 관리하는 Pod를 실행하는 데 필요한 서비스가 포함되어 있습니다. 노드에 대한 자세한 내용은 [쿠버네티스 공식 문서](https://kubernetes.io/docs/concepts/architecture/nodes/)를 참조하십시오.
 
-This tutorial demonstrates what a cluster administrator can view and do for nodes within a cluster.
+이 자습서는 클러스터 관리자가 클러스터 내의 노드를 보고 수행할 수 있는 작업을 보여줍니다.
 
-## Prerequisites
+## 전제 조건
 
-You need a user granted a role including the authorization of **Cluster Management**. For example, you can log in to the console as `admin` directly or create a new role with the authorization and assign it to a user.
+**클러스터 관리** 권한을 포함하여 역할이 부여된 사용자가 필요합니다. 예를 들어 콘솔에 'admin'으로 직접 로그인하거나 권한이 있는 새 역할을 생성하여 사용자에게 할당할 수 있습니다.
 
-## Node Status
+## 노드 상태
 
-Cluster nodes are only accessible to cluster administrators. Some node metrics are very important to clusters. Therefore, it is the administrator's responsibility to watch over these numbers and make sure nodes are available. Follow the steps below to view node status.
+클러스터 노드는 클러스터 관리자만 액세스할 수 있습니다. 일부 노드 메트릭은 클러스터에 매우 중요합니다. 따라서 이러한 숫자를 감시하고 노드를 사용할 수 있는지 확인하는 것은 관리자의 책임입니다. 노드 상태를 보려면 아래 단계를 따르십시오.
 
-1. Click **Platform** in the upper-left corner and select **Cluster Management**.
+1. 왼쪽 상단 모서리에서 **Platform**을 클릭하고 **Cluster Management**를 선택합니다.
 
-2. If you have enabled the [multi-cluster feature](../../multicluster-management/) with member clusters imported, you can select a specific cluster to view its nodes. If you have not enabled the feature, refer to the next step directly.
+2. 가져온 멤버 클러스터와 함께 [멀티 클러스터 기능](../../multicluster-management/)을 활성화한 경우 특정 클러스터를 선택하여 해당 노드를 볼 수 있습니다. 기능을 활성화하지 않은 경우 다음 단계를 직접 참조하십시오.
 
-3. Choose **Cluster Nodes** under **Nodes**, where you can see detailed information of node status.
+3. **Nodes** 아래에서 **Cluster Nodes**를 선택하면 노드 상태에 대한 자세한 정보를 볼 수 있습니다.
 
-    - **Name**: The node name and subnet IP address.
-    - **Status**: The current status of a node, indicating whether a node is available or not.
-    - **Role**: The role of a node, indicating whether a node is a worker or the control plane.
-    - **CPU Usage**: The real-time CPU usage of a node.
-    - **Memory Usage**: The real-time memory usage of a node.
-    - **Pods**: The real-time usage of Pods on a node.
-    - **Allocated CPU**: This metric is calculated based on the total CPU requests of Pods on a node. It represents the amount of CPU reserved for workloads on this node, even if workloads are using fewer CPU resources. This figure is vital to the Kubernetes scheduler (kube-scheduler), which favors nodes with lower allocated CPU resources when scheduling a Pod in most cases. For more details, refer to [Managing Resources for Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/).
-    - **Allocated Memory**: This metric is calculated based on the total memory requests of Pods on a node. It represents the amount of memory reserved for workloads on this node, even if workloads are using fewer memory resources.
-
-    {{< notice note >}}
-**CPU** and **Allocated CPU** are different most times, so are **Memory** and **Allocated Memory**, which is normal. As a cluster administrator, you need to focus on both metrics instead of just one. It's always a good practice to set resource requests and limits for each node to match their real usage. Over-allocating resources can lead to low cluster utilization, while under-allocating may result in high pressure on a cluster, leaving the cluster unhealthy.
-    {{</ notice >}}
-
-## Node Management
-On the **Cluster Nodes** page, you can perform the following operations:
-
-- **Cordon/Uncordon**: Click <img src="/images/docs/v3.3/common-icons/three-dots.png" width="15" alt="icon" /> on the right of the cluster node, and then click **Cordon** or **Uncordon**. Marking a node as unschedulable is very useful during a node reboot or other maintenance. The Kubernetes scheduler will not schedule new Pods to this node if it's been marked unschedulable. Besides, this does not affect existing workloads already on the node.
-
-- **Open Terminal**：Click <img src="/images/docs/v3.3/common-icons/three-dots.png" width="15" alt="icon" /> on the right of the cluster node, and then click **Open Terminal**. This makes it convenient for you to manage nodes, such as modifying node configurations and downloading images.
-
-- **Edit Taints**：Taints allow a node to repel a set of pods. To edit a taint, select the check box before the target node. On the **Edit Taints** that is displayed, you can add, delete, or modify taints.
-
-To view node details, click the node. On the details page, you can perform the following operations:
-
-- **Edit Labels**: Node labels can be very useful when you want to assign Pods to specific nodes. Label a node first (for example, label GPU nodes with `node-role.kubernetes.io/gpu-node`), and then add the label in **Advanced Settings** [when you create a workload](../../project-user-guide/application-workloads/deployments/#step-5-configure-advanced-settings) so that you can allow Pods to run on GPU nodes explicitly. To add node labels, select **More** > **Edit Labels**.
-
-- View the running status of nodes, pods, metadata, monitoring data, and events.
+    - **Name**: 노드 이름 및 서브넷 IP 주소입니다.
+    - **Status**: 노드의 현재 상태로, 노드가 사용 가능한지 여부를 나타냅니다.
+    - **Role**: 노드가 작업자인지 제어 평면인지를 나타내는 노드의 역할입니다.
+    - **CPU Usage**: 노드의 실시간 CPU 사용량입니다.
+    - **Memory Usage**: 노드의 실시간 메모리 사용량입니다.
+    - **Pods**: 노드에서 Pod의 실시간 사용량입니다.
+    - **Allocated CPU**: 이 메트릭은 노드에 있는 Pod의 총 CPU 요청을 기반으로 계산됩니다. 워크로드가 더 적은 CPU 리소스를 사용하는 경우에도 이 노드의 워크로드용으로 예약된 CPU 양을 나타냅니다. 이 수치는 대부분의 경우 Pod를 예약할 때 할당된 CPU 리소스가 낮은 노드를 선호하는 쿠버네티스 스케줄러(kube-scheduler)에 중요합니다. 자세한 내용은 [컨테이너 리소스 관리](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/)를 참조하십시오.
+    - **Allocated Memory**: 이 메트릭은 노드에 있는 Pod의 총 메모리 요청을 기반으로 계산됩니다. 워크로드가 더 적은 메모리 리소스를 사용하는 경우에도 이 노드의 워크로드를 위해 예약된 메모리 양을 나타냅니다.
 
     {{< notice note >}}
-Be careful when you add taints as they may cause unexpected behavior, leading to services unavailable. For more information, see [Taints and Tolerations](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/).
+    
+**CPU**와 **Allocated CPU**는 대부분 다른데, **Memory**와 **Allocated Memory**도 다르며 정상입니다. 클러스터 관리자는 하나가 아닌 두 메트릭에 모두 집중해야 합니다. 실제 사용량과 일치하도록 각 노드에 대한 리소스 요청 및 제한을 설정하는 것은 항상 좋은 방법입니다. 리소스를 과도하게 할당하면 클러스터 사용률이 낮아질 수 있고 과소 할당하면 클러스터에 높은 부담이 가해져 클러스터가 비정상 상태가 될 수 있습니다.
+
     {{</ notice >}}
 
-## Add and Remove Nodes
+## 노드 관리
 
-Currently, you cannot add or remove nodes directly from the KubeSphere console, but you can do it by using [KubeKey](https://github.com/kubesphere/kubekey). For more information, see [Add New Nodes](../../installing-on-linux/cluster-operation/add-new-nodes/) and [Remove Nodes](../../installing-on-linux/cluster-operation/remove-nodes/).
+**Cluster Nodes** 페이지에서 다음 작업을 수행할 수 있습니다.
+
+- **Cordon/Uncordon**: 오른쪽의 <img src="/images/docs/v3.3/common-icons/three-dots.png" width="15" alt="icon" /> 클릭 클러스터 노드를 클릭한 다음 **Cordon** 또는 **Uncordon**을 클릭합니다. 노드를 예약 불가능으로 표시하는 것은 노드 재부팅 또는 기타 유지 관리 중에 매우 유용합니다. Kubernetes 스케줄러는 예약 불가능으로 표시된 경우 이 노드에 새 Pod를 예약하지 않습니다. 또한 노드에 이미 있는 기존 워크로드에는 영향을 미치지 않습니다.
+
+- **Open Terminal**：오른쪽의 <img src="/images/docs/v3.3/common-icons/three-dots.png" width="15" alt="icon" /> 클릭 클러스터 노드를 클릭한 다음 **Open Terminal**를 클릭합니다. 이렇게 하면 노드 구성 수정 및 이미지 다운로드와 같은 노드를 편리하게 관리할 수 있습니다.
+
+- **Edit Taints**: Taints를 사용하면 노드가 포드 세트를 격퇴할 수 있습니다. taint를 편집하려면 대상 노드 앞의 확인란을 선택합니다. 표시된 **Edit Taints**에서 taint를 추가, 삭제 또는 수정할 수 있습니다.
+
+노드 세부 정보를 보려면 노드를 클릭합니다. 세부 정보 페이지에서 다음 작업을 수행할 수 있습니다.
+
+- **Edit Labels**: 노드 레이블은 특정 노드에 포드를 할당하려는 경우 매우 유용할 수 있습니다. 먼저 노드에 레이블을 지정(예: GPU 노드에 `node-role.kubernetes.io/gpu-node` 레이블 지정)한 다음 **Advanced Settings** [워크로드 생성 시](../ ../project-user-guide/application-workloads/deployments/#step-5-configure-advanced-settings) Pod가 GPU 노드에서 명시적으로 실행되도록 허용할 수 있습니다. 노드 레이블을 추가하려면 **More** > **Edit Labels**을 선택합니다.
+
+- 노드, 포드, 메타데이터, 모니터링 데이터 및 이벤트의 실행 상태를 봅니다.
+
+    {{< notice note >}}
+    
+taint를 추가할 때 예기치 않은 동작이 발생하여 서비스를 사용할 수 없게 될 수 있으므로 주의하십시오. 자세한 내용은 [Taints and Tolerations](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/)를 참조하십시오.
+
+    {{</ notice >}}
+
+## 노드 추가 및 제거
+
+현재 Kuberix Enterprise 콘솔에서 직접 노드를 추가하거나 제거할 수 없지만 KubePOP을 사용하여 노드를 추가하거나 제거할 수 있습니다. 자세한 내용은 [새 노드 추가](../../installing-on-linux/cluster-operation/add-new-nodes/) 및 [노드 제거](../../installing-on- linux/cluster-operation/remove-nodes/).
