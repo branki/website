@@ -1,20 +1,20 @@
 ---
 title: "Helm Developer Guide"
-keywords: 'Kubernetes, KubeSphere, helm, development'
+keywords: 'Kubernetes, Kuberix, helm, development'
 description: 'Develop your own Helm-based app.'
 linkTitle: "Helm Developer Guide"
 weight: 14410
 ---
 
-You can upload the Helm chart of an app to KubeSphere so that tenants with necessary permissions can deploy it. This tutorial demonstrates how to prepare Helm charts using NGINX as an example.
+필요한 권한이 있는 테넌트가 배포할 수 있도록 앱의 Helm 차트를 Kuberix Enterprise에 업로드할 수 있습니다. 이 튜토리얼은 NGINX를 예로 사용하여 Helm 차트를 준비하는 방법을 보여줍니다.
 
-## Install Helm
+## Helm 설치
 
-If you have already installed KubeSphere, then Helm is deployed in your environment. Otherwise, refer to the [Helm documentation](https://helm.sh/docs/intro/install/) to install Helm first.
+Kuberix Enterprise를 이미 설치했다면 Helm이 환경에 배포됩니다. 아니면 [Helm 문서](https://helm.sh/docs/intro/install/)를 참고하여 먼저 Helm을 설치하세요.
 
-## Create a Local Repository
+## 로컬 저장소 생성
 
-Execute the following commands to create a repository on your machine.
+다음 명령을 실행하여 컴퓨터에 리포지토리를 만듭니다.
 
 ```bash
 mkdir helm-repo
@@ -24,9 +24,9 @@ mkdir helm-repo
 cd helm-repo
 ```
 
-## Create an App
+## 앱 만들기
 
-Use `helm create` to create a folder named `nginx`, which automatically creates YAML templates and directories for your app. Generally, it is not recommended to change the name of files and directories in the top level directory.
+`helm create`를 사용하여 `nginx`라는 폴더를 만들면 앱에 대한 YAML 템플릿과 디렉터리가 자동으로 생성됩니다. 일반적으로 최상위 디렉토리의 파일 및 디렉토리 이름은 변경하지 않는 것이 좋습니다.
 
 ```bash
 $ helm create nginx
@@ -43,9 +43,9 @@ nginx/
 └── values.yaml
 ```
 
-`Chart.yaml` is used to define the basic information of the chart, including name, API, and app version. For more information, see [Chart.yaml File](../helm-specification/#chartyaml-file).
+'Chart.yaml'은 이름, API, 앱 버전 등 차트의 기본 정보를 정의하는 데 사용됩니다. 자세한 내용은 [Chart.yaml 파일](../helm-specification/#chartyaml-file)을 참조하십시오.
 
-An example of the `Chart.yaml` file:
+`Chart.yaml` 파일의 예:
 
 ```yaml
 apiVersion: v1
@@ -55,9 +55,9 @@ name: nginx
 version: 0.1.0
 ```
 
-When you deploy Helm-based apps to Kubernetes, you can edit the `values.yaml` file on the KubeSphere console directly.
+Helm 기반 앱을 쿠버네티스에 배포할 때 Kuberix Enterprise 콘솔에서 'values.yaml' 파일을 직접 편집할 수 있습니다.
 
-An example of the `values.yaml` file:
+`values.yaml` 파일의 예:
 
 ```yaml
 # Default values for test.
@@ -110,11 +110,11 @@ tolerations: []
 affinity: {}
 ```
 
-Refer to [Helm Specifications](../helm-specification/) to edit files in the `nginx` folder and save them when you finish editing.
+[Helm 사양](../helm-specification/)을 참조하여 `nginx' 폴더에 있는 파일을 편집하고 편집이 끝나면 저장합니다.
 
-## Create an Index File (Optional)
+## 인덱스 파일 생성(선택 사항)
 
-To add a repository with an HTTP or HTTPS URL in KubeSphere, you need to upload an `index.yaml` file to the object storage in advance. Use Helm to create the index file by executing the following command in the previous directory of `nginx`.
+Kuberix Enterprise에서 HTTP 또는 HTTPS URL이 있는 저장소를 추가하려면 'index.yaml' 파일을 미리 오브젝트 스토리지에 업로드해야 합니다. Helm을 사용하여 이전 디렉토리 `nginx`에서 다음 명령어를 실행하여 인덱스 파일을 생성합니다.
 
 ```bash
 helm repo index .
@@ -127,15 +127,15 @@ index.yaml  nginx
 
 {{< notice note >}}
 
-- If the repository URL is S3-styled, an index file will be created automatically in the object storage when you add apps to the repository.
+- 저장소 URL이 S3 스타일인 경우 저장소에 앱을 추가할 때 개체 저장소에 인덱스 파일이 자동으로 생성됩니다.
 
-- For more information about how to add repositories to KubeSphere, see [Import an Helm Repository](../../../workspace-administration/app-repository/import-helm-repository/).
+- Kuberix Enterprise에 리포지토리를 추가하는 방법에 대한 자세한 내용은 [Helm 리포지토리 가져오기](../../../workspace-administration/app-repository/import-helm-repository/)를 참조하세요.
 
 {{</ notice >}}
 
-## Package the Chart
+## 차트 패키지
 
-Go to the previous directory of `nginx` and execute the following command to package your chart which creates a .tgz package.
+`nginx`의 이전 디렉토리로 이동하여 다음 명령을 실행하여 .tgz 패키지를 생성하는 차트를 패키징합니다.
 
 ```bash
 helm package nginx
@@ -146,12 +146,12 @@ $ ls
 nginx  nginx-0.1.0.tgz
 ```
 
-## Upload Your App
+## 앱 업로드
 
-Now that you have your Helm-based app ready, you can load it to KubeSphere and test it on the platform.
+이제 Helm 기반 앱이 준비되었으므로 Kuberix Enterprise에 로드하고 플랫폼에서 테스트할 수 있습니다.
 
-## See Also
+## 또한보십시오
 
-[Helm Specifications](../helm-specification/)
+[헬름 사양](../helm-specification/)
 
-[Import an Helm Repository](../../../workspace-administration/app-repository/import-helm-repository/)
+[Helm 저장소 가져오기](../../../workspace-administration/app-repository/import-helm-repository/)
