@@ -150,7 +150,7 @@ Docker는 이미지를 포함한 모든 Docker 관련 파일이 저장되는 기
 
 {{< notice note >}}
 
-도메인 이름은 명령에서 `dockerhub.kubekey.local`입니다. **own registry address**를 사용해야 합니다.
+도메인 이름은 명령에서 `dockerhub.kubePOP.local`입니다. **own registry address**를 사용해야 합니다.
 
 {{</ notice >}} 
 
