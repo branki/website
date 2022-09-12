@@ -1,50 +1,50 @@
 ---
-title: "Deploy RadonDB MySQL on KubeSphere"
-keywords: 'KubeSphere, Kubernetes, Installation, RadonDB MySQL'
-description: 'Learn how to deploy RadonDB MySQL from the App Store of KubeSphere and access its service.'
-linkTitle: "Deploy RadonDB MySQL on KubeSphere"
+title: "Deploy RadonDB MySQL on Kuberix Enterprise"
+keywords: 'Kuberix, Kubernetes, Installation, RadonDB MySQL'
+description: 'Learn how to deploy RadonDB MySQL from the App Store of Kuberix Enterprise and access its service.'
+linkTitle: "Deploy RadonDB MySQL on Kuberix Enterprise"
 weight: 14293
 ---
 
-[RadonDB MySQL](https://github.com/radondb/radondb-mysql-kubernetes) is an open source, cloud-native, and highly available cluster solution based on [MySQL](https://MySQL.org) database. With the Raft protocol, RadonDB MySQL enables fast failover without losing any transactions.
+[RadonDB MySQL](https://github.com/radondb/radondb-mysql-kubernetes)은 [MySQL](https://MySQL.org) 데이터베이스를 기반으로 하는 오픈 소스, 클라우드 네이티브, 고가용성 클러스터 솔루션입니다. . Raft 프로토콜을 통해 RadonDB MySQL은 트랜잭션 손실 없이 빠른 장애 조치를 가능하게 합니다.
 
-This tutorial demonstrates how to deploy RadonDB MySQL from the App Store of KubeSphere.
+이 튜토리얼은 Kuberix Enterprise의 앱 스토어에서 RadonDB MySQL을 배포하는 방법을 보여줍니다.
 
-{{< notice note >}}
+{{< 공지사항 >}}
 
-The version of RadonDB MySQL in **App Store** is v1.0.0, and is no longer maintained.
+**앱 스토어**의 RadonDB MySQL 버전은 v1.0.0이며 더 이상 유지 관리되지 않습니다.
 
-We recommend you to use the latest version of RadonDB MySQL. For deployment instructions, please refer to [Deploy RadonDB MySQL Operator and Cluster](../../external-apps/deploy-radondb-mysql/).
+최신 버전의 RadonDB MySQL을 사용하는 것이 좋습니다. 배포 지침은 [RadonDB MySQL 운영자 및 클러스터 배포](../../external-apps/deploy-radondb-mysql/)를 참조하십시오.
 
-{{</ notice >}}
+{{</ 공지 >}}
 
-## Prerequisites
+## 전제 조건
 
-- Please make sure you [enable the OpenPitrix system](../../../pluggable-components/app-store/).
-- You need to create a workspace, a project, and a user account (`project-regular`) for this tutorial. The account needs to be a platform regular user and to be invited as the project operator with the `operator` role. In this tutorial, you log in as `project-regular` and work in the project `demo-project` in the workspace `demo-workspace`. For more information, see [Create Workspaces, Projects, Users and Roles](../../../quick-start/create-workspace-and-project/).
+- [OpenPitrix 시스템 활성화](../../../pluggable-components/app-store/)를 확인하십시오.
+- 이 튜토리얼에서는 작업 공간, 프로젝트 및 사용자 계정(`project-regular`)을 생성해야 합니다. 계정은 플랫폼 일반 사용자여야 하며 '운영자' 역할을 가진 프로젝트 운영자로 초대되어야 합니다. 이 튜토리얼에서는 `project-regular`로 로그인하여 `demo-workspace` 작업 공간의 `demo-project` 프로젝트에서 작업합니다. 자세한 내용은 [작업 공간, 프로젝트, 사용자 및 역할 생성](../../../quick-start/create-workspace-and-project/)을 참조하십시오.
 
-## Hands-on Lab
+## 실습 (핸즈온)
 
-### Step 1: Deploy RadonDB MySQL from the App Store
+### 1단계: 앱 스토어에서 RadonDB MySQL 배포
 
-1. On the **Overview** page of the project `demo-project`, click **App Store** in the top-left corner.
+1. `demo-project` 프로젝트의 **Overview** 페이지에서 왼쪽 상단의 **App Store**를 클릭합니다.
 
-2. Find RadonDB MySQL and click **Install** on the **App Information** page.
+2. RadonDB MySQL을 찾아 **App Information** 페이지에서 **Install**를 클릭합니다.
 
-3. Set a name and select an app version. Make sure RadonDB MySQL is deployed in `demo-project` and click **Next**.
+3. 이름을 설정하고 앱 버전을 선택합니다. RadonDB MySQL이 `demo-project`에 배포되었는지 확인하고 **Next**를 클릭합니다.
 
-4. In **App Settings**, you can use the default settings or customize the settings by editing the YAML file directly. When you finish, click **Install**.
+4. **App Settings**에서 기본 설정을 사용하거나 YAML 파일을 직접 편집하여 설정을 사용자 지정할 수 있습니다. 완료되면 **Install**를 클릭합니다.
 
-5. Wait until RadonDB MySQL is up and running.
+5. RadonDB MySQL이 실행될 때까지 기다립니다.
 
-### Step 2: Access RadonDB MySQL
+### 2단계: RadonDB MySQL에 액세스
 
-1. In **Services** under **Application Workloads**, click the Service name of RadonDB MySQL.
+1. **Application Workloads** 아래의 **Services**에서 RadonDB MySQL의 서비스 이름을 클릭합니다.
 
-2. Under **Pods**, expand the menu to see container details, and then click the **Terminal** icon.
+2. **Pods** 아래에서 메뉴를 확장하여 컨테이너 세부 정보를 확인한 다음 **Terminal** 아이콘을 클릭합니다.
 
-3. In the pop-up window, enter commands in the terminal directly to use the app.
+3. 팝업창에서 터미널에 직접 명령어를 입력하여 앱을 사용합니다.
 
-   ![Access RadonDB MySQL](/images/docs/v3.3/appstore/built-in-apps/radondb-mysql-app/radondb-mysql-service-terminal.png)
+   ![RadonDB MySQL 접근](/images/docs/v3.3/appstore/built-in-apps/radondb-mysql-app/radondb-mysql-service-terminal.png)
 
-4. If you want to access RadonDB MySQL outside the cluster, see [the open-source project of RadonDB MySQL](https://github.com/radondb/radondb-mysql-kubernetes) in detail.
+4. 클러스터 외부에서 RadonDB MySQL에 접근하고 싶다면 [RadonDB MySQL 오픈소스 프로젝트](https://github.com/radondb/radondb-mysql-kubernetes)를 참조한다.
