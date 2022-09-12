@@ -1,220 +1,212 @@
 ---
 title: "Kubernetes Application Lifecycle Management"
-keywords: 'Kubernetes, KubeSphere, app-store'
+keywords: 'Kubernetes, Kuberix, app-store'
 description: 'Manage your app across the entire lifecycle, including submission, review, test, release, upgrade and removal.'
 linkTitle: 'Application Lifecycle Management'
 weight: 14100
 ---
 
-KubeSphere integrates [OpenPitrix](https://github.com/openpitrix/openpitrix), an open-source multi-cloud application management platform, to set up the App Store, managing Kubernetes applications throughout their entire lifecycle. The App Store supports two kinds of application deployment:
+Kuberix Enterprise는 오픈 소스 멀티 클라우드 애플리케이션 관리 플랫폼인 [OpenPitrix](https://github.com/openpitrix/openpitrix)를 통합하여 전체 수명 주기 동안 쿠버네티스 애플리케이션을 관리하는 앱 스토어를 설정합니다. 앱 스토어는 두 가지 종류의 애플리케이션 배포를 지원합니다.
 
-- **Template-Based Apps** provide a way for developers and independent software vendors (ISVs) to share applications with users in a workspace. You can also import third-party app repositories within a workspace.
-- **Composed Apps** help users quickly build a complete application using multiple microservices to compose it. KubeSphere allows users to select existing services or create new services to create a composed app on the one-stop console.
+- **템플릿 기반 앱**은 개발자 및 ISV(독립 소프트웨어 공급업체)가 작업 공간에서 사용자와 애플리케이션을 공유할 수 있는 방법을 제공합니다. 작업 공간 내에서 타사 앱 리포지토리를 가져올 수도 있습니다.
+- **구성된 앱**은 사용자가 여러 마이크로서비스를 사용하여 완전한 애플리케이션을 신속하게 구축할 수 있도록 도와줍니다. Kuberix Enterprise는 사용자가 기존 서비스를 선택하거나 새로운 서비스를 생성하여 원스톱 콘솔에서 구성된 앱을 생성할 수 있도록 합니다.
 
-Using [Redis](https://redis.io/) as an example application, this tutorial demonstrates how to manage the Kubernetes app throughout the entire lifecycle, including submission, review, test, release, upgrade and removal.
+[Redis](https://redis.io/)를 예제 애플리케이션으로 사용하는 이 튜토리얼은 제출, 검토, 테스트, 릴리스, 업그레이드 및 제거를 포함한 전체 수명 주기 동안 쿠버네티스 앱을 관리하는 방법을 보여줍니다.
 
-## Prerequisites
+## 전제 조건
 
-- You need to enable the [KubeSphere App Store (OpenPitrix)](../../pluggable-components/app-store/).
-- You need to create a workspace, a project and a user (`project-regular`). For more information, see [Create Workspaces, Projects, Users and Roles](../../quick-start/create-workspace-and-project/).
+- [Kuberix Enterprise 앱 스토어(OpenPitrix)](../../pluggable-components/app-store/)를 활성화해야 합니다.
+- 작업 공간, 프로젝트 및 사용자(`project-regular`)를 생성해야 합니다. 자세한 내용은 [작업 공간, 프로젝트, 사용자 및 역할 생성](../../quick-start/create-workspace-and-project/)을 참조하십시오.
 
-## Hands-on Lab
+## 핸즈온 랩
 
-### Step 1: Create a customized role and two users
+### 1단계: 사용자 지정 역할 및 두 명의 사용자 생성
 
-You need to create two users first, one for ISVs (`isv`) and the other (`reviewer`) for app technical reviewers.
+먼저 두 명의 사용자를 생성해야 합니다. 하나는 ISV(`isv`)용이고 다른 하나(`reviewer`)는 앱 기술 검토자용입니다.
 
-1. Log in to the KubeSphere console with the user `admin`. Click **Platform** in the upper-left corner and select **Access Control**. In **Platform Roles**, click **Create**.
+1. 사용자 `admin`으로 Kuberix Enterprise 콘솔에 로그인합니다. 왼쪽 상단 모서리에서 **Platform**을 클릭하고 **Access Control**를 선택합니다. **Role**에서 **Create**를 클릭합니다.
 
-2. Set a name for the role, such as `app-review`, and click **Edit Permissions**.
+2. 'app-review'와 같은 역할 이름을 설정하고 **Change Access**을 클릭합니다.
 
-3. In **App Management**, choose **App Template Management** and **App Template Viewing** in the permission list, and then click **OK**.
-
-   {{< notice note >}}
-
-   The user who is granted the role `app-review` has the permission to view the App Store on the platform and manage apps, including review and removal.
-
-   {{</ notice >}} 
-
-4. As the role is ready now, you need to create a user and grant the role `app-review` to it. In **Users**, click **Create**. Provide the required information and click **OK**.
-
-5. Similarly, create another user `isv`, and grant the role of `platform-regular` to it.
-
-6. Invite both users created above to an existing workspace such as `demo-workspace`, and grant them the role of `workspace-admin`.
-
-### Step 2: Upload and submit an application
-
-1. Log in to KubeSphere as `isv` and go to your workspace. You need to upload the example app Redis to this workspace so that it can be used later. First, download the app [Redis 11.3.4](https://github.com/kubesphere/tutorial/raw/master/tutorial%205%20-%20app-store/redis-11.3.4.tgz) and click **Upload Template** in **App Templates**.
+3. **App Management**의 권한 목록에서 **App template management**와 **View App template**를 선택한 후 **OK**을 클릭합니다.
 
    {{< notice note >}}
 
-   In this example, a new version of Redis will be uploaded later to demonstrate the upgrade feature.
+   '앱 리뷰' 역할이 부여된 사용자는 플랫폼에서 앱 스토어를 보고 리뷰 및 제거를 포함한 앱을 관리할 수 있는 권한이 있습니다.
 
    {{</ notice >}} 
 
-2. In the dialog that appears, click **Upload Helm Chart** to upload the chart file. Click **OK** to continue.
+4. 이제 역할이 준비되었으므로 사용자를 만들고 'app-review' 역할을 부여해야 합니다. **User**에서 **Create**를 클릭합니다. 필요한 정보를 제공하고 **OK**을 클릭합니다.
 
-3. Basic information of the app displays under **App Information**. To upload an icon for the app, click **Upload Icon**. You can also skip it and click **OK** directly.
+5. 마찬가지로 다른 사용자 `isv`를 만들고 `platform-regular` 역할을 부여합니다.
+
+6. 위에서 생성한 두 사용자를 `demo-workspace`와 같은 기존 작업 공간에 초대하고 `workspace-admin` 역할을 부여합니다.
+
+### 2단계: 신청서 업로드 및 제출
+
+1. Kuberix Enterprise에 'isv'로 로그인하고 작업 공간으로 이동합니다. 나중에 사용할 수 있도록 예제 앱 Redis를 이 작업 공간에 업로드해야 합니다. 먼저 [Redis 11.3.4](https://github.com/kubesphere/tutorial/raw/master/tutorial%205%20-%20app-store/redis-11.3.4.tgz) 앱을 다운로드하고 *를 클릭합니다. **APp Template**의 *업로드 템플릿**.
 
    {{< notice note >}}
 
-   The maximum accepted resolution of the app icon is 96 x 96 pixels.
+   이 예제에서는 업그레이드 기능을 시연하기 위해 새 버전의 Redis가 나중에 업로드됩니다.
 
    {{</ notice >}} 
 
-4. The app displays in the template list with the status **Developing** after it is successfully uploaded, which means this app is under development. The uploaded app is visible to all members in the same workspace.
+2. 표시되는 대화 상자에서 **Helm Chart Upload**를 클릭하여 차트 파일을 업로드합니다. 계속하려면 **OK**을 클릭하세요.
 
-5. Go to the detail page of the app template by clicking Redis from the list. You can edit the basic information of this app by clicking **Edit**.
+3. **App Information** 아래에 앱의 기본 정보가 표시됩니다. 앱 아이콘을 업로드하려면 **Upload Icon**을 클릭하세요. 건너뛰고 **OK**을 직접 클릭할 수도 있습니다.
 
-6. You can customize the app's basic information by specifying the fields in the pop-up window.
+   {{< notice note >}}
 
-7. Click **OK** to save your changes, then you can test this application by deploying it to Kubernetes. Click the draft version to expand the menu and click **Install**.
+   앱 아이콘의 최대 허용 해상도는 96 x 96픽셀입니다.
+
+   {{</ notice >}} 
+
+4. 앱은 성공적으로 업로드된 후 템플릿 목록에 **Developing** 상태로 표시됩니다. 이는 이 앱이 개발 중임을 의미합니다. 업로드된 앱은 동일한 작업 공간의 모든 구성원이 볼 수 있습니다.
+
+5. 목록에서 Redis를 클릭하여 앱 템플릿의 상세 페이지로 이동합니다. **Modify**을 클릭하면 이 앱의 기본 정보를 수정할 수 있습니다.
+
+6. 팝업 창에서 필드를 지정하여 앱의 기본 정보를 사용자 정의할 수 있습니다.
+
+7. **OK**을 클릭하여 변경 사항을 저장한 다음 쿠버네티스에 배포하여 이 애플리케이션을 테스트할 수 있습니다. 초안 버전을 클릭하여 메뉴를 확장하고 **설치**를 클릭합니다.
 
    {{< notice note >}} 
 
-   If you don't want to test the app, you can submit it for review directly. However, it is recommended that you test your app deployment and function first before you submit it for review, especially in a production environment. This helps you detect any problems in advance and accelerate the review process. 
+   앱을 테스트하고 싶지 않다면 직접 제출하여 검토를 받을 수 있습니다. 그러나 특히 프로덕션 환경에서 검토를 위해 제출하기 전에 먼저 앱 배포 및 기능을 테스트하는 것이 좋습니다. 이를 통해 문제를 미리 감지하고 검토 프로세스를 가속화할 수 있습니다.
 
    {{</ notice >}} 
 
-8. Select the cluster and project to which you want to deploy the app, set up different configurations for the app, and then click **Install**.
+8. 앱을 배포할 클러스터 및 프로젝트를 선택하고 앱에 대해 다른 구성을 설정한 다음 **Install**를 클릭합니다.
 
    {{< notice note >}}
 
-   Some apps can be deployed with all configurations set in a form. You can use the toggle switch to see its YAML file, which contains all parameters you need to specify in the form. 
+   일부 앱은 양식에 설정된 모든 구성으로 배포할 수 있습니다. 토글 스위치를 사용하여 양식에 지정해야 하는 모든 매개변수가 포함된 YAML 파일을 볼 수 있습니다.
 
    {{</ notice >}} 
 
-9. Wait for a few minutes, then switch to the tab **App Instances**. You will find that Redis has been deployed successfully.
+9. 몇 분 동안 기다린 다음 **App Instance** 탭으로 전환합니다. Redis가 성공적으로 배포되었음을 알 수 있습니다.
 
-10. After you test the app with no issues found, you can click **Submit for Release** to submit this application for release.
+10. 문제가 발견되지 않은 상태로 앱을 테스트한 후 **Submmit to Release**을 클릭하여 이 애플리케이션을 제출하여 출시할 수 있습니다.
 
     {{< notice note >}}
 
-The version number must start with a number and contain decimal points.
+버전 번호는 숫자로 시작하고 소수점을 포함해야 합니다.
 
 {{</ notice >}}
 
-11. After the app is submitted, the app status will change to **Submitted**. Now app reviewers can release it.
+11. 앱이 제출되면 앱 상태가 **Submitted**으로 변경됩니다. 이제 앱 리뷰어가 릴리스할 수 있습니다.
 
-### Step 3: Release the application
+### 3단계: 애플리케이션 출시
 
-1. Log out of KubeSphere and log back in as `app-reviewer`. Click **Platform** in the upper-left corner and select **App Store Management**. On the **App Release** page, the app submitted in the previous step displays under the tab **Unreleased**.
+1. Kuberix Enterprise에서 로그아웃하고 'app-reviewer'로 다시 로그인합니다. 왼쪽 상단 모서리에서 **Platform**을 클릭하고 **App Store Management**를 선택합니다. **App Release** 페이지에서 이전 단계에서 제출된 앱은 **Unreleased** 탭 아래에 표시됩니다.
 
-2. To release this app, click it to inspect the app information, introduction, chart file and update logs from the pop-up window.
+2. 이 앱을 출시하려면 해당 앱을 클릭하여 팝업 창에서 앱 정보, 소개, 차트 파일 및 업데이트 로그를 확인합니다.
 
-3. The reviewer needs to decide whether the app meets the release criteria on the App Store. Click **Pass** to approve it or **Reject** to deny an app submission.
+3. 검토자는 앱이 앱 스토어의 출시 기준을 충족하는지 여부를 결정해야 합니다. **Pass**를 클릭하여 승인하거나 **Cancel**를 클릭하여 앱 제출을 거부합니다.
 
-### Step 4: Release the application to the App Store
+### 4단계: 앱 스토어에 애플리케이션 출시
 
-After the app is approved, `isv` can release the Redis application to the App Store, allowing all users on the platform to find and deploy this application.
+앱이 승인되면 'isv'는 Redis 애플리케이션을 앱 스토어에 출시하여 플랫폼의 모든 사용자가 이 애플리케이션을 찾고 배포할 수 있도록 합니다.
 
-1. Log out of KubeSphere and log back in as `isv`. Go to your workspace and click Redis on the **Template-Based Apps** page. On its details page, expand the version menu, then click **Release to Store**. In the pop-up prompt, click **OK** to confirm.
+1. Kuberix Enterprise에서 로그아웃하고 'isv'로 다시 로그인합니다. 작업 공간으로 이동하여 **Template-Based Apps** 페이지에서 Redis를 클릭합니다. 세부 정보 페이지에서 버전 메뉴를 확장한 다음 **Release to Store**를 클릭합니다. 팝업 프롬프트에서 **OK**을 클릭하여 확인합니다.
 
-2. Under **App Release**, you can see the app status. **Activated** means it is available in the App Store.
+2. **App Release**에서 앱 상태를 확인할 수 있습니다. **Activated**은 앱 스토어에서 사용할 수 있음을 의미합니다.
 
-3. Click **View in Store** to go to its **Versions** page in the App Store. Alternatively, click **App Store** in the upper-left corner, and you can also see the app.
+3. **View On Store**를 클릭하여 앱 스토어의 **Version** 페이지로 이동합니다. 또는 왼쪽 상단의 **App Store**를 클릭하면 앱을 볼 수도 있습니다.
 
    {{< notice note >}}
 
-   You may see two Redis apps in the App Store, one of which is a built-in app in KubeSphere. Note that a newly-released app displays at the beginning of the list in the App Store.
+   앱 스토어에서 두 개의 Redis 앱을 볼 수 있으며 그 중 하나는 쿠버네티스에 내장된 앱입니다. 새로 출시된 앱은 앱 스토어의 목록 시작 부분에 표시됩니다.
 
    {{</ notice >}} 
 
-4. Now, users in the workspace can install Redis from the App Store. To install the app to Kubernetes, click the app to go to its **App Information** page, and click **Install**.
+4. 이제 작업 공간의 사용자는 앱 스토어에서 Redis를 설치할 수 있습니다. 앱을 쿠버네티스에 설치하려면 앱을 클릭하여 **App Information** 페이지로 이동하고 **Install**를 클릭합니다.
    
    {{< notice note >}}
    
-   If you have trouble installing an application and the **Status** column shows **Failed**, you can hover your cursor over the **Failed** icon to see the error message.
+   응용 프로그램을 설치하는 데 문제가 있고 **Status** 열에 **Failed**가 표시되는 경우 **Failed** 아이콘 위로 커서를 가져가면 오류 메시지가 표시됩니다.
    
    {{</ notice >}}
 
-### Step 5: Create an application category
+### 5단계: 애플리케이션 카테고리 생성
 
-`app-reviewer` can create multiple categories for different types of applications based on their function and usage. It is similar to setting tags and categories can be used in the App Store as filters, such as Big Data, Middleware, and IoT.
+'app-reviewer'는 기능과 용도에 따라 다양한 유형의 애플리케이션에 대해 여러 범주를 만들 수 있습니다. 태그를 설정하는 것과 유사하며 카테고리는 앱스토어에서 빅데이터, 미들웨어, IoT 등의 필터로 사용할 수 있습니다.
 
-1. Log in to KubeSphere as `app-reviewer`. To create a category, go to the **App Store Management** page and click <img src="/images/docs/v3.3/appstore/application-lifecycle-management/plus.png" height="20px"> in **App Categories**.
+1. Kuberix Enterprise에 '앱 리뷰어'로 로그인합니다. 카테고리를 만들려면 **App Store Management** 페이지로 이동하여 <img src="/images/docs/v3.3/appstore/application-lifecycle-management/plus.png" height="20px">를 클릭하세요. **App Categories**에서.
 
-2. Set a name and icon for the category in the dialog, then click **OK**. For Redis, you can enter `Database` for the field **Name**.
+2. 대화 상자에서 범주의 이름과 아이콘을 설정한 다음 **OK**을 클릭합니다. Redis의 경우 **Name** 필드에 '데이터베이스'를 입력할 수 있습니다.
 
    {{< notice note >}}
 
-   Usually, an app reviewer creates necessary categories in advance and ISVs select the category in which an app appears before submitting it for review. A newly-created category has no app in it.
+   일반적으로 앱 리뷰어는 사전에 필요한 카테고리를 생성하고 ISV는 리뷰를 위해 제출하기 전에 앱이 표시될 카테고리를 선택합니다. 새로 생성된 카테고리에는 앱이 없습니다.
 
    {{</ notice >}} 
 
-3. As the category is created, you can assign the category to your app. In **Uncategorized**, select Redis and click **Change Category**. 
+3. 카테고리가 생성되면 앱에 카테고리를 할당할 수 있습니다. **Uncategorized**에서 Redis를 선택하고 **Change Category**을 클릭합니다.
 
-4. In the dialog, select the category (**Database**) from the drop-down list and click **OK**.
+4. 대화 상자의 드롭다운 목록에서 범주(**Database**)를 선택하고 **OK**을 클릭합니다.
 
-5. The app displays in the category as expected.
+5. 앱이 예상대로 카테고리에 표시됩니다.
 
-### Step 6: Add a new version
+### 6단계: 새 버전 추가
 
-To allow workspace users to upgrade apps, you need to add new app versions to KubeSphere first. Follow the steps below to add a new version for the example app.
+작업 공간 사용자가 앱을 업그레이드할 수 있도록 하려면 먼저 Kuberix Enterprise에 새 앱 버전을 추가해야 합니다. 예제 앱의 새 버전을 추가하려면 아래 단계를 따르세요.
 
-1. Log in to KubeSphere as `isv` again and navigate to **Template-Based Apps**. Click the app Redis in the list.
+1. Kuberix Enterprise 에 'isv'로 다시 로그인하고 **Template-Based Apps**로 이동합니다. 목록에서 앱 Redis를 클릭합니다.
 
-2. Download [Redis 12.0.0](https://github.com/kubesphere/tutorial/raw/master/tutorial%205%20-%20app-store/redis-12.0.0.tgz), which is a new version of Redis for demonstration in this tutorial. On the tab **Versions**, click **New Version** on the right to upload the package you just downloaded.
+2. [Redis 12.0.0](https://github.com/KuberixEnterprise/tutorial/raw/master/tutorial%205%20-%20app-store/redis-12.0.0.tgz)을 다운로드합니다. 이 튜토리얼의 데모용 Redis 버전. **Versions** 탭에서 오른쪽에 있는 **New Version**을 클릭하여 방금 다운로드한 패키지를 업로드합니다.
 
-3. Click **Upload Helm Chart** and click **OK** after it is uploaded.
+3. **Upload Helm Chart**를 클릭하고 업로드된 후 **OK**을 클릭합니다.
 
-4. The new app version displays in the version list. You can click it to expand the menu and test the new version. Besides, you can also submit it for review and release it to the App Store, which is the same as the steps shown above.
+4. 새 앱 버전이 버전 목록에 표시됩니다. 클릭하여 메뉴를 확장하고 새 버전을 테스트할 수 있습니다. 또한 위에 표시된 단계와 동일하게 검토를 위해 제출하고 앱 스토어에 출시할 수도 있습니다.
 
-### Step 7: Upgrade an application
+### 7단계: 애플리케이션 업그레이드
 
-After a new version is released to the App Store, all users can upgrade this application to the new version.
+새 버전이 앱 스토어에 출시된 후 모든 사용자는 이 응용 프로그램을 새 버전으로 업그레이드할 수 있습니다.
 
 {{< notice note >}}
 
-To follow the steps below, you must deploy an app of one of its old versions first. In this example, Redis 11.3.4 was already deployed in the project `demo-project` and its new version 12.0.0 was released to the App Store.
+아래 단계를 따르려면 먼저 이전 버전 중 하나의 앱을 배포해야 합니다. 이 예에서 Redis 11.3.4는 이미 'demo-project' 프로젝트에 배포되었으며 새 버전 12.0.0이 앱 스토어에 출시되었습니다.
 
 {{</ notice >}} 
 
-1. Log in to KubeSphere as `project-regular`, navigate to the **Apps** page of the project, and click the app to upgrade.
+1. Kuberix Enterprise에 `project-regular`로 로그인하고 프로젝트의 **Apps** 페이지로 이동한 후 업그레이드할 앱을 클릭합니다.
 
-2. Click **More** and select **Edit Settings** from the drop-down list.
+2. **More**를 클릭하고 드롭다운 목록에서 **Edit Settings**을 선택합니다.
 
-3. In the window that appears, you can see the YAML file of application configurations. Select the new version from the drop-down list on the right. You can customize the YAML file of the new version. In this tutorial, click **Update** to use the default configurations directly.
+3. 나타나는 창에서 응용 프로그램 구성의 YAML 파일을 볼 수 있습니다. 오른쪽의 드롭다운 목록에서 새 버전을 선택합니다. 새 버전의 YAML 파일을 사용자 지정할 수 있습니다. 이 가이드에서 **Update**를 클릭하여 기본 구성을 직접 사용합니다.
 
    {{< notice note >}}
 
-   You can select the same version from the drop-down list on the right as that on the left to customize current application configurations through the YAML file.
+   오른쪽의 드롭다운 목록에서 왼쪽과 동일한 버전을 선택하여 YAML 파일을 통해 현재 애플리케이션 구성을 사용자 지정할 수 있습니다.
 
    {{</ notice >}}
 
-4. On the **Apps** page, you can see that the app is being upgraded. The status will change to **Running** when the upgrade finishes.
+4. **Apps** 페이지에서 앱이 업그레이드 중임을 확인할 수 있습니다. 업그레이드가 완료되면 상태가 **Running**으로 변경됩니다.
 
-### Step 8: Suspend an application
+### 8단계: 지원 중단
 
-You can choose to remove an app entirely from the App Store or suspend a specific app version.
+앱 스토어에서 앱을 완전히 제거하거나 특정 앱 버전을 일시 중지하도록 선택할 수 있습니다.
 
-1. Log in to KubeSphere as `app-reviewer`. Click **Platform** in the upper-left corner and select **App Store Management**. On the **App Store** page, click Redis.
+1. Kuberix Enterprise에 'App-Reviewer'로 로그인합니다. 왼쪽 상단 모서리에서 **Platform**을 클릭하고 **App Store Management**를 선택합니다. **App Store** 페이지에서 Redis를 클릭합니다. 
 
-2. On the detail page, click **Suspend App** and select **OK** in the dialog to confirm the operation to remove the app from the App Store.
+2. 세부 정보 페이지에서 **Suspend App**을 클릭하고 대화 상자에서 **OK**을 선택하여 앱 스토어에서 앱을 제거하는 작업을 확인합니다. 
 
    {{< notice note >}}
 
-   Removing an app from the App Store does not affect tenants who are using the app.
+   앱 스토어에서 앱을 제거해도 앱을 사용하는 테넌트에는 영향을 미치지 않습니다.
 
    {{</ notice >}} 
 
-3. To make the app available in the App Store again, click **Activate App**.
+3. 앱 스토어에서 앱을 다시 사용할 수 있게 하려면 **Activate App**를 클릭합니다.
 
-4. To suspend a specific app version, expand the version menu and click **Suspend Version**. In the dialog that appears, click **OK** to confirm.
+4. 특정 앱 버전을 일시 중지하려면 버전 메뉴를 확장하고 **Suspend Version**를 클릭합니다. 표시되는 대화 상자에서 **OK**을 클릭하여 확인합니다.
 
    {{< notice note >}}
 
-   After an app version is suspended, this version is not available in the App Store. Suspending an app version does not affect tenants who are using this version.
+   앱 버전이 일시 중단된 후에는 이 버전을 앱 스토어에서 사용할 수 없습니다. 앱 버전을 일시 중단해도 이 버전을 사용하는 테넌트에는 영향을 미치지 않습니다.
 
    {{</ notice >}}
 
-5. To make the app version available in the App Store again, click **Activate Version**.
-
-   
-
-   
-
-   
-
-   
+5. 앱 스토어에서 앱 버전을 다시 사용할 수 있게 하려면 **Activate Version**를 클릭합니다.   
 
