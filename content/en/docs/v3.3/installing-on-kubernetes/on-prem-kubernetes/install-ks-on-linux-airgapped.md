@@ -161,11 +161,11 @@ Docker는 이미지를 포함한 모든 Docker 관련 파일이 저장되는 기
 1. 다음 명령을 실행하여 이 두 파일을 다운로드하고 설치를 위한 작업 상자 역할을 하는 컴퓨터로 전송합니다.
 
    ```bash
-   curl -L -O https://github.com/ke/ks-installer/releases/download/v3.3.0/cluster-configuration.yaml
-   curl -L -O https://github.com/ke/ks-installer/releases/download/v3.3.0/ke-installer.yaml
+   curl -L -O https://github.com/ke/ke-installer/releases/download/v3.3.0/cluster-configuration.yaml
+   curl -L -O https://github.com/ke/ke-installer/releases/download/v3.3.0/ke-installer.yaml
    ```
 
-2. `cluster-configuration.yaml`을 편집하여 개인 이미지 레지스트리를 추가합니다. 예를 들어 `dockerhub.kubePOP.local`은 이 튜토리얼에서 레지스트리 주소이고, 아래와 같이 `.spec.local_registry`의 값으로 사용합니다.:
+2. `cluster-configuration.yaml`을 편집하여 개인 이미지 레지스트리를 추가합니다. 예를 들어 `dockerhub.kubepop.local`은 이 튜토리얼에서 레지스트리 주소이고, 아래와 같이 `.spec.local_registry`의 값으로 사용합니다.:
 
    ```yaml
    spec:
@@ -173,7 +173,7 @@ Docker는 이미지를 포함한 모든 Docker 관련 파일이 저장되는 기
        storageClass: ""
      authentication:
        jwtSecret: ""
-     local_registry: dockerhub.kubekey.local # Add this line manually; make sure you use your own registry address.
+     local_registry: dockerhub.kubepop.local # Add this line manually; make sure you use your own registry address.
    ```
 
    {{< notice note >}}
@@ -185,12 +185,12 @@ Docker는 이미지를 포함한 모든 Docker 관련 파일이 저장되는 기
 3. 편집이 끝나면 `cluster-configuration.yaml`을 저장합니다. 다음 명령을 사용하여 `ke-installer`를 **own registry address**로 바꿉니다.:
 
    ```bash
-   sed -i "s#^\s*image: kuberix.*/ke-installer:.*#        image: dockerhub.kubePOP.local/ke/ke-installer:v3.0.0#" ke-installer.yaml
+   sed -i "s#^\s*image: kuberix.*/ke-installer:.*#        image: dockerhub.kubepop.local/ke/ke-installer:v3.0.0#" ke-installer.yaml
    ```
 
    {{< notice warning >}}
 
-   `dockerhub.kubePOP.local`은 명령의 레지스트리 주소입니다. 자신의 레지스트리 주소를 사용해야 합니다.
+   `dockerhub.kubepop.local`은 명령의 레지스트리 주소입니다. 자신의 레지스트리 주소를 사용해야 합니다.
 
    {{</ notice >}}
 
