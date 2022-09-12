@@ -15,9 +15,9 @@ KubePOP v2.1.0에서는 쿠버네티스 클러스터의 에어갭 설치를 위�
 
 |Host IP| Host Name | Usage      |
 | ---------------- | ---- | ---------------- |
-|192.168.0.2 | node1    | Online host for packaging the source cluster with Kubernetes v1.22.10 and Kuberix Enterprise v3.3.0 installed |
-|192.168.0.3 | node2    | Control plane node of the air-gapped environment |
-|192.168.0.4 | node3    | Image registry node of the air-gapped environment |
+|192.168.0.2 | node1    | 쿠버네티스 v1.22.10 및 Kuberix Enterprise v3.3.0이 설치된 소스 클러스터 패키징을 위한 온라인 호스트 |
+|192.168.0.3 | node2    | 에어 갭 환경의 컨트롤 패널 노드 |
+|192.168.0.4 | node3    | 에어갭 환경의 이미지 레지스트리 노드 |
 
 ## 설치 준비
 
