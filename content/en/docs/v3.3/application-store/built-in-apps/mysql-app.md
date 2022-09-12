@@ -1,66 +1,66 @@
 ---
-title: "Deploy MySQL on KubeSphere"
-keywords: 'KubeSphere, Kubernetes, Installation, MySQL'
-description: 'Learn how to deploy MySQL from the App Store of KubeSphere and access its service.'
+title: "Deploy MySQL on Kuberix Enterprise"
+keywords: 'Kuberix, Kubernetes, Installation, MySQL'
+description: 'Learn how to deploy MySQL from the App Store of Kuberix Enterprise and access its service.'
 
 link title: "Deploy MySQL"
 weight: 14260
 ---
-[MySQL](https://www.mysql.com/) is an open-source relational database management system (RDBMS), which uses the most commonly used database management language - Structured Query Language (SQL) for database management. It provides a fully managed database service to deploy cloud-native applications using the world's most popular open-source database.
+[MySQL](https://www.mysql.com/)은 오픈 소스 관계형 데이터베이스 관리 시스템(RDBMS)으로 가장 일반적으로 사용되는 데이터베이스 관리 언어인 SQL(Structured Query Language)을 데이터베이스 관리에 사용합니다. 세계에서 가장 인기 있는 오픈 소스 데이터베이스를 사용하여 클라우드 네이티브 애플리케이션을 배포할 수 있는 완전 관리형 데이터베이스 서비스를 제공합니다.
 
-This tutorial walks you through an example of deploying MySQL from the App Store of KubeSphere.
+이 튜토리얼은 Kuberix Enterprise의 앱 스토어에서 MySQL을 배포하는 예를 안내합니다.
 
-## Prerequisites
+## 전제 조건
 
-- Please make sure you [enable the OpenPitrix system](../../../pluggable-components/app-store/).
-- You need to create a workspace, a project, and a user account for this tutorial. The account needs to be a platform regular user and to be invited as the project operator with the `operator` role. In this tutorial, you log in as `project-regular` and work in the project `demo-project` in the workspace `demo-workspace`. For more information, see [Create Workspaces, Projects, Users and Roles](../../../quick-start/create-workspace-and-project/).
+- [OpenPitrix 시스템 활성화](../../../pluggable-components/app-store/)를 확인하십시오.
+- 이 튜토리얼에서는 작업 공간, 프로젝트 및 사용자 계정을 생성해야 합니다. 계정은 플랫폼 일반 사용자여야 하며 '운영자' 역할을 가진 프로젝트 운영자로 초대되어야 합니다. 이 튜토리얼에서는 `project-regular`로 로그인하여 `demo-workspace` 작업 공간의 `demo-project` 프로젝트에서 작업합니다. 자세한 내용은 [작업 공간, 프로젝트, 사용자 및 역할 생성](../../../quick-start/create-workspace-and-project/)을 참조하십시오.
 
-## Hands-on Lab
+## 실습 (핸즈온)
 
-### Step 1: Deploy MySQL from the App Store
+### 1단계: 앱 스토어에서 MySQL 배포
 
-1. On the **Overview** page of the project `demo-project`, click **App Store** in the upper-left corner.
+1. `demo-project` 프로젝트의 **Overview** 페이지에서 왼쪽 상단의 **App Store**를 클릭합니다.
 
-2. Find MySQL and click **Install** on the **App Information** page.
+2. MySQL을 찾아 **App Information** 페이지에서 **Install**를 클릭합니다.
 
-3. Set a name and select an app version. Make sure MySQL is deployed in `demo-project` and click **Next**.
+3. 이름을 설정하고 앱 버전을 선택합니다. MySQL이 `demo-project`에 배포되었는지 확인하고 **Next**를 클릭합니다.
 
-4. In **App Settings**, uncomment the `mysqlRootPassword` field and customize the password. Click **Install** to continue.
+4. **App Settings**에서 `mysqlRootPassword` 필드의 주석을 제거하고 비밀번호를 사용자 지정합니다. 계속하려면 **Install**를 클릭하세요.
 
-5. Wait until MySQL is up and running.
+5. MySQL이 실행될 때까지 기다리십시오.
 
-### Step 2: Access the MySQL terminal
+### 2단계: MySQL 터미널에 액세스
 
-1. Go to **Workloads** and click the workload name of MySQL.
+1. **Workloads**로 이동하여 MySQL의 워크로드 이름을 클릭합니다.
 
-2. Under **Pods**, expand the menu to see container details, and then click the **Terminal** icon.
+2. **Pods** 아래에서 메뉴를 확장하여 컨테이너 세부 정보를 확인한 다음 **Terminal** 아이콘을 클릭합니다.
 
-3. In the terminal, execute `mysql -uroot -ptesting` to log in to MySQL as the root user.
+3. 터미널에서 `mysql -uroot -ptesting`을 실행하여 루트 사용자로 MySQL에 로그인합니다.
 
-   ![log-in-mysql](/images/docs/v3.3/appstore/built-in-apps/mysql-app/log-in-mysql.png)
+   ![mysql 로그인](/images/docs/v3.3/appstore/built-in-apps/mysql-app/log-in-mysql.png)
 
-### Step 3: Access the MySQL database outside the cluster
+### 3단계: 클러스터 외부의 MySQL 데이터베이스에 액세스
 
-To access MySQL outside the cluster, you need to expose the app through a NodePort first.
+클러스터 외부에서 MySQL에 액세스하려면 먼저 NodePort를 통해 앱을 노출해야 합니다.
 
-1. Go to **Services** and click the service name of MySQL.
+1. **Services**로 이동하여 MySQL의 서비스 이름을 클릭합니다.
 
-2. Click **More** and select **Edit External Access** from the drop-down list.
+2. **More**를 클릭하고 드롭다운 목록에서 **Edit External Access**을 선택합니다.
 
-3. Select **NodePort** for **Access Method** and click **OK**. For more information, see [Project Gateway](../../../project-administration/project-gateway/).
+3. **Access Method**으로 **NodePort**를 선택하고 **OK**을 클릭합니다. 자세한 내용은 [프로젝트 게이트웨이](../../../project-administration/project-gateway/)를 참조하십시오.
 
-4. Under **Ports**, you can see the port is exposed. The port and public IP address will be used in the next step to access the MySQL database.
+4. **Ports**에서 포트가 노출된 것을 볼 수 있습니다. 포트와 공용 IP 주소는 다음 단계에서 MySQL 데이터베이스에 액세스하는 데 사용됩니다.
 
-5. To access your MySQL database, you need to use the MySQL client or install a third-party application such as SQLPro Studio for the connection. The following example demonstrates how to access the MySQL database through SQLPro Studio.
+5. MySQL 데이터베이스에 액세스하려면 MySQL 클라이언트를 사용하거나 연결을 위해 SQLPro Studio와 같은 타사 응용 프로그램을 설치해야 합니다. 다음 예제는 SQLPro Studio를 통해 MySQL 데이터베이스에 액세스하는 방법을 보여줍니다.
 
-   ![login](/images/docs/v3.3/appstore/built-in-apps/mysql-app/login.png)
+   ![로그인](/images/docs/v3.3/appstore/built-in-apps/mysql-app/login.png)
 
    ![access-mysql-success](/images/docs/v3.3/appstore/built-in-apps/mysql-app/access-mysql-success.png)
 
    {{< notice note >}}
 
-   You may need to open the port in your security groups and configure related port forwarding rules depending on where your Kubernetes cluster is deployed.
+   쿠버네티스 클러스터가 배포된 위치에 따라 보안 그룹에서 포트를 열고 관련 포트 전달 규칙을 구성해야 할 수 있습니다.
 
-   {{</ notice >}} 
+   {{</ notice >}}
 
-6. For more information about MySQL, refer to [the official documentation of MySQL](https://dev.mysql.com/doc/).
+6. MySQL에 대한 자세한 내용은 [MySQL 공식 문서](https://dev.mysql.com/doc/)를 참조하십시오.
