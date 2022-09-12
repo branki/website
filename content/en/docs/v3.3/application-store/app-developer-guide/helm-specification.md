@@ -1,16 +1,16 @@
 ---
 title: "Helm Specifications"
-keywords: 'Kubernetes, KubeSphere, Helm, specifications'
+keywords: 'Kubernetes, Kuberix, Helm, specifications'
 description: 'Understand the chart structure and specifications.'
 linkTitle: "Helm Specifications"
 weight: 14420
 ---
 
-Helm charts serve as a packaging format. A chart is a collection of files that describe a related set of Kubernetes resources. For more information, see the [Helm documentation](https://helm.sh/docs/topics/charts/).
+Helm 차트는 패키징 형식으로 사용됩니다. 차트는 관련 쿠버네티스 리소스 집합을 설명하는 파일 모음입니다. 자세한 내용은 [Helm 문서](https://helm.sh/docs/topics/charts/)를 참조하세요.
 
-## Structure
+## 구조
 
-All related files of a chart is stored in a directory which generally contains:
+차트의 모든 관련 파일은 일반적으로 다음을 포함하는 디렉토리에 저장됩니다.
 
 ```text
 chartname/
@@ -25,9 +25,9 @@ chartname/
   templates/NOTES.txt # (Optional) A plain text file with usage notes.
 ```
 
-## Chart.yaml File
+## Chart.yaml 파일
 
-You must provide the `chart.yaml` file for a chart. Here is an example of the file with explanations for each field.
+차트에 대한 `chart.yaml` 파일을 제공해야 합니다. 다음은 각 필드에 대한 설명이 있는 파일의 예입니다.
 
 ```yaml
 apiVersion: (Required) The chart API version. 
@@ -64,19 +64,19 @@ annotations:
 
 {{< notice note >}}
 
-- The field `dependencies` is used to define chart dependencies which were located in a separate file `requirements.yaml` for `v1` charts. For more information, see [Chart Dependencies](https://helm.sh/docs/topics/charts/#chart-dependencies).
-- The field `type` is used to define the type of chart. Allowed values are `application` and `library`. For more information, see [Chart Types](https://helm.sh/docs/topics/charts/#chart-types).
+- 'dependencies' 필드는 'v1' 차트에 대해 별도의 파일 'requirements.yaml'에 있는 차트 종속성을 정의하는 데 사용됩니다. 자세한 내용은 [차트 종속성](https://helm.sh/docs/topics/charts/#chart-dependencies)을 참조하세요.
+- 'type' 필드는 차트의 유형을 정의하는 데 사용됩니다. 허용되는 값은 'application' 및 'library'입니다. 자세한 내용은 [차트 유형](https://helm.sh/docs/topics/charts/#chart-types)을 참조하세요.
 
 {{</ notice >}} 
 
-## Values.yaml and Templates
+## Values.yaml 및 템플릿
 
-Written in the [Go template language](https://golang.org/pkg/text/template/), Helm chart templates are stored in the `templates` folder of a chart. There are two ways to provide values for the templates:
+[Go 템플릿 언어](https://golang.org/pkg/text/template/)로 작성된 Helm 차트 템플릿은 차트의 'templates' 폴더에 저장됩니다. 템플릿에 값을 제공하는 방법에는 두 가지가 있습니다.
 
-1. Make a `values.yaml` file inside of a chart with default values that can be referenced.
-2. Make a YAML file that contains necessary values and use the file through the command line with `helm install`. 
+1. 참조할 수 있는 기본값을 사용하여 차트 내부에 `values.yaml` 파일을 만듭니다.
+2. 필요한 값이 포함된 YAML 파일을 만들고 `helm install`로 명령줄을 통해 파일을 사용합니다.
 
-Here is an example of the template in the `templates` folder.
+다음은 `templates` 폴더에 있는 템플릿의 예입니다.
 
 ```yaml
 apiVersion: v1
@@ -107,7 +107,7 @@ spec:
               value: {{default "minio" .Values.storage}}
 ```
 
-The above example defines a ReplicationController template in Kubernetes. There  are some values referenced in it which are defined in `values.yaml`.
+위의 예는 쿠버네티스에서 ReplicationController 템플릿을 정의합니다. `values.yaml`에 정의된 일부 값이 참조됩니다.
 
 - `imageRegistry`: The Docker image registry.
 - `dockerTag`: The Docker image tag.
@@ -123,8 +123,8 @@ pullPolicy: "Always"
 storage: "s3"
 ```
 
-## Reference
+## 참조
 
-[Helm Documentation](https://helm.sh/docs/)
+[Helm 문서](https://helm.sh/docs/)
 
-[Charts](https://helm.sh/docs/topics/charts/)
+[Chart 문서](https://helm.sh/docs/topics/charts/)
