@@ -1,134 +1,140 @@
 ---
 title: "Cluster Status Monitoring"
-keywords: "Kubernetes, KubeSphere, status, monitoring"
+keywords: "Kubernetes, Kuberix, status, monitoring"
 description: "Monitor how a cluster is functioning based on different metrics, including physical resources, etcd, and API server."
 linkTitle: "Cluster Status Monitoring"
 weight: 8200
 ---
 
-KubeSphere provides monitoring of related metrics such as CPU, memory, network, and disk of the cluster. You can also review historical monitoring data and sort nodes by different indicators based on their usage in **Cluster Status**.
+Kuberix Enterprise는 클러스터의 CPU, 메모리, 네트워크 및 디스크와 같은 관련 메트릭에 대한 모니터링을 제공합니다. 또한 기록 모니터링 데이터를 검토하고 **Cluster Status**에서 사용량에 따라 다양한 지표별로 노드를 정렬할 수 있습니다.
 
-## Prerequisites
+## 전제 조건
 
-You need a user granted a role including the authorization of **Cluster Management**. For example, you can log in to the console as `admin` directly or create a new role with the authorization and assign it to a user.
+**Cluster Management** 권한을 포함하여 역할이 부여된 사용자가 필요합니다. 예를 들어 콘솔에 'admin'으로 직접 로그인하거나 권한이 있는 새 역할을 생성하여 사용자에게 할당할 수 있습니다.
 
-## Cluster Status Monitoring
+## 클러스터 상태 모니터링
 
-1. Click **Platform** in the upper-left corner and select **Cluster Management**.
+1. 왼쪽 상단 모서리에서 **Platform**을 클릭하고 **Cluster Management**를 선택합니다.
 
-2. If you have enabled the [multi-cluster feature](../../multicluster-management/) with member clusters imported, you can select a specific cluster to view its application resources. If you have not enabled the feature, refer to the next step directly.
+2. 가져온 멤버 클러스터와 함께 [멀티 클러스터 기능](../../multicluster-management/)을 활성화한 경우 특정 클러스터를 선택하여 해당 애플리케이션 리소스를 볼 수 있습니다. 기능을 활성화하지 않은 경우 다음 단계를 직접 참조하십시오.
 
-3. Choose **Cluster Status** under **Monitoring & Alerting** to see the overview of cluster status monitoring, including **Cluster Node Status**, **Component Status**, **Cluster Resource Usage**, **etcd Monitoring**, and **Service Component Monitoring**.
+3. **Monitoring & Alerting** 아래에서 **Cluster Status**를 선택하여 **Cluster Node Status**, **Component Status**, **Cluster Resource Usage**, **etcd Monitoring** 및 **Service Component Monitoring**.
 
-### Cluster node status
+### 클러스터 노드 상태
 
-1. **Cluster Nodes Status** displays the status of all nodes, separately marking the active ones. You can go to the **Cluster Nodes** page to view the real-time resource usage of all nodes by clicking **Node Online Status**.
+1. **Cluster Nodes Status**는 활성 노드를 별도로 표시하여 모든 노드의 상태를 표시합니다. **Cluster Nodes** 페이지로 이동하여 **Node Online Status**를 클릭하여 모든 노드의 실시간 리소스 사용량을 볼 수 있습니다.
 
-2. In **Cluster Nodes**, click the node name to view usage details in **Running Status**, including **Resource Usage**, **Allocated Resources**, and **Health Status**.
+2. **Cluster Nodes**에서 노드 이름을 클릭하여 **Resource Usage**, **Allocated Resources** 및 **Health Status**를 포함한 **Running Status**의 사용량 세부 정보를 봅니다.
 
-3. Click the **Monitoring** tab to view how the node is functioning during a certain period based on different metrics, including **CPU Usage**, **Average CPU Load**, **Memory Usage**, **Disk Usage**, **Inode Usage**, **IOPS**, **Disk Throughput**, and **Network Bandwidth**.
+3. **Monitoring** 탭을 클릭하여 **CPU 사용량**, **평균 CPU 로드**, **메모리 사용량**, *을 포함한 다양한 메트릭을 기반으로 특정 기간 동안 노드가 작동하는 방식을 확인합니다. *디스크 사용량**, **Inode 사용량**, **IOPS**, **디스크 처리량** 및 **네트워크 대역폭**.
 
-    {{< notice tip >}}You can customize the time range from the drop-down list in the upper-right corner to view historical data.
-{{</ notice >}}
+    {{< notice tip >}}
+    
+    오른쪽 상단의 드롭다운 목록에서 시간 범위를 사용자 지정하여 기록 데이터를 볼 수 있습니다.
+    
+    {{</ notice >}}
 
-### Component status
+### 구성 요소 상태
 
-KubeSphere monitors the health status of various service components in the cluster. When a key component malfunctions, the system may become unavailable. The monitoring mechanism of KubeSphere ensures the platform can notify tenants of any occurring issues in case of a component failure, so that they can quickly locate the problem and take corresponding action.
+Kuberix Enterprise는 클러스터에 있는 다양한 서비스 구성 요소의 상태를 모니터링합니다. 주요 구성 요소가 오작동할 경우 시스템을 사용할 수 없게 될 수 있습니다. Kuberix Enterprise의 모니터링 메커니즘은 플랫폼이 구성 요소 장애 발생 시 발생하는 문제를 테넌트에게 통지하여 문제를 신속하게 찾아 해당 조치를 취할 수 있도록 합니다.
 
-1. On the **Cluster Status** page, click a component under  **Component Status** to view its status.
+1. **Cluster Status** 페이지에서 **Component Status** 아래의 구성 요소를 클릭하여 해당 상태를 확인합니다.
 
-2. You can see all the components are listed in this part. Components marked in green are those functioning normally while those marked in orange require special attention as it signals potential issues.
+2. 이 부분에 모든 구성 요소가 나열되어 있는 것을 볼 수 있습니다. 녹색으로 표시된 구성 요소는 정상적으로 작동하는 구성 요소이고 주황색으로 표시된 구성 요소는 잠재적인 문제를 나타내므로 특별한 주의가 필요합니다.
 
-    {{< notice tip >}}Components marked in orange may turn to green after a period of time, the reasons of which may be different, such as image pulling retries or pod recreations. You can click the component to see its service details.
-{{</ notice >}}
+    {{< notice tip >}}
+    
+    오렌지색으로 표시된 구성 요소는 일정 시간이 지나면 녹색으로 바뀔 수 있으며, 그 이유는 이미지 풀링 재시도 또는 포드 재생성 등 다를 수 있습니다. 구성 요소를 클릭하여 해당 서비스 세부 정보를 볼 수 있습니다.
+    
+    {{</ notice >}}
 
-### Cluster resource usage
+### 클러스터 리소스 사용량
 
-**Cluster Resource Usage** displays the information including **CPU Usage**, **Memory Usage**, **Disk Usage**, and **Pods** of all nodes in the cluster. Click the pie chart on the left to switch indicators, which shows the trend during a period in a line chart on the right.
+**Cluster Resource Usage**는 클러스터에 있는 모든 노드의 **CPU Usage**, **Memory Usage**, **Disk Usage**, **Pods**를 포함한 정보를 표시합니다. 왼쪽의 원형 차트를 클릭하여 지표를 전환하고 오른쪽의 꺾은선형 차트에서 기간 동안의 추세를 보여줍니다.
 
-## Physical Resource Monitoring
+## 물리적 자원 모니터링
 
-Monitoring data in **Physical Resource Monitoring** help users better observe their physical resources and establish normal standards for resource and cluster performance. KubeSphere allows users to view cluster monitoring data within the last 7 days, including **CPU Usage**, **Memory Usage**, **Average CPU Load (1 minute/5 minutes/15 minutes)**, **Disk Usage**, **Inode Usage**, **Disk Throughput (read/write)**, **IOPS (read/write)**, **Network Bandwidth**, and **Pod Status**. You can customize the time range and time interval to view historical monitoring data of physical resources in KubeSphere. The following sections briefly introduce each monitoring indicator.
+**물리적 자원 모니터링**의 모니터링 데이터는 사용자가 물리적 리소스를 더 잘 관찰하고 리소스 및 클러스터 성능에 대한 일반적인 표준을 설정하는 데 도움이 됩니다. Kuberix Enterprise는 사용자가 **CPU 사용량**, **메모리 사용량**, **평균 CPU 로드(1분/5분/15분)**, **디스크를 포함한 지난 7일 동안의 클러스터 모니터링 데이터를 볼 수 있습니다. 사용량**, **Inode 사용량**, **디스크 처리량(읽기/쓰기)**, **IOPS(읽기/쓰기)**, **네트워크 대역폭** 및 **포드 상태**. 시간 범위 및 시간 간격을 사용자 지정하여 Kuberix Enterprise에서 물리적 리소스의 이력 모니터링 데이터를 볼 수 있습니다. 다음 섹션에서는 각 모니터링 지표를 간략하게 소개합니다.
 
-### CPU usage
+### CPU 사용량
 
-CPU usage shows how CPU resources are used in a period. If you notice that the CPU usage of the platform during a certain period soars, you must first locate the process that is occupying CPU resources the most. For example, for Java applications, you may expect a CPU usage spike in the case of memory leaks or infinite loops in the code.
+CPU 사용량은 기간 동안 CPU 리소스가 어떻게 사용되는지 보여줍니다. 특정 기간 동안 플랫폼의 CPU 사용량이 급증하는 것을 발견하면 먼저 CPU 리소스를 가장 많이 차지하는 프로세스를 찾아야 합니다. 예를 들어 Java 응용 프로그램의 경우 코드에서 메모리 누수 또는 무한 루프의 경우 CPU 사용량 급증을 예상할 수 있습니다.
 
-### Memory usage
+### 메모리 사용량
 
-Memory is one of the important components on a machine, serving as a bridge for communications with the CPU. Therefore, the performance of memory has a great impact on the machine. Data loading, thread concurrency and I/O buffering are all dependent on memory when a program is running. The size of available memory determines whether the program can run normally and how it is functioning. Memory usage reflects how memory resources are used within a cluster as a whole, displayed as a percentage of available memory in use at a given moment.
+메모리는 CPU와의 통신을 위한 브리지 역할을 하는 기계의 중요한 구성 요소 중 하나입니다. 따라서 메모리의 성능은 기계에 큰 영향을 미칩니다. 데이터 로딩, 스레드 동시성 및 I/O 버퍼링은 모두 프로그램이 실행될 때 메모리에 종속됩니다. 사용 가능한 메모리의 크기는 프로그램이 정상적으로 실행될 수 있는지 여부와 작동 방식을 결정합니다. 메모리 사용량은 클러스터 내에서 메모리 리소스가 전체적으로 사용되는 방식을 반영하며 주어진 순간에 사용 가능한 메모리의 백분율로 표시됩니다.
 
-### Average CPU load
+### 평균 CPU 로드
 
-Average CPU load is the average number of processes in the system in a runnable state and an uninterruptible state per unit time. Namely, it is the average number of active processes. Note that there is no direct relation between the average CPU load and the CPU usage. Ideally, the average load should be equal to the number of CPUs. Therefore, you need to consider the number of CPUs when you look into the average load. A system is overloaded only when the average load is greater than the number of CPUs.
+평균 CPU 로드는 단위 시간당 실행 가능한 상태와 중단되지 않는 상태에 있는 시스템의 평균 프로세스 수입니다. 즉, 활성 프로세스의 평균 수입니다. 평균 CPU 로드와 CPU 사용량 사이에는 직접적인 관계가 없습니다. 이상적으로는 평균 로드가 CPU 수와 같아야 합니다. 따라서 평균 부하를 볼 때 CPU 수를 고려해야 합니다. 평균 부하가 CPU 수보다 클 때만 시스템이 과부하됩니다.
 
-KubeSphere provides users with three different time periods to view the average load: 1 minute, 5 minutes, and 15 minutes. Normally, it is recommended that you review all of them to gain a comprehensive understanding of average CPU load:
+Kuberix Enterprise는 사용자에게 평균 부하를 볼 수 있는 세 가지 시간(1분, 5분, 15분)을 제공합니다. 일반적으로 평균 CPU 로드를 포괄적으로 이해하려면 모든 항목을 검토하는 것이 좋습니다.
 
-- If the curves of 1 minute / 5 minutes / 15 minutes are similar within a certain period, it indicates that the CPU load of the cluster is relatively stable.
-- If the value of 1 minute in a certain period, or at a specific time point is much greater than that of 15 minutes, it means that the load in the last 1 minute is increasing, and you need to keep observing. Once the value of 1 minute exceeds the number of CPUs, it may mean that the system is overloaded. You need to further analyze the source of the problem.
-- Conversely, if the value of 1 minute in a certain period, or at a specific time point is much less than that of 15 minutes, it means that the load of the system is decreasing in the last 1 minute, and a high load has been generated in the previous 15 minutes.
+- 1분 / 5분 / 15분의 곡선이 일정 기간 내에 유사하면 클러스터의 CPU 부하가 비교적 안정적임을 나타냅니다.
+- 특정 시간 또는 특정 시점에서 1분의 값이 15분보다 훨씬 크면 최근 1분 동안의 부하가 증가하고 있음을 의미하므로 계속 관찰해야 합니다. 1분의 값이 CPU 수를 초과하면 시스템이 과부하되었음을 의미할 수 있습니다. 문제의 원인을 자세히 분석해야 합니다.
+- 반대로 특정 기간 또는 특정 시점에서 1분의 값이 15분보다 훨씬 작으면 시스템의 부하가 최근 1분 동안 감소하고 있으며 높은 부하가 이전 15분 동안 생성되었습니다.
 
-### Disk usage
+### 디스크 사용량
 
-KubeSphere workloads such as `StatefulSets` and `DaemonSets` all rely on persistent volumes. Some components and services also require a persistent volume. Such backend storage relies on disks, such as block storage or network shared storage. In this connection, providing a real-time monitoring environment for disk usage is an important part of maintaining the high reliability of data.
+`StatefulSets` 및 `DaemonSets`와 같은 Kuberix Enterprise 워크로드는 모두 영구 볼륨에 의존합니다. 일부 구성 요소 및 서비스에는 영구 볼륨도 필요합니다. 이러한 백엔드 스토리지는 블록 스토리지 또는 네트워크 공유 스토리지와 같은 디스크에 의존합니다. 이와 관련하여 디스크 사용량에 대한 실시간 모니터링 환경을 제공하는 것은 데이터의 높은 신뢰성을 유지하는 데 중요한 부분입니다.
 
-In the daily management of the Linux system, platform administrators may encounter data loss or even system crashes due to insufficient disk space. As an essential part of cluster management, they need to pay close attention to the disk usage of the system and ensure that the file system is not filling up or abused. By monitoring the historical data of disk usage, you can evaluate how disks are used during a given period of time. In the case of high disk usage, you can free up disk space by cleaning up unnecessary images or containers.
+Linux 시스템의 일상적인 관리에서 플랫폼 관리자는 디스크 공간 부족으로 인해 데이터 손실 또는 시스템 충돌이 발생할 수 있습니다. 클러스터 관리의 필수적인 부분으로서 시스템의 디스크 사용량에 세심한 주의를 기울여야 하며 파일 시스템이 가득 차거나 남용되지 않도록 해야 합니다. 디스크 사용량의 기록 데이터를 모니터링하여 지정된 기간 동안 디스크가 어떻게 사용되었는지 평가할 수 있습니다. 디스크 사용량이 많은 경우 불필요한 이미지나 컨테이너를 정리하여 디스크 공간을 확보할 수 있습니다.
 
-### Inode usage
+### 아이노드 사용
 
-Each file must have an inode, which is used to store the file's meta-information, such as the file's creator and creation date. The inode will also consume hard disk space, and many small cache files can easily lead to the exhaustion of inode resources. Also, the inode may be used up, but the hard disk is not full. In this case, new files cannot be created on the hard disk.
+각 파일에는 파일 작성자 및 생성 날짜와 같은 파일의 메타 정보를 저장하는 데 사용되는 inode가 있어야 합니다. inode는 또한 하드 디스크 공간을 소비하며 많은 작은 캐시 파일은 쉽게 inode 리소스를 고갈시킬 수 있습니다. 또한 inode가 모두 사용되었을 수 있지만 하드 디스크가 가득 차지 않습니다. 이 경우 하드 디스크에 새 파일을 만들 수 없습니다.
 
-In KubeSphere, the monitoring of inode usage can help you detect such situations in advance, as you can have a clear view of cluster inode usage. The mechanism prompts users to clean up temporary files in time, preventing the cluster from being unable to work due to inode exhaustion.
+Kuberix Enterprise에서 inode 사용량을 모니터링하면 클러스터 inode 사용량을 명확하게 볼 수 있으므로 이러한 상황을 미리 감지하는 데 도움이 됩니다. 이 메커니즘은 사용자에게 시간 내에 임시 파일을 정리하라는 메시지를 표시하여 inode 고갈로 인해 클러스터가 작동하지 않는 것을 방지합니다.
 
-### Disk throughput
+### 디스크 처리량
 
-The monitoring of disk throughput and IOPS is an indispensable part of disk monitoring, which is convenient for cluster administrators to adjust data layout and other management activities to optimize the overall performance of the cluster. Disk throughput refers to the speed of the disk transmission data stream (shown in MB/s), and the transmission data are the sum of data reading and writing. When large blocks of discontinuous data are being transmitted, this indicator is of great importance for reference.
+디스크 처리량 및 IOPS 모니터링은 디스크 모니터링의 필수 불가결한 부분이며, 이는 클러스터 관리자가 클러스터의 전체 성능을 최적화하기 위해 데이터 레이아웃 및 기타 관리 활동을 조정하는 데 편리합니다. 디스크 처리량은 디스크 전송 데이터 스트림의 속도(MB/s로 표시)를 나타내며 전송 데이터는 데이터 읽기 및 쓰기의 합계입니다. 불연속 데이터의 큰 블록이 전송될 때 이 표시기는 참조용으로 매우 중요합니다.
 
 ### IOPS
 
-**IOPS (Input/Output Operations Per Second)** represents a performance measurement of the number of read and write operations per second. Specifically, the IOPS of a disk is the sum of the number of continuous reads and writes per second. This indicator is of great significance for reference when small blocks of discontinuous data are being transmitted.
+**IOPS(Input/Output Operations Per Second)**는 초당 읽기 및 쓰기 작업 수의 성능 측정치를 나타냅니다. 특히 디스크의 IOPS는 초당 연속 읽기 및 쓰기 수의 합계입니다. 이 표시기는 불연속 데이터의 작은 블록이 전송될 때 참조용으로 매우 중요합니다.
 
-### Network bandwidth
+### 네트워크 대역폭
 
-The network bandwidth is the ability of the network card to receive or send data per second, shown in Mbps (megabits per second).
+네트워크 대역폭은 Mbps(초당 메가비트)로 표시되는 초당 데이터를 수신하거나 보낼 수 있는 네트워크 카드의 능력입니다.
 
-### Pod status
+### 포드 상태
 
-Pod status displays the total number of pods in different states, including **Running**, **Completed** and **Warning**. The pod tagged **Completed** usually refers to a Job or a CronJob. The number of pods marked **Warning**, which means an abnormal state, requires special attention.
+Pod 상태는 **Running**, **Completed** 및 **Warning**을 포함하여 다양한 상태의 총 Pod 수를 표시합니다. **Completed** 태그가 지정된 포드는 일반적으로 작업 또는 CronJob을 나타냅니다. 비정상적인 상태를 의미하는 **Warning**으로 표시된 Pod의 수는 특별한 주의가 필요합니다.
 
-## etcd Monitoring
+## etcd 모니터링
 
-etcd monitoring helps you to make better use of etcd, especially to locate performance problems. The etcd service provides metrics interfaces natively, and the KubeSphere monitoring system features a highly graphic and responsive dashboard to display its native data.
+etcd 모니터링은 특히 성능 문제를 찾기 위해 etcd를 더 잘 사용하는 데 도움이 됩니다. etcd 서비스는 기본적으로 메트릭 인터페이스를 제공하고 Kuberix Enterprise 모니터링 시스템은 기본 데이터를 표시하기 위해 고도로 그래픽적이고 반응이 빠른 대시보드를 제공합니다.
 
-|Indicators|Description|
+|지표|설명|
 |---|---|
-|Service Status | - **Leader exists** indicates whether the member has a Leader. If a member does not have a Leader, it is completely unavailable. If all members in the cluster do not have any Leader, the entire cluster is completely unavailable. <br>- **Leader changes in 1 h** refers to the number of Leader changes seen by members of the cluster in 1 hour. Frequent Leader changes will significantly affect the performance of etcd. It also shows that the Leader is unstable, possibly due to network connection issues or excessive loads hitting the etcd cluster. |
-|DB Size | The size of the underlying database (in MiB) of etcd. The current graph shows the average size of each member database of etcd. |
-|Client Traffic|It includes the total traffic sent to the gRPC client and the total traffic received from the gRPC client. For more information about the indicator, see [etcd Network](https://github.com/etcd-io/etcd/blob/v3.2.17/Documentation/metrics.md#network). |
-|gRPC Stream Message|The gRPC streaming message receiving rate and sending rate on the server side, which reflects whether large-scale data read and write operations are happening in the cluster. For more information about the indicator, see [go-grpc-prometheus](https://github.com/grpc-ecosystem/go-grpc-prometheus#counters).|
-|WAL Fsync|The latency of WAL calling fsync. A `wal_fsync` is called when etcd persists its log entries to disk before applying them. For more information about the indicator, see [etcd Disk](https://etcd.io/docs/v3.3.12/metrics/#grpc-requests). |
-|DB Fsync|The submission delay distribution of the backend calls. When etcd submits its most recent incremental snapshot to disk, a `backend_commit` will be called. Note that high latency of disk operations (long WAL log synchronization time or library synchronization time) usually indicates disk problems, which may cause high request latency or make the cluster unstable. For more information about the indicator, see [etcd Disk](https://etcd.io/docs/v3.3.12/metrics/#grpc-requests). |
-|Raft Proposal|- **Proposal Commit Rate** records the rate of consensus proposals committed. If the cluster is healthy, this indicator should increase over time. Several healthy members of an etcd cluster may have different general proposals at the same time. A continuous large lag between a single member and its leader indicates that the member is slow or unhealthy. <br>- **Proposal Apply Rate** records the total rate of consensus proposals applied. The etcd server applies each committed proposal asynchronously. The difference between the **Proposal Commit Rate** and the **Proposal Apply Rate** should usually be small (only a few thousands even under high loads). If the difference between them continues to rise, it indicates that the etcd server is overloaded. This can happen when using large-scale queries such as heavy range queries or large txn operations. <br>- **Proposal Failure Rate** records the total rate of failed proposals, usually related to two issues: temporary failures related to leader election or longer downtime due to a loss of quorum in the cluster. <br> - **Proposal Pending Total** records the current number of pending proposals. An increase in pending proposals indicates high client loads or members unable to submit proposals. <br> Currently, the data displayed on the dashboard is the average size of etcd members. For more information about these indicators, see [etcd Server](https://etcd.io/docs/v3.3.12/metrics/#server). |
+|서비스 현황 | - **Leader exists**은 멤버에 리더가 있는지 여부를 나타냅니다. 회원에게 리더가 없으면 완전히 사용할 수 없습니다. 클러스터의 모든 구성원에 리더가 없으면 전체 클러스터를 완전히 사용할 수 없습니다. <br>- **Leader changes in 1 h**은 1시간 동안 클러스터 구성원이 확인한 리더 변경 횟수를 나타냅니다. 빈번한 리더 변경은 etcd의 성능에 상당한 영향을 미칩니다. 또한 네트워크 연결 문제 또는 etcd 클러스터에 가해지는 과도한 로드로 인해 리더가 불안정함을 보여줍니다. |
+|DB 크기 | etcd의 기본 데이터베이스 크기(MiB)입니다. 현재 그래프는 etcd의 각 멤버 데이터베이스의 평균 크기를 보여줍니다. |
+|클라이언트 트래픽|gRPC 클라이언트로 보낸 총 트래픽과 gRPC 클라이언트에서 받은 총 트래픽이 포함됩니다. 지표에 대한 자세한 내용은 [etcd 네트워크](https://github.com/etcd-io/etcd/blob/v3.2.17/Documentation/metrics.md#network)를 참조하세요. |
+|gRPC 스트림 메시지|서버 측의 gRPC 스트리밍 메시지 수신 속도 및 전송 속도. 클러스터에서 대규모 데이터 읽기 및 쓰기 작업이 발생하는지 여부를 반영합니다. 지표에 대한 자세한 내용은 [go-grpc-prometheus](https://github.com/grpc-ecosystem/go-grpc-prometheus#counters)를 참조하세요.|
+|WAL Fsync|fsync를 호출하는 WAL의 대기 시간. etcd가 로그 항목을 적용하기 전에 디스크에 유지할 때 `wal_fsync`가 호출됩니다. 지표에 대한 자세한 내용은 [etcd 디스크](https://etcd.io/docs/v3.3.12/metrics/#grpc-requests)를 참조하세요. |
+|DB Fsync|백엔드 호출의 제출 지연 분포. etcd가 가장 최근의 증분 스냅샷을 디스크에 제출하면 `backend_commit`이 호출됩니다. 디스크 작업의 긴 대기 시간(긴 WAL 로그 동기화 시간 또는 라이브러리 동기화 시간)은 일반적으로 디스크 문제를 나타내므로 요청 대기 시간이 길거나 클러스터가 불안정해질 수 있습니다. 지표에 대한 자세한 내용은 [etcd 디스크](https://etcd.io/docs/v3.3.12/metrics/#grpc-requests)를 참조하세요. |
+|Raft Proposal|- **Proposal Commit Rate**는 합의된 제안서가 커밋된 비율을 기록합니다. 클러스터가 정상이면 이 표시기는 시간이 지남에 따라 증가해야 합니다. etcd 클러스터의 여러 정상 구성원은 동시에 다른 일반 제안을 가질 수 있습니다. 단일 구성원과 해당 리더 사이에 지속적으로 큰 지연이 발생하면 해당 구성원이 느리거나 비정상적임을 나타냅니다. <br>- **Proposal Commit Rate**은 적용된 합의 제안의 총 비율을 기록합니다. etcd 서버는 커밋된 각 제안을 비동기적으로 적용합니다. **Proposal Apply Rate**과 **Proposal Commit Rate**의 차이는 일반적으로 작아야 합니다(높은 로드에서도 수천 개에 불과). 둘 사이의 차이가 계속 증가하면 etcd 서버가 과부하되었음을 나타냅니다. 이는 헤비 레인지 쿼리 또는 대규모 txn 작업과 같은 대규모 쿼리를 사용할 때 발생할 수 있습니다. <br>- **Proposal Failure Rate**은 일반적으로 두 가지 문제와 관련된 실패한 제안의 총 비율을 기록합니다. 즉, 리더 선출과 관련된 일시적인 실패 또는 클러스터의 쿼럼 손실로 인한 긴 중단 시간입니다. <br> - **Proposal Pending Total**는 보류 중인 제안의 현재 수를 기록합니다. 보류 중인 제안서의 증가는 클라이언트 로드가 높거나 구성원이 제안서를 제출할 수 없음을 나타냅니다. <br> 현재 대시보드에 표시되는 데이터는 etcd 구성원의 평균 크기입니다. 이러한 지표에 대한 자세한 내용은 [etcd 서버](https://etcd.io/docs/v3.3.12/metrics/#server)를 참조하십시오. |
 
-## API Server Monitoring
+## API 서버 모니터링
 
-[API Server](https://kubernetes.io/docs/concepts/overview/kubernetes-api/) is the hub for the interaction of all components in a Kubernetes cluster. The following table lists the main indicators monitored for the API Server.
+[API 서버](https://kubernetes.io/docs/concepts/overview/kubernetes-api/)는 쿠버네티스 클러스터의 모든 구성 요소 상호 작용을 위한 허브입니다. 다음 표에는 API 서버에 대해 모니터링되는 주요 지표가 나열되어 있습니다.
 
-|Indicators|Description|
+|지표|설명|
 |---|---|
-|Request Latency|Classified by HTTP request methods, the latency of resource request response in milliseconds.|
-|Request per Second|The number of requests accepted by kube-apiserver per second.|
+|요청 대기 시간|HTTP 요청 방법으로 분류, 리소스 요청 응답 대기 시간(밀리초)|
+|초당 요청|초당 kube-apiserver에서 수락한 요청 수입니다.|
 
-## Scheduler Monitoring
+## 스케줄러 모니터링
 
-[Scheduler](https://kubernetes.io/docs/reference/command-line-tools-reference/kube-scheduler/) monitors the Kubernetes API of newly created pods and determines which nodes these new pods run on. It makes this decision based on available data, including the availability of collected resources and the resource requirements of the Pod. Monitoring data for scheduling delays ensures that you can see any delays facing the scheduler.
+[스케줄러](https://kubernetes.io/docs/reference/command-line-tools-reference/kube-scheduler/)는 새로 생성된 포드의 쿠버네티스 API를 모니터링하고 이러한 새 포드가 실행되는 노드를 결정합니다. 수집된 리소스의 가용성 및 Pod의 리소스 요구 사항을 포함하여 사용 가능한 데이터를 기반으로 이러한 결정을 내립니다. 예약 지연에 대한 데이터를 모니터링하면 스케줄러가 직면한 모든 지연을 확인할 수 있습니다.
 
-|Indicators|Description|
+|지표|설명|
 |---|---|
-|Attempt Frequency|Include the number of scheduling successes, errors, and failures.|
-|Attempt Rate|Include the scheduling rate of successes, errors, and failures.|
-|Scheduling latency|End-to-end scheduling delay, which is the sum of scheduling algorithm delay and binding delay|
+|시도 빈도|스케줄 성공, 오류 및 실패 횟수를 포함합니다.|
+|시도율|성공, 오류 및 실패의 스케줄링 비율을 포함합니다.|
+|스케줄링 지연|스케줄링 알고리즘 지연과 바인딩 지연의 합인 종단 간 스케줄링 지연|
 
-## Resource Usage Ranking
+## 리소스 사용량 순위
 
-You can sort nodes in ascending and descending order by indicators such as CPU usage, average CPU load, memory usage, disk usage, inode usage, and Pod usage. This enables administrators to quickly find potential problems or identify a node's insufficient resources.
+CPU 사용량, 평균 CPU 로드, 메모리 사용량, 디스크 사용량, inode 사용량 및 Pod 사용량과 같은 지표를 기준으로 노드를 오름차순 및 내림차순으로 정렬할 수 있습니다. 이것은 adm을 가능하게 합니다
