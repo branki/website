@@ -1,30 +1,30 @@
 ---
 title: "Build and Deploy a Maven Project"
-keywords: 'Kubernetes, Docker, DevOps, Jenkins, Maven'
-description: 'Learn how to build and deploy a Maven project using a KubeSphere pipeline.'
+keywords: 'Kubernetes, Kuberix, Docker, DevOps, Jenkins, Maven'
+description: 'Learn how to build and deploy a Maven project using a Kuberix Enterprise pipeline.'
 linkTitle: "Build and Deploy a Maven Project"
 weight: 11430
 ---
 
-## Prerequisites
+## 전제 조건
 
-- You need to [enable the KubeSphere DevOps System](../../../pluggable-components/devops/).
-- You need to have a [Docker Hub](https://www.dockerhub.com/) account.
-- You need to create a workspace, a DevOps project, and a user account, and this user needs to be invited into the DevOps project with the role of `operator`. For more information, see [Create Workspaces, Projects, Users and Roles](../../../quick-start/create-workspace-and-project/).
+- [Kuberix Enterprise DevOps 시스템 활성화](../../../pluggable-components/devops/)가 필요합니다.
+- [Docker Hub](https://www.dockerhub.com/) 계정이 있어야 합니다.
+- Workspace, DevOps 프로젝트, 사용자 계정을 생성해야 하며, 이 사용자는 'operator' 역할로 DevOps 프로젝트에 초대받아야 합니다. 자세한 내용은 [작업 공간, 프로젝트, 사용자 및 역할 생성](../../../quick-start/create-workspace-and-project/)을 참조하십시오.
 
-## Workflow for a Maven Project
+## Maven 프로젝트의 워크플로
 
-As is shown in the graph below, there is the workflow for a Maven project in KubeSphere DevOps, which uses a Jenkins pipeline to build and deploy the Maven project. All steps are defined in the pipeline.
+아래 그래프에서 볼 수 있듯이 Kuberix Enterprise DevOps에는 Jenkins 파이프라인을 사용하여 Maven 프로젝트를 빌드하고 배포하는 Maven 프로젝트에 대한 워크플로가 있습니다. 모든 단계는 파이프라인에서 정의됩니다.
 
 ![maven-project-jenkins](/images/docs/v3.3/devops-user-guide/examples/build-and-deploy-a-maven-project/maven-project-jenkins.png)
 
-At first, the Jenkins Master creates a Pod to run the pipeline. Kubernetes creates the Pod as the agent of Jenkins Master, and the Pod will be destroyed after the pipeline finished. The main process includes cloning code, building and pushing an image, and deploying the workload.
+먼저 Jenkins Master는 파이프라인을 실행할 Pod를 생성합니다. 쿠버네티스는 Jenkins Master의 에이전트로 Pod를 생성하며 파이프라인이 완료된 후 Pod가 소멸됩니다. 주요 프로세스에는 코드 복제, 이미지 빌드 및 푸시, 워크로드 배포가 포함됩니다.
 
-## Default Configurations in Jenkins
+## Jenkins의 기본 구성
 
-### Maven version
+### 메이븐 버전
 
-Execute the following command in the Maven builder container to get version information.
+Maven 빌더 컨테이너에서 다음 명령을 실행하여 버전 정보를 가져옵니다.
 
 ```bash
 mvn --version
@@ -36,50 +36,48 @@ Java home: /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.232.b09-0.el7_7.i386/jre
 Default locale: en_US, platform encoding: UTF-8
 ```
 
-### Maven cache
+### 메이븐 캐시
 
-The Jenkins Agent mounts the directories by Docker Volume on the node. The pipeline can cache some special directories such as `/root/.m2`, which are used for Maven building and the default cache directory for Maven tools in KubeSphere DevOps, so that dependency packages are downloaded and cached on the node.
+Jenkins 에이전트는 노드의 Docker 볼륨별로 디렉터리를 마운트합니다. 파이프라인은 Maven 빌드에 사용되는 `/root/.m2`와 같은 일부 특수 디렉토리와 Kuberix Enterprise DevOps의 Maven 도구에 대한 기본 캐시 디렉토리를 캐시할 수 있으므로 종속성 패키지가 노드에 다운로드되고 캐시됩니다.
 
-### Global Maven settings in the Jenkins Agent
+### Jenkins 에이전트의 글로벌 Maven 설정
 
-The default file path of Maven settings is `maven` and the configuration file path is `/opt/apache-maven-3.5.3/conf/settings.xml`. Execute the following command to get the content of Maven settings.
+Maven 설정의 기본 파일 경로는 `maven`이고 구성 파일 경로는 `/opt/apache-maven-3.5.3/conf/settings.xml`입니다. 다음 명령을 실행하여 Maven 설정의 내용을 가져옵니다.
 
 ```bash
-kubectl get cm -n kubesphere-devops-worker ks-devops-agent -o yaml
+kubectl get cm -n kuberixEnterprise-devops-worker ke-devops-agent -o yaml
 ```
 
-### Network of Maven Pod
+### Maven Pod의 네트워크
 
-The Pod labeled `maven` uses the docker-in-docker network to run the pipeline. Namely, `/var/run/docker.sock` in the node is mounted to the Maven container.
+'maven'이라고 표시된 Pod는 docker-in-docker 네트워크를 사용하여 파이프라인을 실행합니다. 즉, 노드의 `/var/run/docker.sock`이 Maven 컨테이너에 마운트됩니다.
 
-## A Maven Pipeline Example
+## Maven 파이프라인 예제
 
-### Prepare for the Maven project
+### Maven 프로젝트 준비
 
-- Ensure you build the Maven project successfully on the development device.
-- Add the Dockerfile to the project repository to build the image. For more information, refer to <https://github.com/kubesphere/devops-maven-sample/blob/master/Dockerfile-online>.
-- Add the YAML file to the project repository to deploy the workload. For more information, refer to <https://github.com/kubesphere/devops-maven-sample/tree/master/deploy/dev-ol>. If there are different environments, you need to prepare multiple deployment files.
+- 개발 장치에서 Maven 프로젝트를 성공적으로 빌드했는지 확인합니다.
+- Dockerfile을 프로젝트 저장소에 추가하여 이미지를 빌드합니다. 자세한 내용은 <https://github.com/ke/devops-maven-sample/blob/master/Dockerfile-online>을 참조하세요.
+- 프로젝트 리포지토리에 YAML 파일을 추가하여 워크로드를 배포합니다. 자세한 내용은 <https://github.com/ke/devops-maven-sample/tree/master/deploy/dev-ol>을 참조하세요. 다른 환경이 있는 경우 여러 배포 파일을 준비해야 합니다.
 
-### Create credentials
+### 자격 증명 생성
 
 | Credential ID   | Type                | Where to Use                 |
 | --------------- | ------------------- | ---------------------------- |
 | dockerhub-id    | Username and password | Registry, such as Docker Hub |
 | demo-kubeconfig | kubeconfig          | Workload deployment         |
 
-For details, refer to the [Credential Management](../../how-to-use/devops-settings/credential-management/).
+### 워크로드용 프로젝트 만들기
 
-### Create a project for workloads
+이 예에서 모든 워크로드는 'kuberixEnterprise-sample-dev'에 배포됩니다. 'kuberixEnterprise-sample-dev' 프로젝트를 미리 생성해야 합니다.
 
-In this example, all workloads are deployed in `kubesphere-sample-dev`. You must create the project `kubesphere-sample-dev` in advance.
+### Maven 프로젝트를 위한 파이프라인 생성
 
-### Create a pipeline for the Maven project
+1. DevOps 프로젝트의 **Pipelines**으로 이동하고 **Create**을 클릭하여 `maven`이라는 파이프라인을 생성합니다. 자세한 내용은 [파이프라인 생성 - 그래픽 편집 패널 사용](../../how-to-use/pipelines/create-a-pipeline-using-graphical-editing-panel/)을 참조하십시오.
 
-1. Go to **Pipelines** of your DevOps project and click **Create** to create a pipeline named `maven`. For more information, see [Create a Pipeline - using Graphical Editing Panel](../../how-to-use/pipelines/create-a-pipeline-using-graphical-editing-panel/).
+2. 파이프라인의 세부 정보 페이지로 이동하여 **Jenkinsfile Edit**을 클릭합니다.
 
-2. Go to the details page of the pipeline and click **Edit Jenkinsfile**.
-
-3. Copy and paste the following content into the displayed dialog box. You must replace the value of `DOCKERHUB_NAMESPACE` with yours. When you finish editing, click **OK** to save the Jenkinsfile.
+3. 다음 내용을 복사하여 표시된 대화 상자에 붙여넣습니다. 'DOCKERHUB_NAMESPACE' 값을 자신의 값으로 바꿔야 합니다. 편집이 끝나면 **OK**을 클릭하여 Jenkinsfile을 저장합니다.
 
    ```groovy
    pipeline {
@@ -99,14 +97,14 @@ In this example, all workloads are deployed in `kubesphere-sample-dev`. You must
            DOCKERHUB_NAMESPACE = 'Docker Hub Namespace'
            APP_NAME = 'devops-maven-sample'
            BRANCH_NAME = 'dev'
-           PROJECT_NAME = 'kubesphere-sample-dev'
+           PROJECT_NAME = 'kuberixEnterprise-sample-dev'
        }
    
        stages {
            stage ('checkout scm') {
                steps {
                    // Please avoid committing your test changes to this repository
-                   git branch: 'master', url: "https://github.com/kubesphere/devops-maven-sample.git"
+                   git branch: 'master', url: "https://github.com/ke/devops-maven-sample.git"
                }
            }
    
@@ -148,14 +146,14 @@ In this example, all workloads are deployed in `kubesphere-sample-dev`. You must
    }
    ```
 
-4. You can see stages and steps are automatically created on graphical editing panels.
+4. 그래픽 편집 패널에서 단계와 단계가 자동으로 생성되는 것을 볼 수 있습니다.
 
-### Run and test
+### 실행 및 테스트
 
-1. Click **Run**, enter `v1` for **TAG_NAME** in the displayed dialog box, and then click **OK** to run the pipeline.
+1. **Run**을 클릭하고 표시된 대화 상자에서 **TAG_NAME**에 대해 `v1`을 입력한 다음 **OK**를 클릭하여 파이프라인을 실행합니다.
 
-2. When the pipeline runs successfully, you can go to the **Run Records** tab to view its details.
+2. 파이프라인이 성공적으로 실행되면 **Run Records** 탭으로 이동하여 세부 정보를 볼 수 있습니다.
 
-3. In the project of `kubesphere-sample-dev`, new workloads were created.
+3. `kuberixEnterprise-sample-dev` 프로젝트에서 새로운 워크로드가 생성되었습니다.
 
-4. On the **Services** page, view the external access information about the Service created.
+4. **Services** 페이지에서 생성된 서비스에 대한 외부 액세스 정보를 확인합니다.
