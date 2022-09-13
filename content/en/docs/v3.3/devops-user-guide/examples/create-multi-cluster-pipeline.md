@@ -1,36 +1,36 @@
 ---
 title: "Create a Multi-cluster Pipeline"
-keywords: 'KubeSphere, Kubernetes, Multi-cluster, Pipeline, DevOps'
-description: 'Learn how to create a multi-cluster pipeline on KubeSphere.'
+keywords: 'Kuberix, Kubernetes, Multi-cluster, Pipeline, DevOps'
+description: 'Learn how to create a multi-cluster pipeline on Kuberix Enterprise.'
 linkTitle: "Create a Multi-cluster Pipeline"
 weight: 11440
 ---
 
-As cloud providers offer different hosted Kubernetes services, DevOps pipelines have to deal with use cases where multiple Kubernetes clusters are involved.
+클라우드 제공업체는 다양한 호스팅 쿠버네티스 서비스를 제공하므로 DevOps 파이프라인은 여러 쿠버네티스 클러스터가 관련된 사용 사례를 처리해야 합니다.
 
-This tutorial demonstrates how to create a multi-cluster pipeline on KubeSphere.
+이 튜토리얼은 Kuberix Enterprise에서 멀티 클러스터 파이프라인을 생성하는 방법을 보여줍니다.
 
-## Prerequisites
+## 전제 조건
 
-- You need to have three Kubernetes clusters with KubeSphere installed. Choose one cluster as your host cluster and the other two as your member clusters. For more information about cluster roles and how to build a multi-cluster environment on KubeSphere, refer to [Multi-cluster Management](../../../multicluster-management/).
-- You need to set your member clusters as [public clusters](../../../cluster-administration/cluster-settings/cluster-visibility-and-authorization/#make-a-cluster-public). Alternatively, you can [set cluster visibility after a workspace is created](../../../cluster-administration/cluster-settings/cluster-visibility-and-authorization/#set-cluster-visibility-after-a-workspace-is-created).
-- You need to [enable the KubeSphere DevOps system](../../../pluggable-components/devops/) on your host cluster.
-- You need to integrate SonarQube into your pipeline. For more information, refer to [Integrate SonarQube into Pipelines](../../how-to-integrate/sonarqube/).
-- You need to create four accounts on your host cluster: `ws-manager`, `ws-admin`, `project-admin`, and `project-regular`, and grant these accounts different roles. For more information, refer to [Create Workspaces, Projects, Users and Roles](../../../quick-start/create-workspace-and-project/#step-1-create-an-account).
+- Kuberix Enterprise가 설치된 3개의 쿠버네티스 클러스터가 필요합니다. 하나의 클러스터를 호스트 클러스터로 선택하고 다른 두 개를 구성원 클러스터로 선택합니다. 클러스터 역할 및 Kuberix Enterprise에서 멀티 클러스터 환경 구축 방법에 대한 자세한 내용은 [멀티 클러스터 관리](../../../multicluster-management/)를 참조하십시오.
+- 구성원 클러스터를 [공개 클러스터](../../../cluster-administration/cluster-settings/cluster-visibility-and-authorization/#make-a-cluster-public)로 설정해야 합니다. 또는 [작업 공간이 생성된 후 클러스터 가시성을 설정](../../../cluster-administration/cluster-settings/cluster-visibility-and-authorization/#set-cluster-visibility-after-a -작업공간이 생성됨).
+- 호스트 클러스터에서 [Kuberix Enterprise DevOps 시스템을 활성화](../../../pluggable-components/devops/)해야 합니다.
+- SonarQube를 파이프라인에 통합해야 합니다. 자세한 내용은 [SonarQube를 파이프라인에 통합](../../how-to-integrate/sonarqube/)을 참조하세요.
+- 호스트 클러스터에 `ws-manager`, `ws-admin`, `project-admin` 및 `project-regular`의 4개 계정을 만들고 이 계정에 다른 역할을 부여해야 합니다. 자세한 내용은 [작업 공간, 프로젝트, 사용자 및 역할 생성](../../../quick-start/create-workspace-and-project/#step-1-create-an-account)을 참조하세요.
 
-## Workflow Overview
+## 워크플로 개요
 
-This tutorial uses three clusters to serve as three isolated environments in the workflow. See the diagram as below.
+이 자습서에서는 세 개의 클러스터를 사용하여 워크플로에서 세 개의 격리된 환경을 제공합니다. 아래 도표를 참조하십시오.
 
-![use-case-for-multi-cluster](/images/docs/v3.3/devops-user-guide/examples/create-multi-cluster-pipeline/use-case-for-multi-cluster.png)
+![멀티 클러스터에 대한 사용 사례](/images/docs/v3.3/devops-user-guide/examples/create-multi-cluster-pipeline/use-case-for-multi-cluster.png)
 
-The three clusters are used for development, testing, and production respectively. Once codes get submitted to a Git repository, a pipeline will be triggered to run through the following stages—`Unit Test`, `SonarQube Analysis`, `Build & Push`, and `Deploy to Development Cluster`. Developers use the development cluster for self-testing and validation. When developers give approval, the pipeline will proceed to the stage of `Deploy to Testing Cluster` for stricter validation. Finally, the pipeline, with necessary approval ready, will reach the stage of `Deploy to Production Cluster` to provide services externally. 
+3개의 클러스터는 각각 개발, 테스트 및 프로덕션에 사용됩니다. 코드가 Git 리포지토리에 제출되면 파이프라인이 '단위 테스트', 'SonarQube 분석', '빌드 및 푸시' 및 '개발 클러스터에 배포' 단계를 통해 실행되도록 트리거됩니다. 개발자는 자체 테스트 및 검증을 위해 개발 클러스터를 사용합니다. 개발자가 승인하면 파이프라인은 엄격한 검증을 위해 '테스트 클러스터에 배포' 단계로 진행됩니다. 마지막으로 필요한 승인이 준비된 파이프라인은 '프로덕션 클러스터에 배포' 단계에 도달하여 외부에서 서비스를 제공합니다.
 
-## Hands-on Lab
+## 실습 (핸즈온)
 
-### Step 1: Prepare clusters
+### 1단계: 클러스터 준비
 
-See the table below for the role of each cluster. 
+각 클러스터의 역할은 아래 표를 참조하십시오.
 
 | Cluster Name | Cluster Role   | Usage       |
 | ------------ | -------------- | ----------- |
@@ -40,49 +40,49 @@ See the table below for the role of each cluster.
 
 {{< notice note >}}
 
-These Kubernetes clusters can be hosted across different cloud providers and their Kubernetes versions can also vary. Recommended Kubernetes versions for KubeSphere 3.3.0: v1.19.x, v1.20.x, v1.21.x, v1.22.x, and v1.23.x (experimental support).
+이러한 쿠버네티스 클러스터는 다양한 클라우드 제공업체에서 호스팅될 수 있으며 해당 쿠버네티스 버전도 다를 수 있습니다. Kuberix Enterprise 3.3.0에 권장되는 쿠버네티스 버전: v1.19.x, v1.20.x, v1.21.x, v1.22.x 및 v1.23.x(실험 지원).
 
 {{</ notice >}}
 
-### Step 2: Create a workspace
+### 2단계: 작업 공간 만들기
 
-1. Log in to the web console of the host cluster as `ws-manager`. On the **Workspaces** page, click **Create**.
+1. 호스트 클러스터의 웹 콘솔에 `ws-manager`로 로그인합니다. **Workspaces** 페이지에서 **Create**를 클릭합니다.
 
-2. On the **Basic Information** page, name the workspace `devops-multicluster`, select `ws-admin` for **Administrator**, and click **Next**.
+2. **Basic Information** 페이지에서 작업 공간의 이름을 `devops-multicluster`로 지정하고 **Administrator**에 대해 `ws-admin`을 선택한 후 **Next**을 클릭합니다.
 
-3. On the **Cluster Settings** page, select all three clusters and click **Create**.
+3. **Cluster Settings** 페이지에서 세 개의 클러스터를 모두 선택하고 **Create**를 클릭합니다.
 
-4. The workspace created is displayed in the list. You need to log out of the console and log back in as `ws-admin` to invite both `project-admin` and `project-regular` to the workspace and grant them the role `workspace-self-provisioner` and `workspace-viewer` respectively. For more information, refer to [Create Workspaces, Projects, Users and Roles](../../../quick-start/create-workspace-and-project/#step-2-create-a-workspace).
+4. 생성된 작업 공간이 목록에 표시됩니다. 콘솔에서 로그아웃하고 `ws-admin`으로 다시 로그인하여 `project-admin`과 `project-regular`를 작업공간에 초대하고 이들에게 `workspace-self-provisioner` 및 `workspace' 역할을 부여해야 합니다. -viewer`. 자세한 내용은 [작업 공간, 프로젝트, 사용자 및 역할 만들기](../../../quick-start/create-workspace-and-project/#step-2-create-a-workspace)를 참조하세요.
 
-### Step 3: Create a DevOps project
+### 3단계: DevOps 프로젝트 만들기
 
-1. Log out of the console and log back in as `project-admin`. Go to the **DevOps Projects** page and click **Create**.
+1. 콘솔에서 로그아웃하고 'project-admin'으로 다시 로그인합니다. **DevOps Projects** 페이지로 이동하여 **Create**를 클릭합니다.
 
-2. In the displayed dialog box, enter `multicluster-demo` for **Name**, select **host** for **Cluster Settings**, and then click **OK**.
+2. 표시된 대화 상자에서 **Name**에 `multicluster-demo`를 입력하고 **Cluster Settings**에 대해 **host**를 선택한 다음 **OK**을 클릭합니다.
 
    {{< notice note >}}
 
-   Only clusters with the DevOps component enabled will be available in the drop-down list.
+   DevOps 구성 요소가 활성화된 클러스터만 드롭다운 목록에서 사용할 수 있습니다.
 
    {{</ notice >}}
 
-3. The DevOps project created is displayed in the list. Make sure you invite the `project-regular` user to this project and assign it the `operator` role. For more information, refer to [Create Workspaces, Projects, Users and Roles](../../../quick-start/create-workspace-and-project/#step-5-create-a-devops-project-optional).
+3. 생성된 DevOps 프로젝트가 목록에 표시됩니다. 'project-regular' 사용자를 이 프로젝트에 초대하고 'operator' 역할을 할당했는지 확인하세요. 자세한 내용은 [작업 공간, 프로젝트, 사용자 및 역할 생성](../../../quick-start/create-workspace-and-project/#step-5-create-a-devops-project -선택 과목).
 
-### Step 4: Create projects on clusters
+### 4단계: 클러스터에서 프로젝트 만들기
 
-You must create the projects as shown in the table below in advance. Make sure you invite the `project-regular` user to these projects and assign it the `operator` role. For more information about how to create a project, refer to [Create Workspaces, Projects, Users and Roles](../../../quick-start/create-workspace-and-project/#step-3-create-a-project).
+사전에 아래 표와 같이 프로젝트를 생성해야 합니다. 이 프로젝트에 `project-regular` 사용자를 초대하고 `operator` 역할을 할당했는지 확인하세요. 프로젝트 생성 방법에 대한 자세한 내용은 [작업 공간, 프로젝트, 사용자 및 역할 생성](../../../quick-start/create-workspace-and-project/#step-3-create -a-프로젝트).
 
-| Cluster Name | Usage       | Project Name           |
-| ------------ | ----------- | ---------------------- |
-| host         | Testing     | kubesphere-sample-prod |
-| shire        | Production  | kubesphere-sample-prod |
-| rohan        | Development | kubesphere-sample-dev  |
+| Cluster Name | Usage       | Project Name                  |
+| ------------ | ----------- | ----------------------------- |
+| host         | Testing     | kuberixEnterprise-sample-prod |
+| shire        | Production  | kuberixEnterprise-sample-prod |
+| rohan        | Development | kuberixEnterprise-sample-dev  |
 
-### Step 5: Create credentials
+### 5단계: 자격 증명 만들기
 
-1. Log out of the console and log back in as `project-regular`. On the **DevOps Projects** page, click the DevOps project `multicluster-demo`.
+1. 콘솔에서 로그아웃하고 'project-regular'로 다시 로그인합니다. **DevOps Projects** 페이지에서 DevOps 프로젝트 'multicluster-demo'를 클릭합니다.
 
-2. On the **Credentials** page, you need to create the credentials as shown in the table below. For more information about how to create credentials, refer to [Credential Management](../../how-to-use/devops-settings/credential-management/#create-credentials) and [Create a Pipeline Using a Jenkinsfile](../../how-to-use/pipelines/create-a-pipeline-using-jenkinsfile/#step-1-create-credentials).
+2. **Credentials** 페이지에서 아래 표와 같이 자격 증명을 생성해야 합니다. 자격 증명 생성 방법에 대한 자세한 내용은 [자격 증명 관리](../../how-to-use/devops-settings/credential-management/#create-credentials) 및 [Jenkinsfile을 사용하여 파이프라인 만들기]를 참조하세요. (../../how-to-use/pipelines/create-a-pipeline-using-jenkinsfile/#step-1-create-credentials).
 
    | Credential ID | Type                | Where to Use                       |
    | ------------- | ------------------- | ---------------------------------- |
@@ -94,21 +94,21 @@ You must create the projects as shown in the table below in advance. Make sure y
 
    {{< notice note >}}
 
-   You have to manually enter the kubeconfig of your member clusters when creating the kubeconfig credentials `shire` and `rohan`. Make sure your host cluster can access the API Server addresses of your member clusters.
+   kubeconfig 자격 증명 `shire` 및 `rohan`을 생성할 때 구성원 클러스터의 kubeconfig를 수동으로 입력해야 합니다. 호스트 클러스터가 구성원 클러스터의 API 서버 주소에 액세스할 수 있는지 확인하십시오.
 
    {{</ notice >}}
 
-3. Five credentials are created in total.
+3. 총 5개의 자격 증명이 생성됩니다.
 
-### Step 6: Create a pipeline
+### 6단계: 파이프라인 생성
 
-1. Go to the **Pipelines** page and click **Create**. In the displayed dialog box, enter `build-and-deploy-application` for **Name** and click **Next**.
+1. **Pipelines** 페이지로 이동하여 **Create**를 클릭합니다. 표시된 대화 상자에서 **Name**에 `build-and-deploy-application`을 입력하고 **Next**를 클릭합니다.
 
-2. On the **Advanced Settings** tab, click **Create** to use the default settings.
+2. **Advanced Settings** 탭에서 **Create**를 클릭하여 기본 설정을 사용합니다.
 
-3. The pipeline created is displayed in the list. Click its name to go to the details page.
+3. 생성된 파이프라인이 목록에 표시됩니다. 이름을 클릭하면 세부 정보 페이지로 이동합니다.
 
-4. Click **Edit Jenkinsfile** and copy and paste the following contents. Make sure you replace the value of `DOCKERHUB_NAMESPACE` with your own value, and then click **OK**.
+4. **Edit Jenkinsfile**을 클릭하고 다음 내용을 복사하여 붙여넣습니다. `DOCKERHUB_NAMESPACE` 값을 자신의 값으로 바꾼 다음 **OK**을 클릭합니다.
 
    ```groovy
    pipeline {
@@ -137,7 +137,7 @@ You must create the projects as shown in the table below in advance. Make sure y
        stage('checkout') {
          steps {
            container('maven') {
-             git branch: 'master', url: 'https://github.com/kubesphere/devops-maven-sample.git'
+             git branch: 'master', url: 'https://github.com/ke/devops-maven-sample.git'
            }
          }
        }
@@ -228,24 +228,23 @@ You must create the projects as shown in the table below in advance. Make sure y
 
    {{< notice note >}}
 
-   The flag `-o` in the `mvn` commands indicates that the offline mode is enabled. If you have relevant maven dependencies and caches ready locally, you can keep the offline mode on to save time.
+   `mvn` 명령의 `-o` 플래그는 오프라인 모드가 활성화되었음을 나타냅니다. 관련 maven 종속성과 캐시가 로컬로 준비되어 있는 경우 오프라인 모드를 유지하여 시간을 절약할 수 있습니다.
 
    {{</ notice >}}
 
-5. After the pipeline is created, you can view its stages and steps on the graphical editing panel as well.
+5. 파이프라인이 생성된 후 그래픽 편집 패널에서도 해당 단계와 단계를 볼 수 있습니다.
 
-### Step 7: Run the pipeline and check the results
+### 7단계: 파이프라인 실행 및 결과 확인
 
-1. Click **Run** to run the pipeline. The pipeline will pause when it reaches the stage **deploy to staging** as resources have been deployed to the cluster for development. You need to manually click **Proceed** twice to deploy resources to the testing cluster `host` and the production cluster `shire`.
+1. **Run**을 클릭하여 파이프라인을 실행합니다. 파이프라인은 개발을 위해 리소스가 클러스터에 배포되었으므로 **deploy to stagin** 단계에 도달하면 일시 중지됩니다. 테스트 클러스터 `host`와 프로덕션 클러스터 `shire`에 리소스를 배포하려면 수동으로 **Proceed**를 두 번 클릭해야 합니다.
 
-2. After a while, you can see the pipeline status shown as **Successful**.
+2. 잠시 후 **Successful**으로 표시된 파이프라인 상태를 볼 수 있습니다.
 
-3. Check the pipeline running logs by clicking **View Logs** in the upper-right corner. For each stage, you click it to inspect logs, which can be downloaded to your local machine for further analysis.
+3. 오른쪽 상단의 **View Logs**를 클릭하여 파이프라인 실행 로그를 확인합니다. 각 단계에 대해 클릭하여 추가 분석을 위해 로컬 시스템에 다운로드할 수 있는 로그를 검사합니다.
 
-4. Once the pipeline runs successfully, click **Code Check** to check the results through SonarQube.
+4. 파이프라인이 성공적으로 실행되면 **Code Check**를 클릭하여 SonarQube를 통해 결과를 확인합니다.
 
-5. Go to the **Projects** page, and you can view the resources deployed in different projects across the clusters by selecting a specific cluster from the drop-down list.
-
+5. **Projects** 페이지로 이동하고 드롭다운 목록에서 특정 클러스터를 선택하여 클러스터 전체에서 서로 다른 프로젝트에 배포된 리소스를 볼 수 있습니다.
 
    
 
