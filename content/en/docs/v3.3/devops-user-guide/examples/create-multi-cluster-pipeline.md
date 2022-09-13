@@ -74,7 +74,7 @@ weight: 11440
 
 | Cluster Name | Usage       | Project Name                  |
 | ------------ | ----------- | ----------------------------- |
-| host         | Testing     | kuberixEnterprise-sample-prod |
+| host         | Testing     | kuberixEnterprise-sample-test |
 | shire        | Production  | kuberixEnterprise-sample-prod |
 | rohan        | Development | kuberixEnterprise-sample-dev  |
 
