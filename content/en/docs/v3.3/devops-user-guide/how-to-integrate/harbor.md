@@ -6,16 +6,16 @@ linkTitle: "Integrate Harbor into Pipelines"
 weight: 11320
 ---
 
-This tutorial demonstrates how to integrate Harbor into KubeSphere pipelines.
+이 튜토리얼은 Harbor를 Kuberix Enterprise 파이프라인에 통합하는 방법을 보여줍니다.
 
-## Prerequisites
+## 전제 조건
 
-- You need to [enable the KubeSphere DevOps System](../../../pluggable-components/devops/).
-- You need to create a workspace, a DevOps project, and a user (`project-regular`). This account needs to be invited to the DevOps project with the `operator` role. See [Create Workspaces, Projects, Users and Roles](../../../quick-start/create-workspace-and-project/) if they are not ready.
+- [Kuberix Enterprise DevOps 시스템 활성화](../../../pluggable-components/devops/)가 필요합니다.
+- 작업 공간, DevOps 프로젝트 및 사용자(`project-regular`)를 생성해야 합니다. 이 계정은 '운영자' 역할로 DevOps 프로젝트에 초대되어야 합니다. 준비되지 않은 경우 [작업 공간, 프로젝트, 사용자 및 역할 만들기](../../../quick-start/create-workspace-and-project/)를 참조하십시오.
 
-## Install Harbor
+## 하버 설치
 
-It is highly recommended that you install Harbor through [the App Store of KubeSphere](../../../application-store/built-in-apps/harbor-app/). Alternatively, install Harbor manually through Helm3.
+[Kuberix Enterprise의 앱 스토어](../../../application-store/built-in-apps/harbor-app/)를 통해 하버를 설치하는 것이 좋습니다. 또는 Helm3를 통해 Harbour를 수동으로 설치하십시오.
 
 ```bash
 helm repo add harbor https://helm.goharbor.io
@@ -24,23 +24,23 @@ helm repo add harbor https://helm.goharbor.io
 helm install harbor-release harbor/harbor --set expose.type=nodePort,externalURL=http://$ip:30002,expose.tls.enabled=false
 ```
 
-## Get Harbor Credentials
+## Harbor 자격 증명 받기
 
-1. After Harbor is installed, visit `<NodeIP>:30002` and log in to the console with the default account and password (`admin/Harbor12345`). Click **Projects** in the left navigation pane and click **NEW PROJECT** on the **Projects** page.
+1. Harbor가 설치된 후 `<NodeIP>:30002`를 방문하여 기본 계정과 비밀번호(`admin/Harbor12345`)로 콘솔에 로그인합니다. 왼쪽 탐색 창에서 **Projects**를 클릭하고 **Projects** 페이지에서 **NEW PROJECT**를 클릭합니다.
 
-2. In the displayed dialog box, set a name (`ks-devops-harbor`) and click **OK**.
+2. 표시된 대화 상자에서 이름(`ke-devops-harbor`)을 설정하고 **OK**을 클릭합니다.
 
-3. Click the project you just created, and click **NEW ROBOT ACCOUNT** under the **Robot Accounts** tab.
+3. 방금 생성한 프로젝트를 클릭하고 **Robot Accounts** 탭에서 **NEW ROBOT ACCOUNT**를 클릭합니다.
 
-4. In the displayed dialog box, set a name (`robot-test`) for the robot account and click **SAVE**. Make sure you select the checkbox for pushing artifact in **Permissions**. 
+4. 표시된 대화 상자에서 로봇 계정의 이름(`robot-test`)을 설정하고 **SAVE**을 클릭합니다. **Permissions**에서 아티팩트 푸시 확인란을 선택했는지 확인합니다.
 
-5. In the displayed dialog box, click **EXPORT TO FILE** to save the token.
+5. 표시된 대화 상자에서 **EXPORT TO FILE**를 클릭하여 토큰을 저장합니다.
 
-## Enable Insecure Registry
+## 안전하지 않은 레지스트리 활성화
 
-You have to configure Docker to disregard security for your Harbor registry.
+Harbour 레지스트리에 대한 보안을 무시하도록 Docker를 구성해야 합니다.
 
-1. Run the `vim /etc/docker/daemon.json` command on your host to edit the `daemon.json` file, enter the following contents, and save the changes.
+1. 호스트에서 `vim /etc/docker/daemon.json` 명령을 실행하여 `daemon.json` 파일을 편집하고 다음 내용을 입력하고 변경 사항을 저장합니다.
 
    ```json
    {
@@ -63,29 +63,29 @@ You have to configure Docker to disregard security for your Harbor registry.
 
    {{< notice note >}}
 
-   It is suggested that you use this solution for isolated testing or in a tightly controlled, air-gapped environment. For more information, refer to [Deploy a plain HTTP registry](https://docs.docker.com/registry/insecure/#deploy-a-plain-http-registry). After you finish the above operations, you can also use the images in your Harbor registry when deploying workloads in your project. You need to create an image Secret for your Harbor registry, and then select your Harbor registry and enter the absolute path of your images in **Container Settings** under the **Container Image** tab to search for your images.
+   이 솔루션은 격리된 테스트나 엄격하게 제어되는 에어 갭 환경에서 사용하는 것이 좋습니다. 자세한 내용은 [일반 HTTP 레지스트리 배포](https://docs.docker.com/registry/insecure/#deploy-a-plain-http-registry)를 참조하세요. 위 작업을 완료한 후 프로젝트에 워크로드를 배포할 때 Harbor 레지스트리의 이미지를 사용할 수도 있습니다. Harbour 레지스트리에 대한 이미지 Secret을 생성한 다음 Harbour 레지스트리를 선택하고 **Container Image** 탭 아래의 **Container Settings**에서 이미지의 절대 경로를 입력하여 이미지를 검색해야 합니다.
 
    {{</ notice >}}
 
-## Create Credentials
+## 자격 증명 생성
 
-1. Log in to KubeSphere as `project-regular`, go to your DevOps project and create credentials for Harbor in **Credentials** under **DevOps Project Settings**.
+1. KubeSphere에 `project-regular`로 로그인하고 DevOps 프로젝트로 이동하여 **DevOps Project Settings** 아래의 **Credentials**에서 Harbor에 대한 자격 증명을 생성합니다.
 
-2. On the **Create Credentials** page, set a credential ID (`robot-test`) and select **Username and password** for **Type**. The **Username** field must be the same as the value of `name` in the JSON file you just downloaded and enter the value of `token` in the file for **Password/Token**.
+2. **Create Credentials** 페이지에서 자격 증명 ID(`robot-test`)를 설정하고 **Type**에 대해 **Username and password**를 선택합니다. **Username** 필드는 방금 다운로드한 JSON 파일의 '이름' 값과 같아야 하며 **Password/Token**에 대한 파일의 '토큰' 값을 입력해야 합니다.
 
-3. Click **OK** to save it.
+3. **OK**을 클릭하여 저장합니다.
 
-## Create a Pipeline
+## 파이프라인 생성
 
-1. Go to the **Pipelines** page and click **Create**. In the **Basic Information** tab, enter a name (`demo-pipeline`) for the pipeline and click **Next**.
+1. **Pipelines** 페이지로 이동하여 **Create**를 클릭합니다. **Basic Information** 탭에서 파이프라인의 이름(`demo-pipeline`)을 입력하고 **Next**를 클릭합니다.
 
-2. Use default values in **Advanced Settings** and click **Create**.
+2. **Advanced Settings**에서 기본값을 사용하고 **Create**를 클릭합니다.
 
-## Edit the Jenkinsfile
+## 젠킨스 파일 수정
 
-1. Click the pipeline to go to its details page and click **Edit Jenkinsfile**.
+1. 파이프라인을 클릭하여 세부 정보 페이지로 이동하고 **Edit Jenkinsfile**을 클릭합니다.
 
-2. Copy and paste the following contents into the Jenkinsfile. Note that you must replace the values of `REGISTRY`, `HARBOR_NAMESPACE`, `APP_NAME`, and `HARBOR_CREDENTIAL` with your own values.
+2. 다음 내용을 복사하여 Jenkinsfile에 붙여넣습니다. 'REGISTRY', 'HARBOR_NAMESPACE', 'APP_NAME' 및 ​​'HARBOR_CREDENTIAL' 값을 자신의 값으로 바꿔야 합니다.
 
    ```groovy
    pipeline {  
@@ -100,10 +100,10 @@ You have to configure Docker to disregard security for your Harbor registry.
        REGISTRY = '103.61.38.55:30002'
        // the project name
        // make sure your robot account have enough access to the project
-       HARBOR_NAMESPACE = 'ks-devops-harbor'
+       HARBOR_NAMESPACE = 'ke-devops-harbor'
        // docker image name
        APP_NAME = 'docker-example'
-       // ‘robot-test’ is the credential ID you created on the KubeSphere console
+       // ‘robot-test’ is the credential ID you created on the Kuberix Enterprise console
        HARBOR_CREDENTIAL = credentials('robot-test')
      }
      
@@ -134,11 +134,11 @@ You have to configure Docker to disregard security for your Harbor registry.
 
    {{< notice note >}}
 
-   You can pass the parameter to `docker login -u ` via Jenkins credentials with environment variables. However, every Harbor robot account's username contains a "\$" character, which will be converted into "\$$" by Jenkins when used by environment variables. [Learn more](https://number1.co.za/rancher-cannot-use-harbor-robot-account-imagepullbackoff-pull-access-denied/).
+   환경 변수가 있는 Jenkins 자격 증명을 통해 매개변수를 `docker login -u`에 전달할 수 있습니다. 그러나 모든 Harbor 로봇 계정의 사용자 이름에는 "\$" 문자가 포함되어 있으며 환경 변수에서 사용할 때 Jenkins에 의해 "\$$"로 변환됩니다. [자세히 알아보기](https://number1.co.za/rancher-cannot-use-harbor-robot-account-imagepullbackoff-pull-access-denied/).
 
    {{</ notice >}} 
 
 ## Run the Pipeline
 
-Save the Jenkinsfile and KubeSphere automatically creates all stages and steps on the graphical editing panel. Click **Run** to run the pipeline. If everything goes well, the image is pushed to your Harbor registry by Jenkins.
+Jenkinsfile을 저장하면 Kuberix Enterprise가 그래픽 편집 패널에 모든 단계와 단계를 자동으로 생성합니다. **Run**을 클릭하여 파이프라인을 실행합니다. 모든 것이 잘되면 이미지가 Jenkins에 의해 Harbour 레지스트리로 푸시됩니다.
 
