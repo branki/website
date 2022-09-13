@@ -1,49 +1,49 @@
 ---
 title: "DevOps Project Management"
-keywords: 'Kubernetes, KubeSphere, DevOps, Jenkins'
+keywords: 'Kubernetes, Kuberix, DevOps, Jenkins'
 description: 'Create and manage DevOps projects, and understand basic elements in DevOps projects.'
 linkTitle: "DevOps Project Management"
 weight: 11120
 ---
 
-This tutorial demonstrates how to create and manage DevOps projects.
+이 자습서는 DevOps 프로젝트를 만들고 관리하는 방법을 보여줍니다.
 
-## Prerequisites
+## 전제 조건
 
-- You need to create a workspace and a user (`project-admin`). The user must be invited to the workspace with the role of `workspace-self-provisioner`. For more information, refer to [Create Workspaces, Projects, Users and Roles](../../../quick-start/create-workspace-and-project/).
-- You need to enable the [KubeSphere DevOps system](../../../pluggable-components/devops/).
+- 작업 공간과 사용자(`project-admin`)를 생성해야 합니다. 사용자는 'workspace-self-provisioner' 역할로 작업 공간에 초대되어야 합니다. 자세한 내용은 [작업 공간, 프로젝트, 사용자 및 역할 생성](../../../quick-start/create-workspace-and-project/)을 참조하십시오.
+- [Kuberix Enterprise DevOps 시스템](../../../pluggable-components/devops/)을 활성화해야 합니다.
 
-## Create a DevOps Project
+## DevOps 프로젝트 생성
 
-1. Log in to the console of KubeSphere as `project-admin`. Go to **DevOps Projects** and click **Create**.
+1. Kuberix Enterprise 콘솔에 'project-admin'으로 로그인합니다. **DevOps 프로젝트**로 이동하여 **Create**를 클릭합니다.
 
-2. Provide the basic information for the DevOps project and click **OK**.
+2. DevOps 프로젝트에 대한 기본 정보를 제공하고 **OK**을 클릭합니다.
 
-   - **Name**: A concise and clear name for this DevOps project, which is convenient for users to identify, such as `demo-devops`.
-   - **Alias**: The alias name of the DevOps project.
-   - **Description**: A brief introduction to the DevOps project.
-   - **Cluster Settings**: In the current version, a DevOps project cannot run across multiple clusters at the same time. If you have enabled [the multi-cluster feature](../../../multicluster-management/), you must select the cluster where your DevOps project runs.
+   - **Name**: 이 DevOps 프로젝트의 간결하고 명확한 이름으로 `demo-devops`와 같이 사용자가 쉽게 식별할 수 있습니다.
+   - **Alias**: DevOps 프로젝트의 별칭 이름입니다.
+   - **Description**: DevOps 프로젝트에 대한 간략한 소개입니다.
+   - **Cluster Settings**: 현재 버전에서 DevOps 프로젝트는 여러 클러스터에서 동시에 실행할 수 없습니다. [멀티 클러스터 기능](../../../multicluster-management/)을 활성화한 경우 DevOps 프로젝트가 실행되는 클러스터를 선택해야 합니다.
 
-3. A DevOps project is displayed in the list below after created.
+3. DevOps 프로젝트가 생성되면 아래 목록에 표시됩니다.
 
-## View a DevOps Project
+## DevOps 프로젝트 보기
 
-Click the DevOps project just created to go to its details page. Tenants with different permissions can perform various tasks in a DevOps project, including creating CI/CD pipelines and credentials, and managing accounts and roles. 
+방금 생성한 DevOps 프로젝트를 클릭하여 세부 정보 페이지로 이동합니다. 다른 권한을 가진 테넌트는 CI/CD 파이프라인 및 자격 증명 생성, 계정 및 역할 관리를 포함하여 DevOps 프로젝트에서 다양한 작업을 수행할 수 있습니다.
 
-### Pipelines
+### 파이프라인
 
-A pipeline entails a collection of plugins that allow you to constantly and consistently test and build your code. It combines continuous integration (CI) and continuous delivery (CD) to provide streamlined workflows so that your code can be automatically delivered to any target.
+파이프라인에는 지속적이고 일관되게 코드를 테스트하고 빌드할 수 있는 플러그인 모음이 포함됩니다. CI(지속적 통합)와 CD(지속적 전달)를 결합하여 간소화된 워크플로를 제공하므로 코드가 모든 대상에 자동으로 전달될 수 있습니다.
 
-### Credentials
+### 자격 증명
 
-A DevOps project user with required permissions can configure credentials for pipelines for the interaction with external environments. Once the user adds these credentials in a DevOps project, the credentials can be used by the DevOps project to interact with third-party applications, such as GitHub, GitLab and Docker Hub. For more information, see [Credential Management](../../../devops-user-guide/how-to-use/devops-settings/credential-management/).
+필요한 권한이 있는 DevOps 프로젝트 사용자는 외부 환경과의 상호 작용을 위해 파이프라인에 대한 자격 증명을 구성할 수 있습니다. 사용자가 DevOps 프로젝트에 이러한 자격 증명을 추가하면 DevOps 프로젝트에서 자격 증명을 사용하여 GitHub, GitLab 및 Docker Hub와 같은 타사 애플리케이션과 상호 작용할 수 있습니다. 자세한 내용은 [자격 증명 관리](../../../devops-user-guide/how-to-use/devops-settings/credential-management/)를 참조하세요.
 
-### Members and Roles
+### 회원 및 역할
 
-Similar to a project, a DevOps project also requires users to be granted different roles before they can work in the DevOps project. Project administrators (for example, `project-admin`) are responsible for inviting tenants and granting them different roles. For more information, see [Role and Member Management](../../../devops-user-guide/how-to-use/devops-settings/role-and-member-management/).
+프로젝트와 마찬가지로 DevOps 프로젝트에서도 사용자가 DevOps 프로젝트에서 작업하기 전에 다른 역할을 부여받아야 합니다. 프로젝트 관리자(예: `project-admin`)는 테넌트를 초대하고 다른 역할을 부여할 책임이 있습니다. 자세한 내용은 [역할 및 구성원 관리](../../../devops-user-guide/how-to-use/devops-settings/role-and-member-management/)를 참조하십시오.
 
-## Edit or Delete a DevOps Project
+## DevOps 프로젝트 편집 또는 삭제
 
-1. Click **Basic Information** under **DevOps Project Settings**, and you can see an overview of the current DevOps project, including the number of project roles and members, project name and project creator.
+1. **DevOps Project Settings** 아래의 **Basic Information**을 클릭하면 프로젝트 역할 및 구성원 수, 프로젝트 이름 및 프로젝트 작성자를 포함하여 현재 DevOps 프로젝트의 개요를 볼 수 있습니다.
 
-2. Click **Manage** on the right, and you can edit the basic information of the DevOps project or delete it.
+2. 우측의 **Manage**를 클릭하면 DevOps 프로젝트의 기본 정보를 수정하거나 삭제할 수 있습니다.
